@@ -3,6 +3,6 @@ project(sockets_test)
 
 set(CMAKE_CXX_STANDARD 23)
 
-include(project_options.cmake)
+include(${PROJECT_SOURCE_DIR}/project_options.cmake)
 
 add_subdirectory(src)
