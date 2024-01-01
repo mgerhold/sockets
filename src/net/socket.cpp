@@ -304,6 +304,8 @@ ClientSocket::~ClientSocket() {
     *m_shared_state->running = false;
 }
 
+// clang-format off
+[[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
 std::future<std::size_t> ClientSocket::send(std::vector<std::byte> data) {
     auto promise = std::promise<std::size_t>{};
     auto future = promise.get_future();
@@ -313,6 +315,7 @@ std::future<std::size_t> ClientSocket::send(std::vector<std::byte> data) {
     }
     return future;
 }
+// clang-format on
 
 [[nodiscard]] std::future<std::vector<std::byte>> ClientSocket::receive(std::size_t const max_num_bytes) {
     auto promise = std::promise<std::vector<std::byte>>{};
