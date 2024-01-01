@@ -87,9 +87,6 @@ private:
         std::deque<ReceiveTask> receive_tasks;
 
         State() : running{ make_non_null_owner<std::atomic_bool>(true) } { }
-        ~State() {
-            std::cerr << "shared state being cleaned up\n";
-        }
     };
 
     std::unique_ptr<State> m_shared_state{ std::make_unique<State>() };

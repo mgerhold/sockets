@@ -1,19 +1,16 @@
-#include <net/sandbox_server.hpp>
-#include <net/socket_lib.hpp>
-#ifdef _WIN32
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#else
-// todo
-#endif
 #include <array>
 #include <bit>
 #include <cassert>
+#include <condition_variable>
 #include <iostream>
+#include <net/sandbox_server.hpp>
+#include <net/socket_lib.hpp>
 #include <stdexcept>
 
 void run_sandbox_server() {
+    auto mutex = std::mutex{};
     auto received_confirmation = false;
+    auto condition_variable = std::condition_variable{};
     // clang-format off
     auto const socket = SocketLib::create_server_socket(
             AddressFamily::Unspecified,
@@ -35,14 +32,18 @@ void run_sandbox_server() {
                 auto const received = client.receive(1).get();
                 assert(received.size() == 1);
                 std::cerr << "received confirmation: " << static_cast<char>(received.front()) << '\n';
-                received_confirmation = true;
+                {
+                    auto lock = std::scoped_lock{ mutex };
+                    received_confirmation = true;
+                }
+                condition_variable.notify_one();
             }
     );
     // clang-format on
 
-    while (not received_confirmation) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(20));
-    }
+    auto lock = std::unique_lock{ mutex };
+    condition_variable.wait(lock, [&] { return received_confirmation; });
+
     std::cerr << "ending program...\n";
     std::cout << "successful program termination\n";
 }
