@@ -26,13 +26,6 @@ public:
     using OsSocketHandle = int;
 #endif
 
-private:
-    friend void server_listen(
-            OsSocketHandle listen_socket,
-            std::atomic_bool const& running,
-            std::function<void(ClientSocket)> on_connect
-    );
-
 protected:
     UniqueValue<OsSocketHandle, void (*)(OsSocketHandle handle)> m_socket_descriptor;
 
@@ -71,7 +64,7 @@ class ClientSocket final : public AbstractSocket {
     friend void server_listen(
             OsSocketHandle listen_socket,
             std::atomic_bool const& running,
-            std::function<void(ClientSocket)> on_connect
+            std::function<void(ClientSocket)> const& on_connect
     );
 
 private:
@@ -87,11 +80,16 @@ private:
 
     struct State {
         // todo: replace std::atomic_bool using stop_token (also do this in ServerSocket)
-        NonNullOwner<std::atomic_bool> running{ make_non_null_owner<std::atomic_bool>(true) };
+        NonNullOwner<std::atomic_bool> running;
         std::mutex send_tasks_mutex;
         std::deque<SendTask> send_tasks;
         std::mutex receive_tasks_mutex;
         std::deque<ReceiveTask> receive_tasks;
+
+        State() : running{ make_non_null_owner<std::atomic_bool>(true) } { }
+        ~State() {
+            std::cerr << "shared state being cleaned up\n";
+        }
     };
 
     std::unique_ptr<State> m_shared_state{ std::make_unique<State>() };
@@ -104,6 +102,9 @@ private:
 
 
 public:
+    ClientSocket(ClientSocket&& other) noexcept = default;
+    ClientSocket& operator=(ClientSocket&& other) noexcept = default;
+
     ~ClientSocket();
 
     [[nodiscard]] bool is_connected() const {

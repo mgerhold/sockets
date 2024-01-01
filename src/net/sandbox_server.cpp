@@ -18,7 +18,7 @@ void run_sandbox_server() {
     auto const socket = SocketLib::create_server_socket(
             AddressFamily::Unspecified,
             12345,
-            [&](ClientSocket&& client) {
+            [&]([[maybe_unused]] ClientSocket client) {
                 //++num_connections;
                 std::cerr << "server accepted a new client connection: " << client.os_socket_handle().value() << '\n';
                 auto data = std::vector<std::byte>{};

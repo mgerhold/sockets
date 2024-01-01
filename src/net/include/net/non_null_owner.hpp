@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <concepts>
+#include <iostream>
 #include <memory>
 #include <utility>
 
@@ -18,8 +19,6 @@ private:
     }
 
 public:
-    explicit NonNullOwner(T&& value) : m_owned{ std::make_unique<T>(std::forward<T>(value)) } { }
-
     NonNullOwner(NonNullOwner const& other) = delete;
     NonNullOwner& operator=(NonNullOwner const& other) = delete;
 
@@ -34,12 +33,10 @@ public:
     }
 
     [[nodiscard]] T const& operator*() const {
-        assert(m_owned != nullptr);
         return *m_owned;
     }
 
     [[nodiscard]] T& operator*() {
-        assert(m_owned != nullptr);
         return *m_owned;
     }
 
@@ -54,5 +51,6 @@ public:
 
 template<typename T, typename... Args>
 [[nodiscard]] NonNullOwner<T> make_non_null_owner(Args&&... args) {
+    static_assert(sizeof...(args) > 0);
     return NonNullOwner{ std::make_unique<T>(std::forward<Args>(args)...) };
 }

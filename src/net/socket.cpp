@@ -78,7 +78,6 @@ static void connect_socket(AbstractSocket::OsSocketHandle const socket, AddressI
 
 static void socket_deleter(AbstractSocket::OsSocketHandle const handle) {
     closesocket(handle);
-    std::cerr << "socket closed\n";
 }
 
 AbstractSocket::AbstractSocket(OsSocketHandle const os_socket_handle)
@@ -107,7 +106,7 @@ initialize_client_socket(AddressFamily const address_family, std::string const& 
 void server_listen(
         AbstractSocket::OsSocketHandle const listen_socket,
         std::atomic_bool const& running,
-        std::function<void(ClientSocket)> on_connect
+        std::function<void(ClientSocket)> const& on_connect
 ) {
     while (running) {
         auto file_descriptors_to_check = fd_set{};
@@ -166,12 +165,14 @@ ClientSocket::ClientSocket(OsSocketHandle const os_socket_handle)
     : AbstractSocket{ os_socket_handle },
       m_send_receive_thread{ [&state = *m_shared_state, socket = m_socket_descriptor.value()] {
           keep_sending_and_receiving(state, socket);
+          std::cerr << "ClientSocket thread ending...\n";
       } } { }
 
 ClientSocket::ClientSocket(AddressFamily const address_family, std::string const& host, std::uint16_t const port)
     : AbstractSocket{ initialize_client_socket(address_family, host, port) },
       m_send_receive_thread{ [&state = *m_shared_state, socket = m_socket_descriptor.value()] {
           keep_sending_and_receiving(state, socket);
+          std::cerr << "ClientSocket thread ending...\n";
       } } { }
 
 void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const socket) {
@@ -301,7 +302,11 @@ void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const
 }
 
 ClientSocket::~ClientSocket() {
-    *m_shared_state->running = false;
+    if (m_shared_state != nullptr) {
+        // if this object was moved from, the cleanup will be done by the object
+        // this object was moved into
+        *(m_shared_state->running) = false;
+    }
 }
 
 // clang-format off
