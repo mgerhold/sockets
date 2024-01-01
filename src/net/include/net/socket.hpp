@@ -90,7 +90,7 @@ private:
         NonNullOwner<std::atomic_bool> running{ make_non_null_owner<std::atomic_bool>(true) };
         std::mutex send_tasks_mutex;
         std::deque<SendTask> send_tasks;
-        std::mutex receive_tasks_mutes;
+        std::mutex receive_tasks_mutex;
         std::deque<ReceiveTask> receive_tasks;
     };
 
@@ -105,6 +105,10 @@ private:
 
 public:
     ~ClientSocket();
+
+    [[nodiscard]] bool is_connected() const {
+        return *m_shared_state->running;
+    }
 
     std::future<std::size_t> send(std::vector<std::byte> data);
     [[nodiscard]] std::future<std::vector<std::byte>> receive(std::size_t max_num_bytes);

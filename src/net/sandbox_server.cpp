@@ -13,12 +13,12 @@
 #include <stdexcept>
 
 void run_sandbox_server() {
-    //auto num_connections = std::size_t{ 0 };
+    auto received_confirmation = false;
     // clang-format off
     auto const socket = SocketLib::create_server_socket(
             AddressFamily::Unspecified,
             12345,
-            [](ClientSocket const& client) -> void {
+            [&](ClientSocket&& client) {
                 //++num_connections;
                 std::cerr << "server accepted a new client connection: " << client.os_socket_handle().value() << '\n';
                 auto data = std::vector<std::byte>{};
@@ -27,17 +27,23 @@ void run_sandbox_server() {
                 data.push_back(std::byte{'l'});
                 data.push_back(std::byte{'l'});
                 data.push_back(std::byte{'o'});
-                data.push_back(std::byte{'\0'});
-                //auto future = client.send(std::move(data));
+                data.push_back(std::byte{'!'});
+                auto future = client.send(std::move(data));
                 std::this_thread::sleep_for(std::chrono::seconds(1));
+                auto const num_bytes_sent = future.get();
+                std::cerr << num_bytes_sent << " bytes sent\n";
+                auto const received = client.receive(1).get();
+                assert(received.size() == 1);
+                std::cerr << "received confirmation: " << static_cast<char>(received.front()) << '\n';
+                received_confirmation = true;
             }
     );
     // clang-format on
 
-    std::this_thread::sleep_for(std::chrono::seconds(3));
-    /*while (true) {
-        std::cout << '.';
-    }*/
+    while (not received_confirmation) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
+    std::cerr << "ending program...\n";
 
 #if 0
     if (listen(listen_socket, SOMAXCONN) == SOCKET_ERROR) {

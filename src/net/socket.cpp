@@ -182,13 +182,13 @@ void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const
 
         auto const timeout = timeval{ .tv_sec{ 0 }, .tv_usec{ 100 * 1000 } };
         // clang-format off
-            auto const select_result = select(
-                static_cast<int>(socket + 1),
-                nullptr,
-                &write_descriptors,
-                nullptr,
-                &timeout
-            );
+        auto const select_result = select(
+            static_cast<int>(socket + 1),
+            nullptr,
+            &write_descriptors,
+            nullptr,
+            &timeout
+        );
         // clang-format on
 
         if (select_result == SOCKET_ERROR) {
@@ -196,10 +196,10 @@ void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const
         }
 
         auto const can_send = (select_result == 1);
-        std::cerr << "socket " << socket << " can send? " << std::boolalpha << can_send << '\n';
+        // std::cerr << "socket " << socket << " can send? " << std::boolalpha << can_send << '\n';
 
         if (can_send) {
-            auto const send_task = [&]() -> std::optional<SendTask> {
+            auto send_task = [&]() -> std::optional<SendTask> {
                 auto const guard = std::scoped_lock{ state.send_tasks_mutex };
                 if (state.send_tasks.empty()) {
                     return std::nullopt;
@@ -222,11 +222,79 @@ void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const
                     if (result == SOCKET_ERROR) {
                         throw std::runtime_error{ "error sending message" };
                     }
-                    std::cerr << "  (part of) data sent!\n";
+                    std::cerr << "  (part of) data sent! (" << result << " bytes)\n";
                     send_pointer += result;
                     num_bytes_sent += static_cast<std::size_t>(result);
                 }
                 std::cerr << "  data sent completely\n";
+                send_task.value().promise.set_value(num_bytes_sent);
+            }
+        }
+
+        // reading
+        auto read_descriptors = fd_set{};
+        FD_ZERO(&read_descriptors);
+        FD_SET(socket, &read_descriptors);
+
+        // clang-format off
+        auto const read_select_result = select(
+            static_cast<int>(socket + 1),
+            &read_descriptors,
+            nullptr,
+            nullptr,
+            &timeout
+        );
+        // clang-format on
+
+        if (read_select_result == SOCKET_ERROR) {
+            throw std::runtime_error{ "failed to call select to check if socket is ready to receive" };
+        }
+
+        auto const can_receive = (read_select_result == 1);
+
+        if (can_receive) {
+            auto receive_task = [&]() -> std::optional<ReceiveTask> {
+                auto const guard = std::scoped_lock{ state.receive_tasks_mutex };
+                if (state.receive_tasks.empty()) {
+                    return std::nullopt;
+                }
+                auto result = std::move(state.receive_tasks.front());
+                state.receive_tasks.pop_front();
+                return result;
+            }();
+
+            if (receive_task.has_value()) {
+                std::cerr << "  there is something to receive...\n";
+                if (not std::in_range<int>(receive_task.value().max_num_bytes)) {
+                    throw std::runtime_error{ "size of message to be received exceeds allowed maximum" };
+                }
+
+                auto receive_buffer = std::vector<std::byte>{};
+                receive_buffer.resize(receive_task.value().max_num_bytes);
+
+                auto const receive_result =
+                        recv(socket,
+                             reinterpret_cast<char*>(receive_buffer.data()),
+                             static_cast<int>(receive_buffer.size()),
+                             0);
+
+                if (receive_result == 0) {
+                    // connection has been gracefully closed => close socket
+                    receive_task.value().promise.set_value({});
+                    *state.running = false;
+                    break;
+                }
+
+                if (receive_result == SOCKET_ERROR) {
+                    throw std::runtime_error{ "failed to read from socket" };
+                }
+
+                std::cerr << "received " << receive_result << " bytes of a maximum of "
+                          << receive_task.value().max_num_bytes << '\n';
+
+                receive_buffer.resize(static_cast<std::size_t>(receive_result));
+
+                receive_task.value().promise.set_value(std::move(receive_buffer));
             }
         }
     }
@@ -250,7 +318,7 @@ std::future<std::size_t> ClientSocket::send(std::vector<std::byte> data) {
     auto promise = std::promise<std::vector<std::byte>>{};
     auto future = promise.get_future();
     {
-        auto const guard = std::scoped_lock{ m_shared_state->receive_tasks_mutes };
+        auto const guard = std::scoped_lock{ m_shared_state->receive_tasks_mutex };
         m_shared_state->receive_tasks.emplace_back(std::move(promise), max_num_bytes);
     }
     return future;
