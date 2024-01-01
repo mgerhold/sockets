@@ -6,12 +6,12 @@ add_library(net
         sandbox_client.cpp
         include/net/sandbox_server.hpp
         sandbox_server.cpp
-        common.hpp
-        common.cpp
         socket_headers.hpp
         include/net/socket.hpp
         include/net/address_family.hpp
         socket.cpp
+        include/net/unique_value.hpp
+        include/net/non_null_owner.hpp
 )
 
 target_include_directories(net PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

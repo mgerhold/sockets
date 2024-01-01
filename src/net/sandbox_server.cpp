@@ -6,7 +6,6 @@
 #else
 // todo
 #endif
-#include "common.hpp"
 #include <array>
 #include <bit>
 #include <cassert>
@@ -22,6 +21,19 @@ void run_sandbox_server() {
             [&num_connections](Socket const& client) {
                 ++num_connections;
                 std::cerr << "server accepted a new client connection: " << client.os_socket_handle().value() << '\n';
+                /*client.send("Hello").wait();
+
+                while (client.is_connected()) {
+                    auto const available = client.available_bytes();
+                    if (available > 0) {
+                        auto const message = client.receive(available).get();
+                        std::cout << message << '\n';
+                        if (message == "quit") {
+                            client.disconnect();
+                            break;
+                        }
+                    }
+                }*/
             }
     );
     // clang-format on

@@ -75,25 +75,24 @@ static void connect_socket(Socket::OsSocketHandle const socket, AddressInfos con
     }
 }
 
-Socket::Socket(OsSocketHandle os_socket_handle) : m_socket_descriptor{ os_socket_handle } { }
-
-Socket::Socket(Socket&& other) noexcept
-    : m_socket_descriptor{ std::exchange(other.m_socket_descriptor, std::nullopt) } { }
-
-Socket& Socket::operator=(Socket&& other) noexcept {
-    if (this == std::addressof(other)) {
-        return *this;
-    }
-    using std::swap;
-    swap(m_socket_descriptor, other.m_socket_descriptor);
-    return *this;
+static void socket_deleter(Socket::OsSocketHandle const handle) {
+    closesocket(handle);
 }
+
+Socket::Socket(OsSocketHandle const os_socket_handle) : m_socket_descriptor{ os_socket_handle, socket_deleter } { }
 
 Socket::~Socket() {
-    if (m_socket_descriptor.has_value()) {
-        closesocket(m_socket_descriptor.value());
-    }
+    *m_running = false;
 }
+
+[[nodiscard]] std::future<std::size_t> Socket::send(std::vector<std::byte> data) {
+    auto promise = std::promise<std::size_t>{};
+    auto future = promise.get_future();
+
+    return future;
+}
+
+//[[nodiscard]] std::future<std::vector<std::byte>> Socket::receive(std::size_t const max_num_bytes) { }
 
 namespace detail {
     // clang-format off
@@ -148,22 +147,17 @@ ServerSocket::ServerSocket(
         throw std::runtime_error{ std::format("failed to listen on socket: {}", WSAGetLastError()) };
     }
 
-    /*auto ioctlsocket_arg = 1UL; // enable non-blocking mode (0UL = disable)
-    if (ioctlsocket(m_socket_descriptor.value(), FIONBIO, &ioctlsocket_arg) != 0) {
-        throw std::runtime_error{ std::format("failed to set socket to non-blocking mode: '{}'", WSAGetLastError()) };
-    }*/
-
-    m_listen_thread = std::jthread{ [this, callback = std::move(on_connect)]() {
-        server_listen(m_socket_descriptor.value(), m_running, callback);
+    m_listen_thread = std::jthread{ [this, callback = std::move(on_connect)] {
+        server_listen(m_socket_descriptor.value(), *m_running, callback);
     } };
 }
 
 ServerSocket::~ServerSocket() {
-    m_running = false;
+    stop();
 }
 
 void ServerSocket::stop() {
-    m_running = false;
+    *m_running = false;
 }
 
 ClientSocket::ClientSocket(AddressFamily const address_family, std::string const& host, std::uint16_t const port)
