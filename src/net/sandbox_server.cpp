@@ -1,40 +1,42 @@
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include "net/sandbox_server.hpp"
 #include "net/socket_lib.hpp"
-#include <cassert>
-#include <condition_variable>
+#include <chrono>
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 
-
+[[nodiscard]] std::string current_date_time() {
+    auto const now = std::chrono::system_clock::now();
+    auto const now_c = std::chrono::system_clock::to_time_t(now);
+    auto ss = std::stringstream{};
+    ss << std::put_time(std::localtime(&now_c), "%F %T");
+    return ss.str();
+}
 
 void run_sandbox_server() {
-    auto mutex = std::mutex{};
-    auto received_confirmation = false;
-    auto condition_variable = std::condition_variable{};
-    // clang-format off
+    using namespace std::chrono_literals;
+
+    static constexpr auto port = std::uint16_t{ 12345 };
+
     auto const socket = SocketLib::create_server_socket(
             AddressFamily::Unspecified,
-            12345,
+            port,
             [&]([[maybe_unused]] ClientSocket client_connection) {
-                std::cerr << "server accepted a new client connection: " << client_connection.os_socket_handle().value() << '\n';
-                auto const num_bytes_sent = client_connection.send(
-                        "Hello, world. An exclamation mark signals the end of the message!"
-                    ).get();
-                std::cerr << num_bytes_sent << " bytes sent\n";
-                auto const received = client_connection.receive(1).get();
-                assert(received.size() == 1);
-                std::cerr << "received confirmation: " << static_cast<char>(received.front()) << '\n';
-                {
-                    auto lock = std::scoped_lock{ mutex };
-                    received_confirmation = true;
+                std::cout << "client connected\n";
+                while (client_connection.is_connected()) {
+                    auto const text = current_date_time();
+                    std::cout << "  sending \"" << text << "\"..." << std::endl;
+                    client_connection.send(text + '\n').wait();
+                    std::this_thread::sleep_for(1s);
                 }
-                condition_variable.notify_one();
             }
     );
-    // clang-format on
+    std::cout << "listening on port " << port << "..." << std::endl;
 
-    auto lock = std::unique_lock{ mutex };
-    condition_variable.wait(lock, [&] { return received_confirmation; });
-
-    std::cerr << "ending program...\n";
-    std::cout << "successful program termination\n";
+    // sleep forever to keep server alive
+    std::promise<void>{}.get_future().wait();
 }

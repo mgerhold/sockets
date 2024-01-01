@@ -13,12 +13,10 @@ SocketLib::SocketLib() {
     if (WSAStartup(winsock_version, &wsa_data) != 0) {
         throw std::runtime_error{ "unable to initialize winsock" };
     }
-    std::cout << "initialized winsock\n";
 }
 
 SocketLib::~SocketLib() {
     WSACleanup();
-    std::cout << "winsock cleaned up\n";
 }
 
 // clang-format off

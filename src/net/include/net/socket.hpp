@@ -117,4 +117,5 @@ public:
     // clang-format on
 
     [[nodiscard]] std::future<std::vector<std::byte>> receive(std::size_t max_num_bytes);
+    [[nodiscard]] std::future<std::string> receive_string(std::size_t max_num_bytes);
 };

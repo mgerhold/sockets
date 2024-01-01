@@ -1,7 +1,7 @@
 #include "net/socket.hpp"
 #include "socket_headers.hpp"
 #include <cassert>
-//#include <format>
+#include <cstring>
 #include <iostream>
 #include <memory>
 #include <sstream>
@@ -165,14 +165,12 @@ ClientSocket::ClientSocket(OsSocketHandle const os_socket_handle)
     : AbstractSocket{ os_socket_handle },
       m_send_receive_thread{ [&state = *m_shared_state, socket = m_socket_descriptor.value()] {
           keep_sending_and_receiving(state, socket);
-          std::cerr << "ClientSocket thread ending...\n";
       } } { }
 
 ClientSocket::ClientSocket(AddressFamily const address_family, std::string const& host, std::uint16_t const port)
     : AbstractSocket{ initialize_client_socket(address_family, host, port) },
       m_send_receive_thread{ [&state = *m_shared_state, socket = m_socket_descriptor.value()] {
           keep_sending_and_receiving(state, socket);
-          std::cerr << "ClientSocket thread ending...\n";
       } } { }
 
 void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const socket) {
@@ -197,7 +195,6 @@ void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const
         }
 
         auto const can_send = (select_result == 1);
-        // std::cerr << "socket " << socket << " can send? " << std::boolalpha << can_send << '\n';
 
         if (can_send) {
             auto send_task = [&]() -> std::optional<SendTask> {
@@ -211,7 +208,6 @@ void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const
             }();
 
             if (send_task.has_value()) {
-                std::cerr << "  there is something to send...\n";
                 if (not std::in_range<int>(send_task.value().data.size())) {
                     throw std::runtime_error{ "size of message to be sent exceeds allowed maximum" };
                 }
@@ -221,13 +217,18 @@ void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const
                     auto const num_bytes_remaining = send_task.value().data.size() - num_bytes_sent;
                     auto const result = ::send(socket, send_pointer, static_cast<int>(num_bytes_remaining), 0);
                     if (result == SOCKET_ERROR) {
+                        auto const error = WSAGetLastError();
+                        if (error == WSAENOTCONN or error == WSAECONNABORTED) {
+                            // connection no longer active
+                            send_task.value().promise.set_value(0);
+                            *state.running = false;
+                            return;
+                        }
                         throw std::runtime_error{ "error sending message" };
                     }
-                    std::cerr << "  (part of) data sent! (" << result << " bytes)\n";
                     send_pointer += result;
                     num_bytes_sent += static_cast<std::size_t>(result);
                 }
-                std::cerr << "  data sent completely\n";
                 send_task.value().promise.set_value(num_bytes_sent);
             }
         }
@@ -265,7 +266,6 @@ void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const
             }();
 
             if (receive_task.has_value()) {
-                std::cerr << "  there is something to receive...\n";
                 if (not std::in_range<int>(receive_task.value().max_num_bytes)) {
                     throw std::runtime_error{ "size of message to be received exceeds allowed maximum" };
                 }
@@ -283,15 +283,12 @@ void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const
                     // connection has been gracefully closed => close socket
                     receive_task.value().promise.set_value({});
                     *state.running = false;
-                    break;
+                    return;
                 }
 
                 if (receive_result == SOCKET_ERROR) {
                     throw std::runtime_error{ "failed to read from socket" };
                 }
-
-                std::cerr << "received " << receive_result << " bytes of a maximum of "
-                          << receive_task.value().max_num_bytes << '\n';
 
                 receive_buffer.resize(static_cast<std::size_t>(receive_result));
 
@@ -340,4 +337,14 @@ std::future<std::size_t> ClientSocket::send(std::string_view const text){
         m_shared_state->receive_tasks.emplace_back(std::move(promise), max_num_bytes);
     }
     return future;
+}
+
+[[nodiscard]] std::future<std::string> ClientSocket::receive_string(std::size_t const max_num_bytes) {
+    return std::async([&]() -> std::string {
+        auto const data = receive(max_num_bytes).get();
+        auto result = std::string{};
+        result.resize(data.size());
+        std::memcpy(result.data(), data.data(), data.size());
+        return result;
+    });
 }

@@ -1,28 +1,23 @@
 #include "net/sandbox_client.hpp"
 #include "net/socket_lib.hpp"
-#include <array>
-#include <cassert>
 #include <iostream>
-#include <stdexcept>
 #include <string_view>
 
 void run_sandbox_client() {
     auto socket = SocketLib::create_client_socket(AddressFamily::Unspecified, "localhost", 12345);
 
-    auto text = std::string{};
+    auto num_data_points = 0;
+    auto buffer = std::string{};
     while (true) {
-        auto const received = socket.receive(64).get();
-        std::cerr << "received " << received.size() << " bytes\n";
-        for (auto const byte : received) {
-            if (static_cast<char>(byte) == '!') {
-                goto after_loop;
+        buffer += socket.receive_string(512).get();
+        auto const newline_position = buffer.find('\n');
+        if (newline_position != std::string::npos) {
+            std::cout << buffer.substr(0, newline_position) << std::endl; // contains newline
+            buffer.erase(0, newline_position + 1);
+            ++num_data_points;
+            if (num_data_points >= 5) {
+                break;
             }
-            text.push_back(static_cast<char>(byte));
         }
     }
-after_loop:
-    std::cerr << text.length() << '\n' << text << '\n';
-    socket.send({ std::byte{ '!' } }).wait();
-    std::cerr << "sent confirmation\n";
-    std::cout << "successful program termination\n";
 }
