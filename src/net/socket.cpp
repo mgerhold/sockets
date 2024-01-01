@@ -312,6 +312,7 @@ ClientSocket::~ClientSocket() {
 // clang-format off
 [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
 std::future<std::size_t> ClientSocket::send(std::vector<std::byte> data) {
+    // clang-format on
     auto promise = std::promise<std::size_t>{};
     auto future = promise.get_future();
     {
@@ -320,7 +321,16 @@ std::future<std::size_t> ClientSocket::send(std::vector<std::byte> data) {
     }
     return future;
 }
-// clang-format on
+
+// clang-format off
+[[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
+std::future<std::size_t> ClientSocket::send(std::string_view const text){
+    // clang-format on
+    auto data = std::vector<std::byte>{};
+    data.resize(text.length(), std::byte{});
+    std::memcpy(data.data(), text.data(), text.size());
+    return send(std::move(data));
+}
 
 [[nodiscard]] std::future<std::vector<std::byte>> ClientSocket::receive(std::size_t const max_num_bytes) {
     auto promise = std::promise<std::vector<std::byte>>{};

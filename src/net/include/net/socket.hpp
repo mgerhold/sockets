@@ -111,6 +111,9 @@ public:
     // clang-format off
     [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
     std::future<std::size_t> send(std::vector<std::byte> data);
+
+    [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
+    std::future<std::size_t> send(std::string_view text);
     // clang-format on
 
     [[nodiscard]] std::future<std::vector<std::byte>> receive(std::size_t max_num_bytes);
