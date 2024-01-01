@@ -8,7 +8,7 @@
 template<std::default_initializable T>
 class NonNullOwner final {
     template<typename U, typename... Args>
-    friend [[nodiscard]] NonNullOwner<U> make_non_null_owner(Args&&... args);
+    friend NonNullOwner<U> make_non_null_owner(Args&&... args);
 
 private:
     std::unique_ptr<T> m_owned;

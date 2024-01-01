@@ -10,6 +10,8 @@
 void run_sandbox_client() {
     auto const socket = SocketLib::create_client_socket(AddressFamily::Unspecified, "localhost", 12345);
 
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+
 #if 0
     using namespace std::string_view_literals;
     static constexpr auto to_send = "this is a test"sv;

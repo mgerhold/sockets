@@ -36,11 +36,11 @@ public:
         }
     }
 
-    [[noidscard]] explicit operator T const&() const {
+    [[nodiscard]] explicit operator T const&() const {
         return value();
     }
 
-    [[noidscard]] explicit operator T&() {
+    [[nodiscard]] explicit operator T&() {
         return value();
     }
 

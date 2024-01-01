@@ -1,7 +1,8 @@
 #include "net/socket.hpp"
 #include "socket_headers.hpp"
 #include <cassert>
-#include <format>
+//#include <format>
+#include <iostream>
 #include <memory>
 #include <sstream>
 #include <stdexcept>
@@ -53,50 +54,40 @@ using AddressInfos = std::unique_ptr<addrinfo, decltype([](addrinfo* const point
     return AddressInfos{ result };
 }
 
-[[nodiscard]] static Socket::OsSocketHandle create_socket(AddressInfos const& address_infos) {
+[[nodiscard]] static AbstractSocket::OsSocketHandle create_socket(AddressInfos const& address_infos) {
     auto const socket = ::socket(address_infos->ai_family, address_infos->ai_socktype, address_infos->ai_protocol);
     if (socket == INVALID_SOCKET) {
-        throw std::runtime_error{ std::format("failed to create socket: {}", WSAGetLastError()) };
+        throw std::runtime_error{ "failed to create socket" };
     }
     return socket;
 }
 
-static void bind_socket(Socket::OsSocketHandle const socket, AddressInfos const& address_infos) {
+static void bind_socket(AbstractSocket::OsSocketHandle const socket, AddressInfos const& address_infos) {
     if (bind(socket, address_infos->ai_addr, static_cast<int>(address_infos->ai_addrlen)) == SOCKET_ERROR) {
         closesocket(socket);
         throw std::runtime_error{ "failed to bind socket" };
     }
 }
 
-static void connect_socket(Socket::OsSocketHandle const socket, AddressInfos const& address_infos) {
+static void connect_socket(AbstractSocket::OsSocketHandle const socket, AddressInfos const& address_infos) {
     if (connect(socket, address_infos->ai_addr, static_cast<int>(address_infos->ai_addrlen)) == SOCKET_ERROR) {
         closesocket(socket);
         throw std::runtime_error{ "unable to connect" };
     }
 }
 
-static void socket_deleter(Socket::OsSocketHandle const handle) {
+static void socket_deleter(AbstractSocket::OsSocketHandle const handle) {
     closesocket(handle);
+    std::cerr << "socket closed\n";
 }
 
-Socket::Socket(OsSocketHandle const os_socket_handle) : m_socket_descriptor{ os_socket_handle, socket_deleter } { }
+AbstractSocket::AbstractSocket(OsSocketHandle const os_socket_handle)
+    : m_socket_descriptor{ os_socket_handle, socket_deleter } { }
 
-Socket::~Socket() {
-    *m_running = false;
-}
-
-[[nodiscard]] std::future<std::size_t> Socket::send(std::vector<std::byte> data) {
-    auto promise = std::promise<std::size_t>{};
-    auto future = promise.get_future();
-
-    return future;
-}
-
-//[[nodiscard]] std::future<std::vector<std::byte>> Socket::receive(std::size_t const max_num_bytes) { }
 
 namespace detail {
     // clang-format off
-    [[nodiscard]] Socket::OsSocketHandle initialize_server_socket(AddressFamily const address_family, std::uint16_t const port) {
+    [[nodiscard]] AbstractSocket::OsSocketHandle initialize_server_socket(AddressFamily const address_family, std::uint16_t const port) {
         auto const address_infos = get_address_infos(address_family, port);
         auto const socket = create_socket(address_infos);
         bind_socket(socket, address_infos);
@@ -113,10 +104,10 @@ initialize_client_socket(AddressFamily const address_family, std::string const& 
     return socket;
 }
 
-static void server_listen(
-        Socket::OsSocketHandle const listen_socket,
+void server_listen(
+        AbstractSocket::OsSocketHandle const listen_socket,
         std::atomic_bool const& running,
-        std::function<void(Socket)> const& on_connect
+        std::function<void(ClientSocket)> on_connect
 ) {
     while (running) {
         auto file_descriptors_to_check = fd_set{};
@@ -124,31 +115,42 @@ static void server_listen(
         FD_SET(listen_socket, &file_descriptors_to_check);
 
         static constexpr auto timeout = timeval{ .tv_sec{ 0 }, .tv_usec{ 1000 * 100 } };
-        auto const can_accept =
-                static_cast<bool>(select(0 /* unused */, &file_descriptors_to_check, nullptr, nullptr, &timeout));
+        // clang-format off
+        auto const select_result = select(
+            static_cast<int>(listen_socket + 1), // ignored in Windows
+            &file_descriptors_to_check,
+            nullptr,
+            nullptr,
+            &timeout
+        );
+        // clang-format on
+        if (select_result == SOCKET_ERROR) {
+            throw std::runtime_error{ "failed to call select" };
+        }
+        auto const can_accept = (select_result == 1);
         if (not can_accept) {
             continue;
         }
 
         auto const client_socket = accept(listen_socket, nullptr, nullptr);
         assert(client_socket != INVALID_SOCKET and "successful acceptance is guaranteed by previous call to select");
-        on_connect(Socket{ client_socket });
+        on_connect(ClientSocket{ client_socket });
     }
 }
 
 ServerSocket::ServerSocket(
         AddressFamily const address_family,
         std::uint16_t const port,
-        std::function<void(Socket)> on_connect
+        std::function<void(ClientSocket)> on_connect
 )
-    : Socket{ detail::initialize_server_socket(address_family, port) } {
+    : AbstractSocket{ detail::initialize_server_socket(address_family, port) } {
     assert(m_socket_descriptor.has_value() and "has been set via parent constructor");
     if (listen(m_socket_descriptor.value(), SOMAXCONN) == SOCKET_ERROR) {
-        throw std::runtime_error{ std::format("failed to listen on socket: {}", WSAGetLastError()) };
+        throw std::runtime_error{ "failed to listen on socket" };
     }
 
-    m_listen_thread = std::jthread{ [this, callback = std::move(on_connect)] {
-        server_listen(m_socket_descriptor.value(), *m_running, callback);
+    m_listen_thread = std::jthread{ [this, callback = std::move(on_connect)]() mutable {
+        server_listen(m_socket_descriptor.value(), *m_running, std::move(callback));
     } };
 }
 
@@ -160,5 +162,96 @@ void ServerSocket::stop() {
     *m_running = false;
 }
 
+ClientSocket::ClientSocket(OsSocketHandle const os_socket_handle)
+    : AbstractSocket{ os_socket_handle },
+      m_send_receive_thread{ [&state = *m_shared_state, socket = m_socket_descriptor.value()] {
+          keep_sending_and_receiving(state, socket);
+      } } { }
+
 ClientSocket::ClientSocket(AddressFamily const address_family, std::string const& host, std::uint16_t const port)
-    : Socket{ initialize_client_socket(address_family, host, port) } { }
+    : AbstractSocket{ initialize_client_socket(address_family, host, port) },
+      m_send_receive_thread{ [&state = *m_shared_state, socket = m_socket_descriptor.value()] {
+          keep_sending_and_receiving(state, socket);
+      } } { }
+
+void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const socket) {
+    while (*state.running) {
+        auto write_descriptors = fd_set{};
+        FD_ZERO(&write_descriptors);
+        FD_SET(socket, &write_descriptors);
+
+        auto const timeout = timeval{ .tv_sec{ 0 }, .tv_usec{ 100 * 1000 } };
+        // clang-format off
+            auto const select_result = select(
+                static_cast<int>(socket + 1),
+                nullptr,
+                &write_descriptors,
+                nullptr,
+                &timeout
+            );
+        // clang-format on
+
+        if (select_result == SOCKET_ERROR) {
+            throw std::runtime_error{ "failed to call select to check if socket is ready to send" };
+        }
+
+        auto const can_send = (select_result == 1);
+        std::cerr << "socket " << socket << " can send? " << std::boolalpha << can_send << '\n';
+
+        if (can_send) {
+            auto const send_task = [&]() -> std::optional<SendTask> {
+                auto const guard = std::scoped_lock{ state.send_tasks_mutex };
+                if (state.send_tasks.empty()) {
+                    return std::nullopt;
+                }
+                auto result = std::move(state.send_tasks.front());
+                state.send_tasks.pop_front();
+                return result;
+            }();
+
+            if (send_task.has_value()) {
+                std::cerr << "  there is something to send...\n";
+                if (not std::in_range<int>(send_task.value().data.size())) {
+                    throw std::runtime_error{ "size of message to be sent exceeds allowed maximum" };
+                }
+                auto num_bytes_sent = std::size_t{ 0 };
+                auto send_pointer = reinterpret_cast<char const*>(send_task.value().data.data());
+                while (num_bytes_sent < send_task.value().data.size()) {
+                    auto const num_bytes_remaining = send_task.value().data.size() - num_bytes_sent;
+                    auto const result = ::send(socket, send_pointer, static_cast<int>(num_bytes_remaining), 0);
+                    if (result == SOCKET_ERROR) {
+                        throw std::runtime_error{ "error sending message" };
+                    }
+                    std::cerr << "  (part of) data sent!\n";
+                    send_pointer += result;
+                    num_bytes_sent += static_cast<std::size_t>(result);
+                }
+                std::cerr << "  data sent completely\n";
+            }
+        }
+    }
+}
+
+ClientSocket::~ClientSocket() {
+    *m_shared_state->running = false;
+}
+
+std::future<std::size_t> ClientSocket::send(std::vector<std::byte> data) {
+    auto promise = std::promise<std::size_t>{};
+    auto future = promise.get_future();
+    {
+        auto const guard = std::scoped_lock{ m_shared_state->send_tasks_mutex };
+        m_shared_state->send_tasks.emplace_back(std::move(promise), std::move(data));
+    }
+    return future;
+}
+
+[[nodiscard]] std::future<std::vector<std::byte>> ClientSocket::receive(std::size_t const max_num_bytes) {
+    auto promise = std::promise<std::vector<std::byte>>{};
+    auto future = promise.get_future();
+    {
+        auto const guard = std::scoped_lock{ m_shared_state->receive_tasks_mutes };
+        m_shared_state->receive_tasks.emplace_back(std::move(promise), max_num_bytes);
+    }
+    return future;
+}

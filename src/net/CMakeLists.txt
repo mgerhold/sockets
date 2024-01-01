@@ -15,4 +15,4 @@ add_library(net
 )
 
 target_include_directories(net PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(net PRIVATE wsock32 ws2_32)
+target_link_libraries(net PRIVATE wsock32 ws2_32 project_options)

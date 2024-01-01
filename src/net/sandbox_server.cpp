@@ -13,32 +13,31 @@
 #include <stdexcept>
 
 void run_sandbox_server() {
-    auto num_connections = std::size_t{ 0 };
+    //auto num_connections = std::size_t{ 0 };
     // clang-format off
     auto const socket = SocketLib::create_server_socket(
             AddressFamily::Unspecified,
             12345,
-            [&num_connections](Socket const& client) {
-                ++num_connections;
+            [](ClientSocket const& client) -> void {
+                //++num_connections;
                 std::cerr << "server accepted a new client connection: " << client.os_socket_handle().value() << '\n';
-                /*client.send("Hello").wait();
-
-                while (client.is_connected()) {
-                    auto const available = client.available_bytes();
-                    if (available > 0) {
-                        auto const message = client.receive(available).get();
-                        std::cout << message << '\n';
-                        if (message == "quit") {
-                            client.disconnect();
-                            break;
-                        }
-                    }
-                }*/
+                auto data = std::vector<std::byte>{};
+                data.push_back(std::byte{'H'});
+                data.push_back(std::byte{'e'});
+                data.push_back(std::byte{'l'});
+                data.push_back(std::byte{'l'});
+                data.push_back(std::byte{'o'});
+                data.push_back(std::byte{'\0'});
+                //auto future = client.send(std::move(data));
+                std::this_thread::sleep_for(std::chrono::seconds(1));
             }
     );
     // clang-format on
 
-    while (num_connections < 1) { }
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+    /*while (true) {
+        std::cout << '.';
+    }*/
 
 #if 0
     if (listen(listen_socket, SOMAXCONN) == SOCKET_ERROR) {

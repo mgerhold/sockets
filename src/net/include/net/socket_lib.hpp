@@ -1,6 +1,6 @@
 #pragma once
-#include "socket.hpp"
 
+#include "socket.hpp"
 
 class SocketLib final {
 private:
@@ -17,10 +17,10 @@ public:
     [[nodiscard]] static auto create_server_socket(
         AddressFamily const address_family,
         std::uint16_t const port,
-        auto&& callback,
+        std::function<void(ClientSocket)> callback,
         SocketLib const& = instance()
     ) {
-        return ServerSocket{ address_family, port, std::forward<decltype(callback)>(callback) };
+        return ServerSocket{ address_family, port, std::move(callback) };
     }
 
     [[nodiscard]] static ClientSocket create_client_socket(
