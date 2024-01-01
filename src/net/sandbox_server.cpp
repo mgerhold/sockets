@@ -22,19 +22,22 @@ void run_sandbox_server() {
 
     static constexpr auto port = std::uint16_t{ 12345 };
 
-    auto const socket = SocketLib::create_server_socket(
-            AddressFamily::Unspecified,
-            port,
-            [&]([[maybe_unused]] ClientSocket client_connection) {
+    auto const socket =
+            SocketLib::create_server_socket(AddressFamily::Unspecified, port, [&](ClientSocket client_connection) {
                 std::cout << "client connected\n";
-                while (client_connection.is_connected()) {
+                static constexpr auto repetitions = 5;
+                for (int i = 0; i < repetitions; ++i) {
                     auto const text = current_date_time();
-                    std::cout << "  sending \"" << text << "\"..." << std::endl;
+                    std::cout << "  sending \"" << text << "\" (" << (i + 1) << '/' << repetitions << ")..."
+                              << std::endl;
                     client_connection.send(text + '\n').wait();
-                    std::this_thread::sleep_for(1s);
+                    if (i < repetitions - 1) {
+                        std::this_thread::sleep_for(1s);
+                    }
                 }
-            }
-    );
+                client_connection.send("thank you for travelling with Deutsche Bahn\n").wait();
+                std::cout << "  farewell, little client!" << std::endl;
+            });
     std::cout << "listening on port " << port << "..." << std::endl;
 
     // sleep forever to keep server alive
