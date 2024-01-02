@@ -9,7 +9,7 @@
 #include <iostream>
 #include <sstream>
 
-[[nodiscard]] std::string current_date_time() {
+[[nodiscard]] static std::string current_date_time() {
     auto const now = std::chrono::system_clock::now();
     auto const now_c = std::chrono::system_clock::to_time_t(now);
     auto ss = std::stringstream{};
