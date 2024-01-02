@@ -17,14 +17,18 @@ macro(check_sanitizer_support)
     endif ()
 endmacro()
 
+check_sanitizer_support()
+
 if (PROJECT_IS_TOP_LEVEL)
     option(warnings_as_errors "Treat warnings as errors" ON)
     option(enable_undefined_behavior_sanitizer "Enable undefined behavior sanitizer" ${supports_ubsan})
     option(enable_address_sanitizer "Enable address sanitizer" ${supports_asan})
+    option(enable_thread_sanitizer "Enable thread sanitizer" OFF)
 else ()
     option(warnings_as_errors "Treat warnings as errors" OFF)
     option(enable_undefined_behavior_sanitizer "Enable undefined behavior sanitizer" OFF)
     option(enable_address_sanitizer "Enable address sanitizer" OFF)
+    option(enable_thread_sanitizer "Enable thread sanitizer" OFF)
 endif ()
 
 add_library(warnings INTERFACE)

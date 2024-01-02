@@ -9,14 +9,6 @@
 #include <iostream>
 #include <sstream>
 
-[[nodiscard]] static std::string current_date_time() {
-    auto const now = std::chrono::system_clock::now();
-    auto const now_c = std::chrono::system_clock::to_time_t(now);
-    auto ss = std::stringstream{};
-    ss << std::put_time(std::localtime(&now_c), "%F %T");
-    return ss.str();
-}
-
 void run_sandbox_server() {
     using namespace std::chrono_literals;
 
@@ -27,7 +19,7 @@ void run_sandbox_server() {
         auto thread = std::jthread{ [client_connection = std::move(socket)]() mutable {
             static constexpr auto repetitions = 5;
             for (int i = 0; i < repetitions; ++i) {
-                auto const text = current_date_time();
+                auto const text = std::to_string(i);
                 std::cout << "  sending \"" << text << "\" (" << (i + 1) << '/' << repetitions << ")..." << std::endl;
                 client_connection.send(text + '\n').wait();
                 if (i < repetitions - 1) {

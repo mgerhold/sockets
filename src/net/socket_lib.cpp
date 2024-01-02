@@ -3,15 +3,19 @@
 #include <iostream>
 
 SocketLib::SocketLib() {
+#ifdef _WIN32
     auto wsa_data = WSADATA{};
     static constexpr auto winsock_version = MAKEWORD(2, 2);
     if (WSAStartup(winsock_version, &wsa_data) != 0) {
         throw std::runtime_error{ "unable to initialize winsock" };
     }
+#endif
 }
 
 SocketLib::~SocketLib() {
+#ifdef _WIN32
     WSACleanup();
+#endif
 }
 
 // clang-format off

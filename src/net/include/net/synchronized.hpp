@@ -5,6 +5,8 @@
 #include <memory>
 #include <mutex>
 #include <vector>
+#include <variant>
+#include <thread>
 
 template<typename T>
 class Synchronized;

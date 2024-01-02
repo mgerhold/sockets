@@ -32,6 +32,47 @@
     return hints;
 }
 
+enum class SelectStatusCategory {
+    Read,
+    Write,
+    Except,
+};
+
+[[nodiscard]] static fd_set generate_fd_set(AbstractSocket::OsSocketHandle const socket) {
+    auto descriptors = fd_set{};
+    FD_ZERO(&descriptors);
+    FD_SET(socket, &descriptors);
+    return descriptors;
+}
+
+[[nodiscard]] static bool is_socket_ready(
+        AbstractSocket::OsSocketHandle const socket,
+        SelectStatusCategory const category,
+        std::size_t const timeout_milliseconds
+) {
+    auto const microseconds = timeout_milliseconds * 1000;
+    auto timeout = timeval{ .tv_sec = static_cast<long>(microseconds / (1000 * 1000)),
+                            .tv_usec = static_cast<long>(microseconds % (1000 * 1000)) };
+    auto const select_result = [&] {
+        auto descriptors = generate_fd_set(socket);
+        switch (category) {
+            case SelectStatusCategory::Read:
+                return select(static_cast<int>(socket + 1), &descriptors, nullptr, nullptr, &timeout);
+            case SelectStatusCategory::Write:
+                return select(static_cast<int>(socket + 1), nullptr, &descriptors, nullptr, &timeout);
+            case SelectStatusCategory::Except:
+                return select(static_cast<int>(socket + 1), nullptr, nullptr, &descriptors, &timeout);
+            default:
+                std::unreachable();
+                break;
+        }
+    }();
+    if (select_result == SOCKET_ERROR) {
+        throw std::runtime_error{ "failed to call select on socket" };
+    }
+    return select_result == 1;
+}
+
 using AddressInfos = std::unique_ptr<addrinfo, decltype([](addrinfo* const pointer) { freeaddrinfo(pointer); })>;
 
 // clang-format off
@@ -56,21 +97,21 @@ using AddressInfos = std::unique_ptr<addrinfo, decltype([](addrinfo* const point
 
 [[nodiscard]] static AbstractSocket::OsSocketHandle create_socket(AddressInfos const& address_infos) {
     auto const socket = ::socket(address_infos->ai_family, address_infos->ai_socktype, address_infos->ai_protocol);
-    if (socket == INVALID_SOCKET) {
+    if (socket == SOCKET_INVALID) {
         throw std::runtime_error{ "failed to create socket" };
     }
     return socket;
 }
 
 static void bind_socket(AbstractSocket::OsSocketHandle const socket, AddressInfos const& address_infos) {
-    if (bind(socket, address_infos->ai_addr, static_cast<int>(address_infos->ai_addrlen)) == SOCKET_ERROR) {
+    if (bind(socket, address_infos->ai_addr, static_cast<SockLen>(address_infos->ai_addrlen)) == SOCKET_ERROR) {
         closesocket(socket);
         throw std::runtime_error{ "failed to bind socket" };
     }
 }
 
 static void connect_socket(AbstractSocket::OsSocketHandle const socket, AddressInfos const& address_infos) {
-    if (connect(socket, address_infos->ai_addr, static_cast<int>(address_infos->ai_addrlen)) == SOCKET_ERROR) {
+    if (connect(socket, address_infos->ai_addr, static_cast<SockLen>(address_infos->ai_addrlen)) == SOCKET_ERROR) {
         closesocket(socket);
         throw std::runtime_error{ "unable to connect" };
     }
@@ -109,30 +150,13 @@ void server_listen(
         std::function<void(ClientSocket)> const& on_connect
 ) {
     while (not stop_token.stop_requested()) {
-        auto file_descriptors_to_check = fd_set{};
-        FD_ZERO(&file_descriptors_to_check);
-        FD_SET(listen_socket, &file_descriptors_to_check);
-
-        static constexpr auto timeout = timeval{ .tv_sec{ 0 }, .tv_usec{ 1000 * 100 } };
-        // clang-format off
-        auto const select_result = select(
-            static_cast<int>(listen_socket + 1), // ignored in Windows
-            &file_descriptors_to_check,
-            nullptr,
-            nullptr,
-            &timeout
-        );
-        // clang-format on
-        if (select_result == SOCKET_ERROR) {
-            throw std::runtime_error{ "failed to call select" };
-        }
-        auto const can_accept = (select_result == 1);
+        auto const can_accept = is_socket_ready(listen_socket, SelectStatusCategory::Read, 100);
         if (not can_accept) {
             continue;
         }
 
         auto const client_socket = accept(listen_socket, nullptr, nullptr);
-        assert(client_socket != INVALID_SOCKET and "successful acceptance is guaranteed by previous call to select");
+        assert(client_socket != SOCKET_INVALID and "successful acceptance is guaranteed by previous call to select");
         on_connect(ClientSocket{ client_socket });
     }
 }
@@ -167,49 +191,8 @@ ClientSocket::ClientSocket(AddressFamily const address_family, std::string const
     : AbstractSocket{ initialize_client_socket(address_family, host, port) },
       m_send_receive_thread{ keep_sending_and_receiving, std::ref(*m_shared_state), m_socket_descriptor.value() } { }
 
-[[nodiscard]] static fd_set generate_fd_set(AbstractSocket::OsSocketHandle const socket) {
-    auto descriptors = fd_set{};
-    FD_ZERO(&descriptors);
-    FD_SET(socket, &descriptors);
-    return descriptors;
-}
-
-enum class SelectStatusCategory {
-    Read,
-    Write,
-    Except,
-};
-
-[[nodiscard]] bool is_socket_ready(
-        AbstractSocket::OsSocketHandle const socket,
-        SelectStatusCategory const category,
-        std::size_t const timeout_milliseconds
-) {
-    auto const microseconds = timeout_milliseconds * 1000;
-    auto const timeout = timeval{ .tv_sec{ static_cast<long>(microseconds / (1000 * 1000)) },
-                                  .tv_usec{ static_cast<long>(microseconds % (1000 * 1000)) } };
-    auto const select_result = [&] {
-        auto descriptors = generate_fd_set(socket);
-        switch (category) {
-            case SelectStatusCategory::Read:
-                return select(static_cast<int>(socket + 1), &descriptors, nullptr, nullptr, &timeout);
-            case SelectStatusCategory::Write:
-                return select(static_cast<int>(socket + 1), nullptr, &descriptors, nullptr, &timeout);
-            case SelectStatusCategory::Except:
-                return select(static_cast<int>(socket + 1), nullptr, nullptr, &descriptors, &timeout);
-            default:
-                std::unreachable();
-                break;
-        }
-    }();
-    if (select_result == SOCKET_ERROR) {
-        throw std::runtime_error{ "failed to call select on socket" };
-    }
-    return select_result == 1;
-}
-
 template<typename Queue, typename Element = typename Queue::value_type>
-[[nodiscard]] static std::optional<Element> try_enqueue_task(Synchronized<Queue>& queue) {
+[[nodiscard]] static std::optional<Element> try_dequeue_task(Synchronized<Queue>& queue) {
     auto tasks = queue.lock();
     if (tasks->empty()) {
         return std::nullopt;
@@ -223,7 +206,7 @@ void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const
     static constexpr auto timeout_milliseconds = std::size_t{ 100 };
     while (*state.running) {
         if (is_socket_ready(socket, SelectStatusCategory::Write, timeout_milliseconds)) {
-            if (auto send_task = try_enqueue_task(state.send_tasks)) {
+            if (auto send_task = try_dequeue_task(state.send_tasks)) {
                 if (not process_send_task(socket, *std::move(send_task))) {
                     // connection is dead
                     *state.running = false;
@@ -233,7 +216,7 @@ void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const
         }
 
         if (is_socket_ready(socket, SelectStatusCategory::Read, timeout_milliseconds)) {
-            if (auto receive_task = try_enqueue_task(state.receive_tasks)) {
+            if (auto receive_task = try_dequeue_task(state.receive_tasks)) {
                 if (not process_receive_task(socket, *std::move(receive_task))) {
                     // connection is dead
                     *state.running = false;
@@ -286,7 +269,7 @@ std::future<std::size_t> ClientSocket::send(std::string_view const text){
 }
 
 [[nodiscard]] std::future<std::string> ClientSocket::receive_string(std::size_t const max_num_bytes) {
-    return std::async([&]() -> std::string {
+    return std::async([this, max_num_bytes]() -> std::string {
         auto const data = receive(max_num_bytes).get();
         auto result = std::string{};
         result.resize(data.size());
@@ -296,7 +279,7 @@ std::future<std::size_t> ClientSocket::send(std::string_view const text){
 }
 
 [[nodiscard]] bool ClientSocket::process_receive_task(OsSocketHandle const socket, ReceiveTask task) {
-    if (not std::in_range<int>(task.max_num_bytes)) {
+    if (not std::in_range<SendReceiveSize>(task.max_num_bytes)) {
         throw std::runtime_error{ "size of message to be received exceeds allowed maximum" };
     }
 
@@ -304,7 +287,10 @@ std::future<std::size_t> ClientSocket::send(std::string_view const text){
     receive_buffer.resize(task.max_num_bytes);
 
     auto const receive_result =
-            recv(socket, reinterpret_cast<char*>(receive_buffer.data()), static_cast<int>(receive_buffer.size()), 0);
+            recv(socket,
+                 reinterpret_cast<char*>(receive_buffer.data()),
+                 static_cast<SendReceiveSize>(receive_buffer.size()),
+                 0);
 
     if (receive_result == 0) {
         // connection has been gracefully closed => close socket
@@ -323,17 +309,21 @@ std::future<std::size_t> ClientSocket::send(std::string_view const text){
 }
 
 [[nodiscard]] bool ClientSocket::process_send_task(OsSocketHandle const socket, SendTask task) {
-    if (not std::in_range<int>(task.data.size())) {
+    if (not std::in_range<SendReceiveSize>(task.data.size())) {
         throw std::runtime_error{ "size of message to be sent exceeds allowed maximum" };
     }
     auto num_bytes_sent = std::size_t{ 0 };
     auto send_pointer = reinterpret_cast<char const*>(task.data.data());
     while (num_bytes_sent < task.data.size()) {
         auto const num_bytes_remaining = task.data.size() - num_bytes_sent;
-        auto const result = ::send(socket, send_pointer, static_cast<int>(num_bytes_remaining), 0);
+        auto const result = ::send(socket, send_pointer, static_cast<SendReceiveSize>(num_bytes_remaining), 0);
         if (result == SOCKET_ERROR) {
+#ifdef _WIN32
             auto const error = WSAGetLastError();
             if (error == WSAENOTCONN or error == WSAECONNABORTED) {
+#else
+            if (errno == ENOTCONN or errno == ECONNRESET) {
+#endif
                 // connection no longer active
                 task.promise.set_value(0);
                 return false;

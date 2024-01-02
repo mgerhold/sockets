@@ -15,6 +15,10 @@ function(enable_sanitizers
         if (${enable_undefined_behavior_sanitizer})
             list(APPEND sanitizers "undefined")
         endif ()
+
+        if (${enable_thread_sanitizer})
+            list(APPEND sanitizers "thread")
+        endif ()
     elseif (MSVC)
         if (${enable_address_sanitizer})
             list(APPEND sanitizers "address")
