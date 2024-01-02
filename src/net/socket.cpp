@@ -149,7 +149,7 @@ ServerSocket::ServerSocket(
     }
 
     m_listen_thread = std::jthread{ [this, callback = std::move(on_connect)]() mutable {
-        server_listen(m_socket_descriptor.value(), *m_running, std::move(callback));
+        server_listen(m_socket_descriptor.value(), *m_running, callback);
     } };
 }
 
