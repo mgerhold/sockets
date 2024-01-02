@@ -181,10 +181,10 @@ ClientSocket::ClientSocket(AddressFamily const address_family, std::string const
 }
 
 void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const socket) {
+    static constexpr auto timeout = timeval{ .tv_sec{ 0 }, .tv_usec{ 100 * 1000 } };
     while (*state.running) {
         auto write_descriptors = generate_fd_set(socket);
 
-        auto const timeout = timeval{ .tv_sec{ 0 }, .tv_usec{ 100 * 1000 } };
         // clang-format off
         auto const select_result = select(
             static_cast<int>(socket + 1),
