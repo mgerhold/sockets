@@ -22,22 +22,23 @@ void run_sandbox_server() {
 
     static constexpr auto port = std::uint16_t{ 12345 };
 
-    auto const socket =
-            SocketLib::create_server_socket(AddressFamily::Unspecified, port, [&](ClientSocket client_connection) {
-                std::cout << "client connected\n";
-                static constexpr auto repetitions = 5;
-                for (int i = 0; i < repetitions; ++i) {
-                    auto const text = current_date_time();
-                    std::cout << "  sending \"" << text << "\" (" << (i + 1) << '/' << repetitions << ")..."
-                              << std::endl;
-                    client_connection.send(text + '\n').wait();
-                    if (i < repetitions - 1) {
-                        std::this_thread::sleep_for(1s);
-                    }
+    auto const server = SocketLib::create_server_socket(AddressFamily::Unspecified, port, [&](ClientSocket socket) {
+        std::cout << "client connected\n";
+        auto thread = std::jthread{ [client_connection = std::move(socket)]() mutable {
+            static constexpr auto repetitions = 5;
+            for (int i = 0; i < repetitions; ++i) {
+                auto const text = current_date_time();
+                std::cout << "  sending \"" << text << "\" (" << (i + 1) << '/' << repetitions << ")..." << std::endl;
+                client_connection.send(text + '\n').wait();
+                if (i < repetitions - 1) {
+                    std::this_thread::sleep_for(1s);
                 }
-                client_connection.send("thank you for travelling with Deutsche Bahn\n").wait();
-                std::cout << "  farewell, little client!" << std::endl;
-            });
+            }
+            client_connection.send("thank you for travelling with Deutsche Bahn\n").wait();
+            std::cout << "  farewell, little client!" << std::endl;
+        } };
+        thread.detach();
+    });
     std::cout << "listening on port " << port << "..." << std::endl;
 
     // sleep forever to keep server alive
