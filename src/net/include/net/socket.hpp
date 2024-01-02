@@ -50,12 +50,14 @@ class ServerSocket final : public AbstractSocket {
     friend class SocketLib;
 
 private:
-    NonNullOwner<std::atomic_bool> m_running{ make_non_null_owner<std::atomic_bool>(true) };
     std::jthread m_listen_thread;
 
     ServerSocket(AddressFamily address_family, std::uint16_t port, std::function<void(ClientSocket)> on_connect);
 
 public:
+    ServerSocket(ServerSocket&& other) noexcept = default;
+    ServerSocket& operator=(ServerSocket&& other) noexcept = default;
+
     ~ServerSocket();
     void stop();
 };
@@ -63,8 +65,8 @@ public:
 class ClientSocket final : public AbstractSocket {
     friend class SocketLib;
     friend void server_listen(
+            std::stop_token const& stop_token,
             OsSocketHandle listen_socket,
-            std::atomic_bool const& running,
             std::function<void(ClientSocket)> const& on_connect
     );
 

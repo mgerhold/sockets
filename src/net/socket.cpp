@@ -104,11 +104,11 @@ initialize_client_socket(AddressFamily const address_family, std::string const& 
 }
 
 void server_listen(
+        std::stop_token const& stop_token,
         AbstractSocket::OsSocketHandle const listen_socket,
-        std::atomic_bool const& running,
         std::function<void(ClientSocket)> const& on_connect
 ) {
-    while (running) {
+    while (not stop_token.stop_requested()) {
         auto file_descriptors_to_check = fd_set{};
         FD_ZERO(&file_descriptors_to_check);
         FD_SET(listen_socket, &file_descriptors_to_check);
@@ -148,9 +148,7 @@ ServerSocket::ServerSocket(
         throw std::runtime_error{ "failed to listen on socket" };
     }
 
-    m_listen_thread = std::jthread{ [this, callback = std::move(on_connect)]() mutable {
-        server_listen(m_socket_descriptor.value(), *m_running, callback);
-    } };
+    m_listen_thread = std::jthread{ server_listen, m_socket_descriptor.value(), std::move(on_connect) };
 }
 
 ServerSocket::~ServerSocket() {
@@ -158,7 +156,7 @@ ServerSocket::~ServerSocket() {
 }
 
 void ServerSocket::stop() {
-    *m_running = false;
+    m_listen_thread.request_stop();
 }
 
 ClientSocket::ClientSocket(OsSocketHandle const os_socket_handle)
