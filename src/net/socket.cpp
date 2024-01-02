@@ -173,11 +173,16 @@ ClientSocket::ClientSocket(AddressFamily const address_family, std::string const
           keep_sending_and_receiving(state, socket);
       } } { }
 
+[[nodiscard]] static fd_set generate_fd_set(AbstractSocket::OsSocketHandle const socket) {
+    auto descriptors = fd_set{};
+    FD_ZERO(&descriptors);
+    FD_SET(socket, &descriptors);
+    return descriptors;
+}
+
 void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const socket) {
     while (*state.running) {
-        auto write_descriptors = fd_set{};
-        FD_ZERO(&write_descriptors);
-        FD_SET(socket, &write_descriptors);
+        auto write_descriptors = generate_fd_set(socket);
 
         auto const timeout = timeval{ .tv_sec{ 0 }, .tv_usec{ 100 * 1000 } };
         // clang-format off
@@ -234,9 +239,7 @@ void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const
         }
 
         // reading
-        auto read_descriptors = fd_set{};
-        FD_ZERO(&read_descriptors);
-        FD_SET(socket, &read_descriptors);
+        auto read_descriptors = generate_fd_set(socket);
 
         // clang-format off
         auto const read_select_result = select(
