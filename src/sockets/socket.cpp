@@ -125,10 +125,12 @@ namespace c2k {
     AbstractSocket::AbstractSocket(OsSocketHandle const os_socket_handle)
         : m_socket_descriptor{ os_socket_handle, socket_deleter } { }
 
-
     namespace detail {
         // clang-format off
-        [[nodiscard]] AbstractSocket::OsSocketHandle initialize_server_socket(AddressFamily const address_family, std::uint16_t const port) {
+        [[nodiscard]] AbstractSocket::OsSocketHandle initialize_server_socket(
+            AddressFamily const address_family,
+            std::uint16_t const port
+        ) {
             auto const address_infos = get_address_infos(address_family, port);
             auto const socket = create_socket(address_infos);
             bind_socket(socket, address_infos);
