@@ -1,4 +1,4 @@
-add_library(sockets
+add_library(c2k_sockets
         STATIC
         include/sockets/socket_lib.hpp
         socket_lib.cpp
@@ -11,10 +11,10 @@ add_library(sockets
         include/sockets/synchronized.hpp
 )
 
-target_include_directories(sockets PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(c2k_sockets PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 if (WIN32)
     set(SOCKET_LIBRARIES wsock32 ws2_32)
 endif ()
 
-target_link_libraries(sockets PRIVATE ${SOCKET_LIBRARIES} project_options)
+target_link_libraries(c2k_sockets PRIVATE ${SOCKET_LIBRARIES} c2k_sockets_options)

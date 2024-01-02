@@ -1,5 +1,5 @@
-add_executable(client client.cpp)
-add_executable(server server.cpp)
+add_executable(c2k_sockets_demo_client client.cpp)
+add_executable(c2k_sockets_demo_server server.cpp)
 
-target_link_libraries(client PRIVATE sockets project_options)
-target_link_libraries(server PRIVATE sockets project_options)
+target_link_libraries(c2k_sockets_demo_client PRIVATE c2k_sockets c2k_sockets_options)
+target_link_libraries(c2k_sockets_demo_server PRIVATE c2k_sockets c2k_sockets_options)

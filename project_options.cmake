@@ -33,14 +33,14 @@ else ()
     option(build_examples "Build example server and client applications" OFF)
 endif ()
 
-add_library(warnings INTERFACE)
-set_warnings(warnings ${warnings_as_errors})
+add_library(c2k_sockets_warnings INTERFACE)
+set_warnings(c2k_sockets_warnings ${warnings_as_errors})
 
-add_library(sanitizers INTERFACE)
-enable_sanitizers(sanitizers ${enable_address_sanitizer} ${enable_undefined_behavior_sanitizer})
+add_library(c2k_sockets_sanitizers INTERFACE)
+enable_sanitizers(c2k_sockets_sanitizers ${enable_address_sanitizer} ${enable_undefined_behavior_sanitizer})
 
-add_library(project_options INTERFACE)
-target_link_libraries(project_options
-        INTERFACE warnings
-        INTERFACE sanitizers
+add_library(c2k_sockets_options INTERFACE)
+target_link_libraries(c2k_sockets_options
+        INTERFACE c2k_sockets_warnings
+        INTERFACE c2k_sockets_sanitizers
 )
