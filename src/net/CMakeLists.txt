@@ -12,6 +12,7 @@ add_library(net
         socket.cpp
         include/net/unique_value.hpp
         include/net/non_null_owner.hpp
+        include/net/synchronized.hpp
 )
 
 target_include_directories(net PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

@@ -2,6 +2,7 @@
 
 #include "address_family.hpp"
 #include "non_null_owner.hpp"
+#include "synchronized.hpp"
 #include "unique_value.hpp"
 
 #include <atomic>
@@ -80,13 +81,9 @@ private:
 
     struct State {
         // todo: replace std::atomic_bool using stop_token (also do this in ServerSocket)
-        NonNullOwner<std::atomic_bool> running;
-        std::mutex send_tasks_mutex;
-        std::deque<SendTask> send_tasks;
-        std::mutex receive_tasks_mutex;
-        std::deque<ReceiveTask> receive_tasks;
-
-        State() : running{ make_non_null_owner<std::atomic_bool>(true) } { }
+        NonNullOwner<std::atomic_bool> running{ make_non_null_owner<std::atomic_bool>(true) };
+        Synchronized<std::deque<SendTask>> send_tasks{ std::deque<SendTask>{} };
+        Synchronized<std::deque<ReceiveTask>> receive_tasks{ std::deque<ReceiveTask>{} };
     };
 
     std::unique_ptr<State> m_shared_state{ std::make_unique<State>() };

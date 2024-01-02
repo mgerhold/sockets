@@ -180,35 +180,53 @@ ClientSocket::ClientSocket(AddressFamily const address_family, std::string const
     return descriptors;
 }
 
-void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const socket) {
-    static constexpr auto timeout = timeval{ .tv_sec{ 0 }, .tv_usec{ 100 * 1000 } };
-    while (*state.running) {
-        auto write_descriptors = generate_fd_set(socket);
+enum class SelectStatusCategory {
+    Read,
+    Write,
+    Except,
+};
 
-        // clang-format off
-        auto const select_result = select(
-            static_cast<int>(socket + 1),
-            nullptr,
-            &write_descriptors,
-            nullptr,
-            &timeout
-        );
-        // clang-format on
-
-        if (select_result == SOCKET_ERROR) {
-            throw std::runtime_error{ "failed to call select to check if socket is ready to send" };
+[[nodiscard]] bool is_socket_ready(
+        AbstractSocket::OsSocketHandle const socket,
+        SelectStatusCategory const category,
+        std::size_t const timeout_milliseconds
+) {
+    auto const microseconds = timeout_milliseconds * 1000;
+    auto const timeout = timeval{ .tv_sec{ static_cast<long>(microseconds / (1000 * 1000)) },
+                                  .tv_usec{ static_cast<long>(microseconds % (1000 * 1000)) } };
+    auto const select_result = [&] {
+        auto descriptors = generate_fd_set(socket);
+        switch (category) {
+            case SelectStatusCategory::Read:
+                return select(static_cast<int>(socket + 1), &descriptors, nullptr, nullptr, &timeout);
+            case SelectStatusCategory::Write:
+                return select(static_cast<int>(socket + 1), nullptr, &descriptors, nullptr, &timeout);
+            case SelectStatusCategory::Except:
+                return select(static_cast<int>(socket + 1), nullptr, nullptr, &descriptors, &timeout);
+            default:
+                std::unreachable();
+                break;
         }
+    }();
+    if (select_result == SOCKET_ERROR) {
+        throw std::runtime_error{ "failed to call select on socket" };
+    }
+    return select_result == 1;
+}
 
-        auto const can_send = (select_result == 1);
+void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const socket) {
+    static constexpr auto timeout_milliseconds = std::size_t{ 100 };
+    while (*state.running) {
+        auto const can_send = is_socket_ready(socket, SelectStatusCategory::Write, timeout_milliseconds);
 
         if (can_send) {
             auto send_task = [&]() -> std::optional<SendTask> {
-                auto const guard = std::scoped_lock{ state.send_tasks_mutex };
-                if (state.send_tasks.empty()) {
+                auto send_tasks = state.send_tasks.lock();
+                if (send_tasks->empty()) {
                     return std::nullopt;
                 }
-                auto result = std::move(state.send_tasks.front());
-                state.send_tasks.pop_front();
+                auto result = std::move(send_tasks->front());
+                send_tasks->pop_front();
                 return result;
             }();
 
@@ -239,32 +257,16 @@ void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const
         }
 
         // reading
-        auto read_descriptors = generate_fd_set(socket);
-
-        // clang-format off
-        auto const read_select_result = select(
-            static_cast<int>(socket + 1),
-            &read_descriptors,
-            nullptr,
-            nullptr,
-            &timeout
-        );
-        // clang-format on
-
-        if (read_select_result == SOCKET_ERROR) {
-            throw std::runtime_error{ "failed to call select to check if socket is ready to receive" };
-        }
-
-        auto const can_receive = (read_select_result == 1);
+        auto const can_receive = is_socket_ready(socket, SelectStatusCategory::Read, timeout_milliseconds);
 
         if (can_receive) {
             auto receive_task = [&]() -> std::optional<ReceiveTask> {
-                auto const guard = std::scoped_lock{ state.receive_tasks_mutex };
-                if (state.receive_tasks.empty()) {
+                auto receive_tasks = state.receive_tasks.lock();
+                if (receive_tasks->empty()) {
                     return std::nullopt;
                 }
-                auto result = std::move(state.receive_tasks.front());
-                state.receive_tasks.pop_front();
+                auto result = std::move(receive_tasks->front());
+                receive_tasks->pop_front();
                 return result;
             }();
 
@@ -316,8 +318,9 @@ std::future<std::size_t> ClientSocket::send(std::vector<std::byte> data) {
     auto promise = std::promise<std::size_t>{};
     auto future = promise.get_future();
     {
-        auto const guard = std::scoped_lock{ m_shared_state->send_tasks_mutex };
-        m_shared_state->send_tasks.emplace_back(std::move(promise), std::move(data));
+        auto send_tasks = m_shared_state->send_tasks.lock();
+        ;
+        send_tasks->emplace_back(std::move(promise), std::move(data));
     }
     return future;
 }
@@ -336,8 +339,8 @@ std::future<std::size_t> ClientSocket::send(std::string_view const text){
     auto promise = std::promise<std::vector<std::byte>>{};
     auto future = promise.get_future();
     {
-        auto const guard = std::scoped_lock{ m_shared_state->receive_tasks_mutex };
-        m_shared_state->receive_tasks.emplace_back(std::move(promise), max_num_bytes);
+        auto receive_tasks = m_shared_state->receive_tasks.lock();
+        receive_tasks->emplace_back(std::move(promise), max_num_bytes);
     }
     return future;
 }
