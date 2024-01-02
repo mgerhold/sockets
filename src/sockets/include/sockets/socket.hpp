@@ -86,6 +86,8 @@ namespace c2k {
             NonNullOwner<std::atomic_bool> running{ make_non_null_owner<std::atomic_bool>(true) };
             Synchronized<std::deque<SendTask>> send_tasks{ std::deque<SendTask>{} };
             Synchronized<std::deque<ReceiveTask>> receive_tasks{ std::deque<ReceiveTask>{} };
+            std::mutex data_received_mutex;
+            std::condition_variable data_received_condition_variable;
         };
 
         std::unique_ptr<State> m_shared_state{ std::make_unique<State>() };

@@ -210,9 +210,12 @@ namespace c2k {
 
     void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const socket) {
         static constexpr auto timeout_milliseconds = std::size_t{ 100 };
+        auto processed_send_task = false;
+        auto processed_receive_task = false;
         while (*state.running) {
             if (is_socket_ready(socket, SelectStatusCategory::Write, timeout_milliseconds)) {
                 if (auto send_task = try_dequeue_task(state.send_tasks)) {
+                    processed_send_task = true;
                     if (not process_send_task(socket, *std::move(send_task))) {
                         // connection is dead
                         *state.running = false;
@@ -223,6 +226,7 @@ namespace c2k {
 
             if (is_socket_ready(socket, SelectStatusCategory::Read, timeout_milliseconds)) {
                 if (auto receive_task = try_dequeue_task(state.receive_tasks)) {
+                    processed_receive_task = true;
                     if (not process_receive_task(socket, *std::move(receive_task))) {
                         // connection is dead
                         *state.running = false;
@@ -231,6 +235,11 @@ namespace c2k {
                 }
             }
         }
+
+        if (not processed_send_task and not processed_receive_task) {
+            auto lock = std::unique_lock{ state.data_received_mutex };
+            state.data_received_condition_variable.wait(lock);
+        }
     }
 
     ClientSocket::~ClientSocket() {
@@ -238,6 +247,7 @@ namespace c2k {
             // if this object was moved from, the cleanup will be done by the object
             // this object was moved into
             *(m_shared_state->running) = false;
+            m_shared_state->data_received_condition_variable.notify_one();
         }
     }
 
@@ -251,12 +261,13 @@ namespace c2k {
             auto send_tasks = m_shared_state->send_tasks.lock();
             send_tasks->emplace_back(std::move(promise), std::move(data));
         }
+        m_shared_state->data_received_condition_variable.notify_one();
         return future;
     }
 
     // clang-format off
     [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
-    std::future<std::size_t> ClientSocket::send(std::string_view const text){
+    std::future<std::size_t> ClientSocket::send(std::string_view const text) {
         // clang-format on
         auto data = std::vector<std::byte>{};
         data.resize(text.length(), std::byte{});
@@ -271,6 +282,7 @@ namespace c2k {
             auto receive_tasks = m_shared_state->receive_tasks.lock();
             receive_tasks->emplace_back(std::move(promise), max_num_bytes);
         }
+        m_shared_state->data_received_condition_variable.notify_one();
         return future;
     }
 
