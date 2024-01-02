@@ -214,90 +214,29 @@ enum class SelectStatusCategory {
     return select_result == 1;
 }
 
+template<typename Queue, typename Element = typename Queue::value_type>
+[[nodiscard]] static std::optional<Element> try_enqueue_task(Synchronized<Queue>& queue) {
+    auto tasks = queue.lock();
+    if (tasks->empty()) {
+        return std::nullopt;
+    }
+    auto result = std::move(tasks->front());
+    tasks->pop_front();
+    return result;
+}
+
 void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const socket) {
     static constexpr auto timeout_milliseconds = std::size_t{ 100 };
     while (*state.running) {
-        auto const can_send = is_socket_ready(socket, SelectStatusCategory::Write, timeout_milliseconds);
-
-        if (can_send) {
-            auto send_task = [&]() -> std::optional<SendTask> {
-                auto send_tasks = state.send_tasks.lock();
-                if (send_tasks->empty()) {
-                    return std::nullopt;
-                }
-                auto result = std::move(send_tasks->front());
-                send_tasks->pop_front();
-                return result;
-            }();
-
-            if (send_task.has_value()) {
-                if (not std::in_range<int>(send_task.value().data.size())) {
-                    throw std::runtime_error{ "size of message to be sent exceeds allowed maximum" };
-                }
-                auto num_bytes_sent = std::size_t{ 0 };
-                auto send_pointer = reinterpret_cast<char const*>(send_task.value().data.data());
-                while (num_bytes_sent < send_task.value().data.size()) {
-                    auto const num_bytes_remaining = send_task.value().data.size() - num_bytes_sent;
-                    auto const result = ::send(socket, send_pointer, static_cast<int>(num_bytes_remaining), 0);
-                    if (result == SOCKET_ERROR) {
-                        auto const error = WSAGetLastError();
-                        if (error == WSAENOTCONN or error == WSAECONNABORTED) {
-                            // connection no longer active
-                            send_task.value().promise.set_value(0);
-                            *state.running = false;
-                            return;
-                        }
-                        throw std::runtime_error{ "error sending message" };
-                    }
-                    send_pointer += result;
-                    num_bytes_sent += static_cast<std::size_t>(result);
-                }
-                send_task.value().promise.set_value(num_bytes_sent);
+        if (is_socket_ready(socket, SelectStatusCategory::Write, timeout_milliseconds)) {
+            if (auto send_task = try_enqueue_task(state.send_tasks)) {
+                process_send_task(socket, state, *std::move(send_task));
             }
         }
 
-        // reading
-        auto const can_receive = is_socket_ready(socket, SelectStatusCategory::Read, timeout_milliseconds);
-
-        if (can_receive) {
-            auto receive_task = [&]() -> std::optional<ReceiveTask> {
-                auto receive_tasks = state.receive_tasks.lock();
-                if (receive_tasks->empty()) {
-                    return std::nullopt;
-                }
-                auto result = std::move(receive_tasks->front());
-                receive_tasks->pop_front();
-                return result;
-            }();
-
-            if (receive_task.has_value()) {
-                if (not std::in_range<int>(receive_task.value().max_num_bytes)) {
-                    throw std::runtime_error{ "size of message to be received exceeds allowed maximum" };
-                }
-
-                auto receive_buffer = std::vector<std::byte>{};
-                receive_buffer.resize(receive_task.value().max_num_bytes);
-
-                auto const receive_result =
-                        recv(socket,
-                             reinterpret_cast<char*>(receive_buffer.data()),
-                             static_cast<int>(receive_buffer.size()),
-                             0);
-
-                if (receive_result == 0) {
-                    // connection has been gracefully closed => close socket
-                    receive_task.value().promise.set_value({});
-                    *state.running = false;
-                    return;
-                }
-
-                if (receive_result == SOCKET_ERROR) {
-                    throw std::runtime_error{ "failed to read from socket" };
-                }
-
-                receive_buffer.resize(static_cast<std::size_t>(receive_result));
-
-                receive_task.value().promise.set_value(std::move(receive_buffer));
+        if (is_socket_ready(socket, SelectStatusCategory::Read, timeout_milliseconds)) {
+            if (auto receive_task = try_enqueue_task(state.receive_tasks)) {
+                process_receive_task(socket, state, *std::move(receive_task));
             }
         }
     }
@@ -353,4 +292,56 @@ std::future<std::size_t> ClientSocket::send(std::string_view const text){
         std::memcpy(result.data(), data.data(), data.size());
         return result;
     });
+}
+
+void ClientSocket::process_receive_task(OsSocketHandle const socket, State& state, ReceiveTask task) {
+    if (not std::in_range<int>(task.max_num_bytes)) {
+        throw std::runtime_error{ "size of message to be received exceeds allowed maximum" };
+    }
+
+    auto receive_buffer = std::vector<std::byte>{};
+    receive_buffer.resize(task.max_num_bytes);
+
+    auto const receive_result =
+            recv(socket, reinterpret_cast<char*>(receive_buffer.data()), static_cast<int>(receive_buffer.size()), 0);
+
+    if (receive_result == 0) {
+        // connection has been gracefully closed => close socket
+        task.promise.set_value({});
+        *state.running = false;
+        return;
+    }
+
+    if (receive_result == SOCKET_ERROR) {
+        throw std::runtime_error{ "failed to read from socket" };
+    }
+
+    receive_buffer.resize(static_cast<std::size_t>(receive_result));
+
+    task.promise.set_value(std::move(receive_buffer));
+}
+
+void ClientSocket::process_send_task(OsSocketHandle const socket, State& state, SendTask task) {
+    if (not std::in_range<int>(task.data.size())) {
+        throw std::runtime_error{ "size of message to be sent exceeds allowed maximum" };
+    }
+    auto num_bytes_sent = std::size_t{ 0 };
+    auto send_pointer = reinterpret_cast<char const*>(task.data.data());
+    while (num_bytes_sent < task.data.size()) {
+        auto const num_bytes_remaining = task.data.size() - num_bytes_sent;
+        auto const result = ::send(socket, send_pointer, static_cast<int>(num_bytes_remaining), 0);
+        if (result == SOCKET_ERROR) {
+            auto const error = WSAGetLastError();
+            if (error == WSAENOTCONN or error == WSAECONNABORTED) {
+                // connection no longer active
+                task.promise.set_value(0);
+                *state.running = false;
+                return;
+            }
+            throw std::runtime_error{ "error sending message" };
+        }
+        send_pointer += result;
+        num_bytes_sent += static_cast<std::size_t>(result);
+    }
+    task.promise.set_value(num_bytes_sent);
 }

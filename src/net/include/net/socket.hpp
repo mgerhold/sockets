@@ -115,4 +115,7 @@ public:
 
     [[nodiscard]] std::future<std::vector<std::byte>> receive(std::size_t max_num_bytes);
     [[nodiscard]] std::future<std::string> receive_string(std::size_t max_num_bytes);
+
+    static void process_receive_task(OsSocketHandle socket, State& state, ReceiveTask task);
+    static void process_send_task(OsSocketHandle socket, State& state, SendTask task);
 };
