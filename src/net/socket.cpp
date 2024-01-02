@@ -161,15 +161,11 @@ void ServerSocket::stop() {
 
 ClientSocket::ClientSocket(OsSocketHandle const os_socket_handle)
     : AbstractSocket{ os_socket_handle },
-      m_send_receive_thread{ [&state = *m_shared_state, socket = m_socket_descriptor.value()] {
-          keep_sending_and_receiving(state, socket);
-      } } { }
+      m_send_receive_thread{ keep_sending_and_receiving, std::ref(*m_shared_state), m_socket_descriptor.value() } { }
 
 ClientSocket::ClientSocket(AddressFamily const address_family, std::string const& host, std::uint16_t const port)
     : AbstractSocket{ initialize_client_socket(address_family, host, port) },
-      m_send_receive_thread{ [&state = *m_shared_state, socket = m_socket_descriptor.value()] {
-          keep_sending_and_receiving(state, socket);
-      } } { }
+      m_send_receive_thread{ keep_sending_and_receiving, std::ref(*m_shared_state), m_socket_descriptor.value() } { }
 
 [[nodiscard]] static fd_set generate_fd_set(AbstractSocket::OsSocketHandle const socket) {
     auto descriptors = fd_set{};
@@ -228,13 +224,21 @@ void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const
     while (*state.running) {
         if (is_socket_ready(socket, SelectStatusCategory::Write, timeout_milliseconds)) {
             if (auto send_task = try_enqueue_task(state.send_tasks)) {
-                process_send_task(socket, state, *std::move(send_task));
+                if (not process_send_task(socket, *std::move(send_task))) {
+                    // connection is dead
+                    *state.running = false;
+                    break;
+                }
             }
         }
 
         if (is_socket_ready(socket, SelectStatusCategory::Read, timeout_milliseconds)) {
             if (auto receive_task = try_enqueue_task(state.receive_tasks)) {
-                process_receive_task(socket, state, *std::move(receive_task));
+                if (not process_receive_task(socket, *std::move(receive_task))) {
+                    // connection is dead
+                    *state.running = false;
+                    break;
+                }
             }
         }
     }
@@ -256,7 +260,6 @@ std::future<std::size_t> ClientSocket::send(std::vector<std::byte> data) {
     auto future = promise.get_future();
     {
         auto send_tasks = m_shared_state->send_tasks.lock();
-        ;
         send_tasks->emplace_back(std::move(promise), std::move(data));
     }
     return future;
@@ -292,7 +295,7 @@ std::future<std::size_t> ClientSocket::send(std::string_view const text){
     });
 }
 
-void ClientSocket::process_receive_task(OsSocketHandle const socket, State& state, ReceiveTask task) {
+[[nodiscard]] bool ClientSocket::process_receive_task(OsSocketHandle const socket, ReceiveTask task) {
     if (not std::in_range<int>(task.max_num_bytes)) {
         throw std::runtime_error{ "size of message to be received exceeds allowed maximum" };
     }
@@ -306,8 +309,7 @@ void ClientSocket::process_receive_task(OsSocketHandle const socket, State& stat
     if (receive_result == 0) {
         // connection has been gracefully closed => close socket
         task.promise.set_value({});
-        *state.running = false;
-        return;
+        return false;
     }
 
     if (receive_result == SOCKET_ERROR) {
@@ -317,9 +319,10 @@ void ClientSocket::process_receive_task(OsSocketHandle const socket, State& stat
     receive_buffer.resize(static_cast<std::size_t>(receive_result));
 
     task.promise.set_value(std::move(receive_buffer));
+    return true;
 }
 
-void ClientSocket::process_send_task(OsSocketHandle const socket, State& state, SendTask task) {
+[[nodiscard]] bool ClientSocket::process_send_task(OsSocketHandle const socket, SendTask task) {
     if (not std::in_range<int>(task.data.size())) {
         throw std::runtime_error{ "size of message to be sent exceeds allowed maximum" };
     }
@@ -333,8 +336,7 @@ void ClientSocket::process_send_task(OsSocketHandle const socket, State& state, 
             if (error == WSAENOTCONN or error == WSAECONNABORTED) {
                 // connection no longer active
                 task.promise.set_value(0);
-                *state.running = false;
-                return;
+                return false;
             }
             throw std::runtime_error{ "error sending message" };
         }
@@ -342,4 +344,5 @@ void ClientSocket::process_send_task(OsSocketHandle const socket, State& state, 
         num_bytes_sent += static_cast<std::size_t>(result);
     }
     task.promise.set_value(num_bytes_sent);
+    return true;
 }

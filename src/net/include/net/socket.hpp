@@ -82,7 +82,6 @@ private:
     };
 
     struct State {
-        // todo: replace std::atomic_bool using stop_token (also do this in ServerSocket)
         NonNullOwner<std::atomic_bool> running{ make_non_null_owner<std::atomic_bool>(true) };
         Synchronized<std::deque<SendTask>> send_tasks{ std::deque<SendTask>{} };
         Synchronized<std::deque<ReceiveTask>> receive_tasks{ std::deque<ReceiveTask>{} };
@@ -104,7 +103,7 @@ public:
     ~ClientSocket();
 
     [[nodiscard]] bool is_connected() const {
-        return *m_shared_state->running;
+        return *(m_shared_state->running);
     }
 
     // clang-format off
@@ -118,6 +117,6 @@ public:
     [[nodiscard]] std::future<std::vector<std::byte>> receive(std::size_t max_num_bytes);
     [[nodiscard]] std::future<std::string> receive_string(std::size_t max_num_bytes);
 
-    static void process_receive_task(OsSocketHandle socket, State& state, ReceiveTask task);
-    static void process_send_task(OsSocketHandle socket, State& state, SendTask task);
+    [[nodiscard]] static bool process_receive_task(OsSocketHandle socket, ReceiveTask task);
+    [[nodiscard]] static bool process_send_task(OsSocketHandle socket, SendTask task);
 };

@@ -1,11 +1,6 @@
+#include "net/socket_lib.hpp"
+#include "socket_headers.hpp"
 #include <iostream>
-#include <net/socket_lib.hpp>
-#ifdef _WIN32
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#else
-// todo
-#endif
 
 SocketLib::SocketLib() {
     auto wsa_data = WSADATA{};
