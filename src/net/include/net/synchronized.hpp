@@ -80,6 +80,8 @@ private:
     friend class Locked<T>;
 
 public:
+    using value_type = T;
+
     explicit Synchronized(T data) : m_data{ std::move(data) } { }
 
     ~Synchronized() {
