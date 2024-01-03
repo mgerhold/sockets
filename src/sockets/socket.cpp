@@ -189,13 +189,11 @@ namespace c2k {
 
     ClientSocket::ClientSocket(OsSocketHandle const os_socket_handle)
         : AbstractSocket{ os_socket_handle },
-          m_send_receive_thread{ keep_sending_and_receiving, std::ref(*m_shared_state), m_socket_descriptor.value() } {
-    }
+          m_send_thread{ keep_sending, std::ref(*m_shared_state), m_socket_descriptor.value() },
+          m_receive_thread{ keep_receiving, std::ref(*m_shared_state), m_socket_descriptor.value() } { }
 
     ClientSocket::ClientSocket(AddressFamily const address_family, std::string const& host, std::uint16_t const port)
-        : AbstractSocket{ initialize_client_socket(address_family, host, port) },
-          m_send_receive_thread{ keep_sending_and_receiving, std::ref(*m_shared_state), m_socket_descriptor.value() } {
-    }
+        : ClientSocket{ initialize_client_socket(address_family, host, port) } { }
 
     template<typename Queue, typename Element = typename Queue::value_type>
     [[nodiscard]] static std::optional<Element> try_dequeue_task(Synchronized<Queue>& queue) {
@@ -208,37 +206,41 @@ namespace c2k {
         return result;
     }
 
-    void ClientSocket::keep_sending_and_receiving(State& state, OsSocketHandle const socket) {
-        static constexpr auto timeout_milliseconds = std::size_t{ 100 };
-        auto processed_send_task = false;
-        auto processed_receive_task = false;
+    void ClientSocket::keep_sending(State& state, OsSocketHandle const socket) {
         while (*state.running) {
-            if (is_socket_ready(socket, SelectStatusCategory::Write, timeout_milliseconds)) {
-                if (auto send_task = try_dequeue_task(state.send_tasks)) {
-                    processed_send_task = true;
-                    if (not process_send_task(socket, *std::move(send_task))) {
-                        // connection is dead
-                        *state.running = false;
-                        break;
-                    }
+            auto processed_send_task = false;
+            if (auto send_task = try_dequeue_task(state.send_tasks)) {
+                processed_send_task = true;
+                if (not process_send_task(socket, *std::move(send_task))) {
+                    // connection is dead
+                    *state.running = false;
+                    break;
                 }
             }
 
-            if (is_socket_ready(socket, SelectStatusCategory::Read, timeout_milliseconds)) {
-                if (auto receive_task = try_dequeue_task(state.receive_tasks)) {
-                    processed_receive_task = true;
-                    if (not process_receive_task(socket, *std::move(receive_task))) {
-                        // connection is dead
-                        *state.running = false;
-                        break;
-                    }
-                }
+            if (not processed_send_task) {
+                auto lock = std::unique_lock{ state.data_sent_mutex };
+                state.data_sent_condition_variable.wait(lock);
             }
         }
+    }
 
-        if (not processed_send_task and not processed_receive_task) {
-            auto lock = std::unique_lock{ state.data_received_mutex };
-            state.data_received_condition_variable.wait(lock);
+    void ClientSocket::keep_receiving(State& state, OsSocketHandle const socket) {
+        while (*state.running) {
+            auto processed_receive_task = false;
+            if (auto receive_task = try_dequeue_task(state.receive_tasks)) {
+                processed_receive_task = true;
+                if (not process_receive_task(socket, *std::move(receive_task))) {
+                    // connection is dead
+                    *state.running = false;
+                    break;
+                }
+            }
+
+            if (not processed_receive_task) {
+                auto lock = std::unique_lock{ state.data_received_mutex };
+                state.data_received_condition_variable.wait(lock);
+            }
         }
     }
 
@@ -247,6 +249,7 @@ namespace c2k {
             // if this object was moved from, the cleanup will be done by the object
             // this object was moved into
             *(m_shared_state->running) = false;
+            m_shared_state->data_sent_condition_variable.notify_one();
             m_shared_state->data_received_condition_variable.notify_one();
         }
     }
@@ -261,7 +264,7 @@ namespace c2k {
             auto send_tasks = m_shared_state->send_tasks.lock();
             send_tasks->emplace_back(std::move(promise), std::move(data));
         }
-        m_shared_state->data_received_condition_variable.notify_one();
+        m_shared_state->data_sent_condition_variable.notify_one();
         return future;
     }
 

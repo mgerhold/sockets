@@ -88,15 +88,19 @@ namespace c2k {
             Synchronized<std::deque<ReceiveTask>> receive_tasks{ std::deque<ReceiveTask>{} };
             std::mutex data_received_mutex;
             std::condition_variable data_received_condition_variable;
+            std::mutex data_sent_mutex;
+            std::condition_variable data_sent_condition_variable;
         };
 
         std::unique_ptr<State> m_shared_state{ std::make_unique<State>() };
-        std::jthread m_send_receive_thread;
+        std::jthread m_send_thread;
+        std::jthread m_receive_thread;
 
         explicit ClientSocket(OsSocketHandle os_socket_handle);
         ClientSocket(AddressFamily address_family, std::string const& host, std::uint16_t port);
 
-        static void keep_sending_and_receiving(State& state, OsSocketHandle socket);
+        static void keep_sending(State& state, OsSocketHandle socket);
+        static void keep_receiving(State& state, OsSocketHandle socket);
 
 
     public:
