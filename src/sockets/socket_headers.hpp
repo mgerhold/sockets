@@ -18,9 +18,10 @@ namespace c2k {
 #else
 
 #include <netdb.h>
-#include <unistd.h>
+#include <netinet/tcp.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <unistd.h>
 
 namespace c2k {
 
