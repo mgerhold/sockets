@@ -1,6 +1,5 @@
 add_library(c2k_sockets
         STATIC
-        include/sockets/detail/socket_lib.hpp
         sockets.cpp
         socket_headers.hpp
         include/sockets/detail/socket.hpp
