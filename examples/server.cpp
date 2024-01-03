@@ -1,7 +1,7 @@
 #include <chrono>
 #include <iomanip>
 #include <iostream>
-#include <sockets/socket_lib.hpp>
+#include <sockets/sockets.hpp>
 #include <sstream>
 
 void run_sandbox_server() {
@@ -10,10 +10,10 @@ void run_sandbox_server() {
 
     static constexpr auto port = std::uint16_t{ 12345 };
 
-    auto const server = SocketLib::create_server_socket(AddressFamily::Unspecified, port, [&](ClientSocket socket) {
+    auto const server = Sockets::create_server(AddressFamily::Unspecified, port, [&](ClientSocket socket) {
         std::cout << "client connected\n";
         auto thread = std::jthread{ [client_connection = std::move(socket)]() mutable {
-            static constexpr auto repetitions = 5;
+            static constexpr auto repetitions = 30;
             for (int i = 0; i < repetitions; ++i) {
                 auto const text = std::to_string(i);
                 std::cout << "  sending \"" << text << "\" (" << (i + 1) << '/' << repetitions << ")...\n";

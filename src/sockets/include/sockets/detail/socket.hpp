@@ -48,7 +48,7 @@ namespace c2k {
     }
 
     class ServerSocket final : public AbstractSocket {
-        friend class SocketLib;
+        friend class Sockets;
 
     private:
         std::jthread m_listen_thread;
@@ -64,7 +64,7 @@ namespace c2k {
     };
 
     class ClientSocket final : public AbstractSocket {
-        friend class SocketLib;
+        friend class Sockets;
         friend void server_listen(
                 std::stop_token const& stop_token,
                 OsSocketHandle listen_socket,

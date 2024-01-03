@@ -1,9 +1,9 @@
-#include "sockets/socket_lib.hpp"
 #include "socket_headers.hpp"
+#include "sockets/sockets.hpp"
 #include <iostream>
 
 namespace c2k {
-    SocketLib::SocketLib() {
+    Sockets::Sockets() {
 #ifdef _WIN32
         auto wsa_data = WSADATA{};
         static constexpr auto winsock_version = MAKEWORD(2, 2);
@@ -13,24 +13,24 @@ namespace c2k {
 #endif
     }
 
-    SocketLib::~SocketLib() {
+    Sockets::~Sockets() {
 #ifdef _WIN32
         WSACleanup();
 #endif
     }
 
     // clang-format off
-    [[nodiscard]] ClientSocket SocketLib::create_client_socket(
+    [[nodiscard]] ClientSocket Sockets::create_client(
         AddressFamily const address_family,
         std::string const& host,
         std::uint16_t const port,
-        SocketLib const&
+        Sockets const&
     ) { // clang-format on
         return ClientSocket{ address_family, host, port };
     }
 
-    [[nodiscard]] SocketLib const& SocketLib::instance() {
-        static auto handle = SocketLib{};
+    [[nodiscard]] Sockets const& Sockets::instance() {
+        static auto handle = Sockets{};
         return handle;
     }
 } // namespace c2k

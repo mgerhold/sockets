@@ -1,9 +1,9 @@
 #include <iostream>
-#include <sockets/socket_lib.hpp>
+#include <sockets/sockets.hpp>
 
 static void run_sandbox_client() {
     using namespace c2k;
-    auto socket = SocketLib::create_client_socket(AddressFamily::Unspecified, "localhost", 12345);
+    auto socket = Sockets::create_client(AddressFamily::Unspecified, "localhost", 12345);
 
     auto buffer = std::string{};
     while (socket.is_connected()) {
