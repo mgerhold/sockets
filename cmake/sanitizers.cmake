@@ -5,6 +5,7 @@ function(enable_sanitizers
         target_name
         enable_address_sanitizer
         enable_undefined_behavior_sanitizer
+        enable_thread_sanitizer
 )
     set(sanitizers "")
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
