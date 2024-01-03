@@ -101,6 +101,15 @@ namespace c2k {
         if (socket == invalid_socket) {
             throw std::runtime_error{ "failed to create socket" };
         }
+#ifdef _WIN32
+        auto flag = char{ 1 };
+#else
+        auto flag = 1;
+#endif
+        auto const result = ::setsockopt(socket, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag));
+        if (result < 0) {
+            throw std::runtime_error{ "failed to set TCP_NODELAY" };
+        }
         return socket;
     }
 
@@ -161,6 +170,15 @@ namespace c2k {
             auto const client_socket = accept(listen_socket, nullptr, nullptr);
             assert(client_socket != invalid_socket and "successful acceptance is guaranteed by previous call to select"
             );
+#ifdef _WIN32
+            auto flag = char{ 1 };
+#else
+            auto flag = 1;
+#endif
+            auto const result = ::setsockopt(client_socket, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag));
+            if (result < 0) {
+                throw std::runtime_error{ "failed to set TCP_NODELAY" };
+            }
             on_connect(ClientSocket{ client_socket });
         }
     }
