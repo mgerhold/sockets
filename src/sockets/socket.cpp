@@ -205,6 +205,25 @@ namespace c2k {
         m_listen_thread.request_stop();
     }
 
+    void ClientSocket::State::clear_queues() {
+        {
+            auto tasks = receive_tasks.lock();
+            while (not tasks->empty()) {
+                auto task = std::move(tasks->front());
+                tasks->pop_front();
+                task.promise.set_value({});
+            }
+        }
+        {
+            auto tasks = send_tasks.lock();
+            while (not tasks->empty()) {
+                auto task = std::move(tasks->front());
+                tasks->pop_front();
+                task.promise.set_value(0);
+            }
+        }
+    }
+
     ClientSocket::ClientSocket(OsSocketHandle const os_socket_handle)
         : AbstractSocket{ os_socket_handle },
           m_send_thread{ keep_sending, std::ref(*m_shared_state), m_socket_descriptor.value() },
@@ -225,13 +244,13 @@ namespace c2k {
     }
 
     void ClientSocket::keep_sending(State& state, OsSocketHandle const socket) {
-        while (*state.running) {
+        while (state.is_running()) {
             auto processed_send_task = false;
             if (auto send_task = try_dequeue_task(state.send_tasks)) {
                 processed_send_task = true;
                 if (not process_send_task(socket, *std::move(send_task))) {
                     // connection is dead
-                    *state.running = false;
+                    state.stop_running();
                     break;
                 }
             }
@@ -244,23 +263,24 @@ namespace c2k {
                     state.data_sent_condition_variable.wait(
                         locked.unsafe_underlying_lock(),
                         [&] {
-                            return not locked->empty();
+                            return not state.is_running() or not locked->empty();
                         }
                     );
                     // clang-format on
                 }
             }
         }
+        state.clear_queues();
     }
 
     void ClientSocket::keep_receiving(State& state, OsSocketHandle const socket) {
-        while (*state.running) {
+        while (state.is_running()) {
             auto processed_receive_task = false;
             if (auto receive_task = try_dequeue_task(state.receive_tasks)) {
                 processed_receive_task = true;
                 if (not process_receive_task(socket, *std::move(receive_task))) {
                     // connection is dead
-                    *state.running = false;
+                    state.stop_running();
                     break;
                 }
             }
@@ -273,22 +293,22 @@ namespace c2k {
                     state.data_received_condition_variable.wait(
                         locked.unsafe_underlying_lock(),
                         [&] {
-                            return not locked->empty();
+                            return not state.is_running() or not locked->empty();
                         }
                     );
                     // clang-format on
                 }
             }
         }
+        state.clear_queues();
     }
 
     ClientSocket::~ClientSocket() {
         if (m_shared_state != nullptr) {
             // if this object was moved from, the cleanup will be done by the object
             // this object was moved into
-            *(m_shared_state->running) = false;
-            m_shared_state->data_sent_condition_variable.notify_one();
-            m_shared_state->data_received_condition_variable.notify_one();
+            m_shared_state->stop_running();
+            m_shared_state->clear_queues();
         }
     }
 
@@ -300,6 +320,11 @@ namespace c2k {
         auto future = promise.get_future();
         {
             auto send_tasks = m_shared_state->send_tasks.lock();
+            if (not m_shared_state->is_running()) {
+                promise.set_value({});
+                m_shared_state->data_sent_condition_variable.notify_one();
+                return future;
+            }
             send_tasks->emplace_back(std::move(promise), std::move(data));
         }
         m_shared_state->data_sent_condition_variable.notify_one();
@@ -321,6 +346,11 @@ namespace c2k {
         auto future = promise.get_future();
         {
             auto receive_tasks = m_shared_state->receive_tasks.lock();
+            if (not m_shared_state->is_running()) {
+                promise.set_value({});
+                m_shared_state->data_sent_condition_variable.notify_one();
+                return future;
+            }
             receive_tasks->emplace_back(std::move(promise), max_num_bytes);
         }
         m_shared_state->data_received_condition_variable.notify_one();
@@ -358,6 +388,16 @@ namespace c2k {
         }
 
         if (receive_result == socket_error) {
+#ifdef _WIN32
+            auto const error = WSAGetLastError();
+            if (error == WSAENOTCONN or error == WSAECONNABORTED or error == WSAECONNRESET) {
+#else
+            if (errno == ENOTCONN or errno == ECONNRESET) {
+#endif
+                // connection no longer active
+                task.promise.set_value({});
+                return false;
+            }
             throw std::runtime_error{ "failed to read from socket" };
         }
 
@@ -379,7 +419,7 @@ namespace c2k {
             if (result == socket_error) {
 #ifdef _WIN32
                 auto const error = WSAGetLastError();
-                if (error == WSAENOTCONN or error == WSAECONNABORTED) {
+                if (error == WSAENOTCONN or error == WSAECONNABORTED or error == WSAECONNRESET) {
 #else
                 if (errno == ENOTCONN or errno == ECONNRESET) {
 #endif
@@ -395,4 +435,5 @@ namespace c2k {
         task.promise.set_value(num_bytes_sent);
         return true;
     }
+
 } // namespace c2k

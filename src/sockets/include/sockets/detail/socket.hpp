@@ -82,12 +82,27 @@ namespace c2k {
             std::size_t max_num_bytes;
         };
 
-        struct State {
+        class State {
+        private:
             NonNullOwner<std::atomic_bool> running{ make_non_null_owner<std::atomic_bool>(true) };
+
+        public:
             Synchronized<std::deque<SendTask>> send_tasks{ std::deque<SendTask>{} };
             Synchronized<std::deque<ReceiveTask>> receive_tasks{ std::deque<ReceiveTask>{} };
             std::condition_variable data_received_condition_variable;
             std::condition_variable data_sent_condition_variable;
+
+            [[nodiscard]] bool is_running() const {
+                return *running;
+            }
+
+            void stop_running() {
+                *running = false;
+                data_received_condition_variable.notify_one();
+                data_sent_condition_variable.notify_one();
+            }
+
+            void clear_queues();
         };
 
         std::unique_ptr<State> m_shared_state{ std::make_unique<State>() };
@@ -108,7 +123,7 @@ namespace c2k {
         ~ClientSocket();
 
         [[nodiscard]] bool is_connected() const {
-            return *(m_shared_state->running);
+            return m_shared_state->is_running();
         }
 
         // clang-format off
@@ -122,6 +137,7 @@ namespace c2k {
         [[nodiscard]] std::future<std::vector<std::byte>> receive(std::size_t max_num_bytes);
         [[nodiscard]] std::future<std::string> receive_string(std::size_t max_num_bytes);
 
+    private:
         [[nodiscard]] static bool process_receive_task(OsSocketHandle socket, ReceiveTask task);
         [[nodiscard]] static bool process_send_task(OsSocketHandle socket, SendTask task);
     };
