@@ -10,7 +10,7 @@ c2k_sockets_setup_dependencies()
 
 add_subdirectory(src)
 
-if (${build_examples})
+if (${c2k_sockets_build_examples})
     add_subdirectory(examples)
 endif ()
 
