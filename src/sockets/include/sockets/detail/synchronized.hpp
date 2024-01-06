@@ -40,6 +40,10 @@ namespace c2k {
     public:
         T const& value() && = delete;
 
+        [[nodiscard]] std::unique_lock<std::mutex>& unsafe_underlying_lock() {
+            return m_lock;
+        }
+
         [[nodiscard]] T const& value() const& {
             throw_if_expired();
             return *m_data;
