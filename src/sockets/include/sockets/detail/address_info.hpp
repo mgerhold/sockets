@@ -5,7 +5,7 @@
 
 namespace c2k {
     struct AddressInfo {
-        AddressFamily family;
+        AddressFamily family = AddressFamily::Unspecified;
         std::string address;
         std::uint16_t port;
 
