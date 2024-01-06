@@ -15,16 +15,16 @@ namespace c2k {
     template<typename T>
     class Locked final {
     private:
-        std::weak_ptr<std::monostate> m_weak_ptr;
         std::unique_lock<std::mutex> m_lock;
+        std::weak_ptr<std::monostate> m_weak_ptr;
         std::thread::id m_initial_thread_id;
         T* m_data;
 
         friend class Synchronized<T>;
 
         Locked(std::weak_ptr<std::monostate> weak_ptr, std::unique_lock<std::mutex> lock, T* const data)
-            : m_weak_ptr{ std::move(weak_ptr) },
-              m_lock{ std::move(lock) },
+            : m_lock{ std::move(lock) },
+              m_weak_ptr{ std::move(weak_ptr) },
               m_initial_thread_id{ std::this_thread::get_id() },
               m_data{ data } { }
 
