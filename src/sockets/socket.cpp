@@ -386,17 +386,9 @@ namespace c2k {
         }
 
         if (receive_result == socket_error) {
-#ifdef _WIN32
-            auto const error = WSAGetLastError();
-            if (error == WSAENOTCONN or error == WSAECONNABORTED or error == WSAECONNRESET) {
-#else
-            if (errno == ENOTCONN or errno == ECONNRESET) {
-#endif
-                // connection no longer active
-                task.promise.set_value({});
-                return false;
-            }
-            throw std::runtime_error{ "failed to read from socket" };
+            // connection no longer active
+            task.promise.set_value({});
+            return false;
         }
 
         receive_buffer.resize(static_cast<std::size_t>(receive_result));
@@ -415,17 +407,9 @@ namespace c2k {
             auto const num_bytes_remaining = task.data.size() - num_bytes_sent;
             auto const result = ::send(socket, send_pointer, static_cast<SendReceiveSize>(num_bytes_remaining), 0);
             if (result == socket_error) {
-#ifdef _WIN32
-                auto const error = WSAGetLastError();
-                if (error == WSAENOTCONN or error == WSAECONNABORTED or error == WSAECONNRESET) {
-#else
-                if (errno == ENOTCONN or errno == ECONNRESET) {
-#endif
-                    // connection no longer active
-                    task.promise.set_value(0);
-                    return false;
-                }
-                throw std::runtime_error{ "error sending message" };
+                // connection no longer active
+                task.promise.set_value(0);
+                return false;
             }
             send_pointer += result;
             num_bytes_sent += static_cast<std::size_t>(result);
