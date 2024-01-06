@@ -257,13 +257,12 @@ namespace c2k {
 
             if (not processed_send_task) {
                 auto locked = state.send_tasks.lock();
-                auto const no_more_tasks = locked->empty();
-                if (no_more_tasks) {
+                if (locked->empty()) {
                     // clang-format off
-                    state.data_sent_condition_variable.wait(
-                        locked.unsafe_underlying_lock(),
-                        [&] {
-                            return not state.is_running() or not locked->empty();
+                    locked.wait(
+                        state.data_sent_condition_variable,
+                        [&state](std::deque<SendTask> const& tasks) {
+                            return not state.is_running() or not tasks.empty();
                         }
                     );
                     // clang-format on
@@ -287,13 +286,12 @@ namespace c2k {
 
             if (not processed_receive_task) {
                 auto locked = state.receive_tasks.lock();
-                auto const no_more_tasks = locked->empty();
-                if (no_more_tasks) {
+                if (locked->empty()) {
                     // clang-format off
-                    state.data_received_condition_variable.wait(
-                        locked.unsafe_underlying_lock(),
-                        [&] {
-                            return not state.is_running() or not locked->empty();
+                    locked.wait(
+                        state.data_received_condition_variable,
+                        [&state](std::deque<ReceiveTask> const& tasks) {
+                            return not state.is_running() or not tasks.empty();
                         }
                     );
                     // clang-format on

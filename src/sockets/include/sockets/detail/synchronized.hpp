@@ -2,6 +2,7 @@
 
 #include <atomic>
 #include <cassert>
+#include <condition_variable>
 #include <memory>
 #include <mutex>
 #include <thread>
@@ -11,6 +12,13 @@
 namespace c2k {
     template<typename T>
     class Synchronized;
+
+    namespace detail {
+        template<typename Func, typename Arg>
+        concept Predicate = requires(Func func, Arg arg) {
+            { func(arg) } -> std::same_as<bool>;
+        };
+    } // namespace detail
 
     template<typename T>
     class Locked final {
@@ -40,8 +48,15 @@ namespace c2k {
     public:
         T const& value() && = delete;
 
-        [[nodiscard]] std::unique_lock<std::mutex>& unsafe_underlying_lock() {
-            return m_lock;
+        // clang-format off
+        void wait(
+            std::condition_variable& condition_variable,
+            detail::Predicate<T&> auto&& predicate
+        ) {
+            // clang-format on
+            throw_if_expired();
+            assert(m_lock.owns_lock());
+            condition_variable.wait(m_lock, [&] { return predicate(*m_data); });
         }
 
         [[nodiscard]] T const& value() const& {
