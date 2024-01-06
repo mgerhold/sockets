@@ -237,8 +237,18 @@ namespace c2k {
             }
 
             if (not processed_send_task) {
-                auto lock = std::unique_lock{ state.data_sent_mutex };
-                state.data_sent_condition_variable.wait(lock);
+                auto locked = state.send_tasks.lock();
+                auto const no_more_tasks = locked->empty();
+                if (no_more_tasks) {
+                    // clang-format off
+                    state.data_sent_condition_variable.wait(
+                        locked.unsafe_underlying_lock(),
+                        [&] {
+                            return not locked->empty();
+                        }
+                    );
+                    // clang-format on
+                }
             }
         }
     }
@@ -256,8 +266,18 @@ namespace c2k {
             }
 
             if (not processed_receive_task) {
-                auto lock = std::unique_lock{ state.data_received_mutex };
-                state.data_received_condition_variable.wait(lock);
+                auto locked = state.receive_tasks.lock();
+                auto const no_more_tasks = locked->empty();
+                if (no_more_tasks) {
+                    // clang-format off
+                    state.data_received_condition_variable.wait(
+                        locked.unsafe_underlying_lock(),
+                        [&] {
+                            return not locked->empty();
+                        }
+                    );
+                    // clang-format on
+                }
             }
         }
     }
