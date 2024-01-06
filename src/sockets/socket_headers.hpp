@@ -10,6 +10,8 @@ namespace c2k {
 
     inline constexpr auto invalid_socket = std::uintptr_t{ INVALID_SOCKET };
     inline constexpr auto socket_error = SOCKET_ERROR;
+    inline constexpr auto reuse_port = SO_REUSEADDR;
+    inline constexpr auto tcp_no_delay = TCP_NODELAY;
 
     using SockLen = int;
     using SendReceiveSize = int;
@@ -27,6 +29,8 @@ namespace c2k {
 
     inline constexpr auto invalid_socket = -1;
     inline constexpr auto socket_error = -1;
+    inline constexpr auto reuse_port = SO_REUSEPORT;
+    inline constexpr auto tcp_no_delay = TCP_NODELAY;
 
     using SockLen = unsigned int;
     using SendReceiveSize = std::size_t;

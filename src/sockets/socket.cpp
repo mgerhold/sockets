@@ -2,6 +2,7 @@
 #include "sockets/sockets.hpp"
 #include <cassert>
 #include <cstring>
+#include <format>
 #include <iostream>
 #include <memory>
 #include <sstream>
@@ -96,25 +97,53 @@ namespace c2k {
         return AddressInfos{ result };
     }
 
-    [[nodiscard]] static AbstractSocket::OsSocketHandle create_socket(AddressInfos const& address_infos) {
-        auto const socket = ::socket(address_infos->ai_family, address_infos->ai_socktype, address_infos->ai_protocol);
-        if (socket == invalid_socket) {
-            throw std::runtime_error{ "failed to create socket" };
+    enum class SocketOption {
+        TcpNoDelay,
+        ReusePort,
+    };
+
+    static constexpr auto to_string(SocketOption const option) {
+        switch (option) {
+            case SocketOption::TcpNoDelay:
+                return "TcpNoDelay";
+            case SocketOption::ReusePort:
+                return "ReusePort";
         }
+        std::unreachable();
+    }
+
+    static void set_socket_option(AbstractSocket::OsSocketHandle const socket, SocketOption const option) {
 #ifdef _WIN32
         auto flag = char{ 1 };
 #else
         auto flag = 1;
 #endif
-        auto const result = ::setsockopt(socket, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag));
+        auto const option_name = [&] {
+            switch (option) {
+                case SocketOption::TcpNoDelay:
+                    return tcp_no_delay;
+                case SocketOption::ReusePort:
+                    return reuse_port;
+            }
+            std::unreachable();
+        }();
+        auto const result = ::setsockopt(socket, IPPROTO_TCP, option_name, &flag, sizeof(flag));
         if (result < 0) {
-            throw std::runtime_error{ "failed to set TCP_NODELAY" };
+            throw std::runtime_error{ std::format("failed to set {}", to_string(option)) };
         }
+    }
 
-        auto const result2 = ::setsockopt(socket, SOL_SOCKET, SO_REUSEPORT, &flag, sizeof(flag));
-        if (result2 < 0) {
-            throw std::runtime_error{ "failed to set SO_REUSEPORT" };
+    static void set_all_default_socket_options(AbstractSocket::OsSocketHandle const socket) {
+        set_socket_option(socket, SocketOption::TcpNoDelay);
+        set_socket_option(socket, SocketOption::ReusePort);
+    }
+
+    [[nodiscard]] static AbstractSocket::OsSocketHandle create_socket(AddressInfos const& address_infos) {
+        auto const socket = ::socket(address_infos->ai_family, address_infos->ai_socktype, address_infos->ai_protocol);
+        if (socket == invalid_socket) {
+            throw std::runtime_error{ "failed to create socket" };
         }
+        set_all_default_socket_options(socket);
         return socket;
     }
 
@@ -139,19 +168,17 @@ namespace c2k {
     AbstractSocket::AbstractSocket(OsSocketHandle const os_socket_handle)
         : m_socket_descriptor{ os_socket_handle, socket_deleter } { }
 
-    namespace detail {
-        // clang-format off
-        [[nodiscard]] AbstractSocket::OsSocketHandle initialize_server_socket(
-            AddressFamily const address_family,
-            std::uint16_t const port
-        ) {
-            auto const address_infos = get_address_infos(address_family, port);
-            auto const socket = create_socket(address_infos);
-            bind_socket(socket, address_infos);
-            return socket;
-        }
-        // clang-format on
-    } // namespace detail
+    // clang-format off
+    [[nodiscard]] AbstractSocket::OsSocketHandle initialize_server_socket(
+        AddressFamily const address_family,
+        std::uint16_t const port
+    ) {
+        auto const address_infos = get_address_infos(address_family, port);
+        auto const socket = create_socket(address_infos);
+        bind_socket(socket, address_infos);
+        return socket;
+    }
+    // clang-format on
 
     [[nodiscard]] static auto
     initialize_client_socket(AddressFamily const address_family, std::string const& host, std::uint16_t const port) {
@@ -173,22 +200,15 @@ namespace c2k {
             }
 
             auto const client_socket = accept(listen_socket, nullptr, nullptr);
-            assert(client_socket != invalid_socket and "successful acceptance is guaranteed by previous call to select"
+            // clang-format off
+            assert(
+                client_socket != invalid_socket
+                and "successful acceptance is guaranteed by previous call to select"
             );
-#ifdef _WIN32
-            auto flag = char{ 1 };
-#else
-            auto flag = 1;
-#endif
-            auto const result = ::setsockopt(client_socket, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag));
-            if (result < 0) {
-                throw std::runtime_error{ "failed to set TCP_NODELAY" };
-            }
+            // clang-format on
 
-            auto const result2 = ::setsockopt(client_socket, SOL_SOCKET, SO_REUSEPORT, &flag, sizeof(flag));
-            if (result2 < 0) {
-                throw std::runtime_error{ "failed to set SO_REUSEPORT" };
-            }
+            set_all_default_socket_options(client_socket);
+
             on_connect(ClientSocket{ client_socket });
         }
     }
@@ -198,7 +218,7 @@ namespace c2k {
             std::uint16_t const port,
             std::function<void(ClientSocket)> on_connect
     )
-        : AbstractSocket{ detail::initialize_server_socket(address_family, port) } {
+        : AbstractSocket{ initialize_server_socket(address_family, port) } {
         assert(m_socket_descriptor.has_value() and "has been set via parent constructor");
         if (listen(m_socket_descriptor.value(), SOMAXCONN) == socket_error) {
             throw std::runtime_error{ "failed to listen on socket" };
