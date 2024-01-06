@@ -110,6 +110,11 @@ namespace c2k {
         if (result < 0) {
             throw std::runtime_error{ "failed to set TCP_NODELAY" };
         }
+
+        auto const result2 = ::setsockopt(socket, SOL_SOCKET, SO_REUSEPORT, &flag, sizeof(flag));
+        if (result2 < 0) {
+            throw std::runtime_error{ "failed to set SO_REUSEPORT" };
+        }
         return socket;
     }
 
@@ -178,6 +183,11 @@ namespace c2k {
             auto const result = ::setsockopt(client_socket, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag));
             if (result < 0) {
                 throw std::runtime_error{ "failed to set TCP_NODELAY" };
+            }
+
+            auto const result2 = ::setsockopt(client_socket, SOL_SOCKET, SO_REUSEPORT, &flag, sizeof(flag));
+            if (result2 < 0) {
+                throw std::runtime_error{ "failed to set SO_REUSEPORT" };
             }
             on_connect(ClientSocket{ client_socket });
         }
