@@ -1,10 +1,10 @@
 #pragma once
 
 #include "address_family.hpp"
+#include "address_info.hpp"
 #include "non_null_owner.hpp"
 #include "synchronized.hpp"
 #include "unique_value.hpp"
-
 #include <atomic>
 #include <cstdint>
 #include <deque>
@@ -28,6 +28,10 @@ namespace c2k {
         using OsSocketHandle = int;
 #endif
 
+    private:
+        AddressInfo m_local_address_info;
+        AddressInfo m_remote_address_info;
+
     protected:
         UniqueValue<OsSocketHandle, void (*)(OsSocketHandle handle)> m_socket_descriptor;
 
@@ -39,6 +43,18 @@ namespace c2k {
                 return std::nullopt;
             }
             return m_socket_descriptor.value();
+        }
+
+        AddressInfo const& local_address() && = delete;
+
+        [[nodiscard]] AddressInfo const& local_address() const& {
+            return m_local_address_info;
+        }
+
+        AddressInfo const& remote_address() && = delete;
+
+        [[nodiscard]] AddressInfo const& remote_address() const& {
+            return m_remote_address_info;
         }
     };
 

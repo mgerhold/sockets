@@ -4,7 +4,7 @@
 static void run_sandbox_client() {
     using namespace c2k;
     auto socket = Sockets::create_client(AddressFamily::Unspecified, "localhost", 12345);
-
+    std::cout << "connected to server at " << socket.remote_address() << '\n';
     auto buffer = std::string{};
     while (socket.is_connected()) {
         buffer += socket.receive_string(512).get();

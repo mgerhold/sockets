@@ -1,4 +1,5 @@
 #include "socket_headers.hpp"
+#include "sockets/detail/byte_order.hpp"
 #include "sockets/sockets.hpp"
 #include <cassert>
 #include <cstring>
@@ -127,7 +128,16 @@ namespace c2k {
             }
             std::unreachable();
         }();
-        auto const result = ::setsockopt(socket, IPPROTO_TCP, option_name, &flag, sizeof(flag));
+        auto const level = [&]() -> int {
+            switch (option) {
+                case SocketOption::TcpNoDelay:
+                    return IPPROTO_TCP;
+                case SocketOption::ReusePort:
+                    return SOL_SOCKET;
+            }
+            std::unreachable();
+        }();
+        auto const result = ::setsockopt(socket, level, option_name, &flag, sizeof(flag));
         if (result < 0) {
             throw std::runtime_error{ std::format("failed to set {}", to_string(option)) };
         }
@@ -165,8 +175,132 @@ namespace c2k {
         closesocket(handle);
     }
 
+#ifdef _WIN32
+    [[nodiscard]] static AddressInfo extract_adress_info(SOCKADDR_STORAGE const& address) {
+        switch (address.ss_family) {
+            case AF_INET: {
+                auto const ipv4_info = reinterpret_cast<sockaddr_in const*>(&address);
+                auto ipv4_address = std::format(
+                        "{}.{}.{}.{}",
+                        ipv4_info->sin_addr.S_un.S_un_b.s_b1,
+                        ipv4_info->sin_addr.S_un.S_un_b.s_b2,
+                        ipv4_info->sin_addr.S_un.S_un_b.s_b3,
+                        ipv4_info->sin_addr.S_un.S_un_b.s_b4
+                );
+                return AddressInfo{ AddressFamily::Ipv4,
+                                    std::move(ipv4_address),
+                                    static_cast<std::uint16_t>(ipv4_info->sin_port) };
+            }
+            case AF_INET6: {
+                auto const ipv6_info = reinterpret_cast<sockaddr_in6 const*>(&address);
+                auto ipv6_address = std::format(
+                        "{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:"
+                        "{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}",
+                        ipv6_info->sin6_addr.u.Byte[0],
+                        ipv6_info->sin6_addr.u.Byte[1],
+                        ipv6_info->sin6_addr.u.Byte[2],
+                        ipv6_info->sin6_addr.u.Byte[3],
+                        ipv6_info->sin6_addr.u.Byte[4],
+                        ipv6_info->sin6_addr.u.Byte[5],
+                        ipv6_info->sin6_addr.u.Byte[6],
+                        ipv6_info->sin6_addr.u.Byte[7],
+                        ipv6_info->sin6_addr.u.Byte[8],
+                        ipv6_info->sin6_addr.u.Byte[9],
+                        ipv6_info->sin6_addr.u.Byte[10],
+                        ipv6_info->sin6_addr.u.Byte[11],
+                        ipv6_info->sin6_addr.u.Byte[12],
+                        ipv6_info->sin6_addr.u.Byte[13],
+                        ipv6_info->sin6_addr.u.Byte[14],
+                        ipv6_info->sin6_addr.u.Byte[15]
+                );
+                return AddressInfo{ AddressFamily::Ipv6,
+                                    std::move(ipv6_address),
+                                    static_cast<std::uint16_t>(ipv6_info->sin6_port) };
+            }
+        }
+        std::unreachable();
+    }
+#else
+    [[nodiscard]] static AddressInfo extract_adress_info(sockaddr_storage const& address) {
+        switch (address.ss_family) {
+            case AF_INET: {
+                auto const ipv4_info = reinterpret_cast<sockaddr_in const*>(&address);
+                auto const ipv4_address_32 = from_network_byte_order(ipv4_info->sin_addr.s_addr);
+                static_assert(sizeof(ipv4_address_32) == 4);
+                auto ipv4_address = std::format(
+                        "{}.{}.{}.{}",
+                        (ipv4_address_32 >> 24) & 0xFF,
+                        (ipv4_address_32 >> 16) & 0xFF,
+                        (ipv4_address_32 >> 8) & 0xFF,
+                        (ipv4_address_32 >> 0) & 0xFF
+                );
+                return AddressInfo{ AddressFamily::Ipv4,
+                                    std::move(ipv4_address),
+                                    static_cast<std::uint16_t>(ipv4_info->sin_port) };
+            }
+            case AF_INET6: {
+                auto const ipv6_info = reinterpret_cast<sockaddr_in6 const*>(&address);
+                auto ipv6_address = std::format(
+                        "{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:"
+                        "{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}",
+                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[0],
+                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[1],
+                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[2],
+                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[3],
+                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[4],
+                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[5],
+                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[6],
+                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[7],
+                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[8],
+                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[9],
+                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[10],
+                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[11],
+                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[12],
+                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[13],
+                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[14],
+                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[15]
+                );
+                return AddressInfo{ AddressFamily::Ipv6,
+                                    std::move(ipv6_address),
+                                    static_cast<std::uint16_t>(ipv6_info->sin6_port) };
+            }
+        }
+        std::unreachable();
+    }
+#endif
+
     AbstractSocket::AbstractSocket(OsSocketHandle const os_socket_handle)
-        : m_socket_descriptor{ os_socket_handle, socket_deleter } { }
+        : m_socket_descriptor{ os_socket_handle, socket_deleter } {
+#ifdef _WIN32
+        auto local_info = SOCKADDR_STORAGE{};
+        auto len = static_cast<int>(sizeof(local_info));
+        if (getsockname(os_socket_handle, reinterpret_cast<SOCKADDR*>(&local_info), &len) == socket_error) {
+            throw std::runtime_error{ "failed to get local address and port" };
+        }
+        m_local_address_info = extract_adress_info(local_info);
+
+        // for server sockets, there is no remote address, so we ignore errors here
+        auto remote_info = SOCKADDR_STORAGE{};
+        len = static_cast<int>(sizeof(remote_info));
+        if (getpeername(os_socket_handle, reinterpret_cast<SOCKADDR*>(&remote_info), &len) != socket_error) {
+            m_remote_address_info = extract_adress_info(remote_info);
+        }
+#else
+        auto local_info = sockaddr_storage{};
+        auto len = static_cast<socklen_t>(sizeof(local_info));
+        if (getsockname(os_socket_handle, reinterpret_cast<sockaddr*>(&local_info), &len) == socket_error) {
+            throw std::runtime_error{ "failed to get local address and port" };
+        }
+        m_local_address_info = extract_adress_info(local_info);
+
+        // for server sockets, there is no remote address, so we ignore errors here
+        auto remote_info = sockaddr_storage{};
+        len = static_cast<socklen_t>(sizeof(local_info));
+        if (getpeername(os_socket_handle, reinterpret_cast<sockaddr*>(&remote_info), &len) != socket_error) {
+            m_remote_address_info = extract_adress_info(remote_info);
+        }
+#endif
+    }
 
     // clang-format off
     [[nodiscard]] AbstractSocket::OsSocketHandle initialize_server_socket(
