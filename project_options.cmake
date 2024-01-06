@@ -20,24 +20,31 @@ endmacro()
 check_sanitizer_support()
 
 if (PROJECT_IS_TOP_LEVEL)
-    option(warnings_as_errors "Treat warnings as errors" ON)
-    option(enable_undefined_behavior_sanitizer "Enable undefined behavior sanitizer" ${supports_ubsan})
-    option(enable_address_sanitizer "Enable address sanitizer" ${supports_asan})
-    option(enable_thread_sanitizer "Enable thread sanitizer" OFF)
-    option(build_examples "Build example server and client applications" ON)
+    option(c2k_sockets_warnings_as_errors "Treat warnings as errors" ON)
+    option(c2k_sockets_enable_undefined_behavior_sanitizer "Enable undefined behavior sanitizer" ${supports_ubsan})
+    option(c2k_sockets_enable_address_sanitizer "Enable address sanitizer" ${supports_asan})
+    option(c2k_sockets_enable_thread_sanitizer "Enable thread sanitizer" OFF)
+    option(c2k_sockets_build_examples "Build example server and client applications" ON)
+    option(c2k_sockets_build_tests "Build tests using Google Test" ON)
 else ()
-    option(warnings_as_errors "Treat warnings as errors" OFF)
-    option(enable_undefined_behavior_sanitizer "Enable undefined behavior sanitizer" OFF)
-    option(enable_address_sanitizer "Enable address sanitizer" OFF)
-    option(enable_thread_sanitizer "Enable thread sanitizer" OFF)
-    option(build_examples "Build example server and client applications" OFF)
+    option(c2k_sockets_warnings_as_errors "Treat warnings as errors" OFF)
+    option(c2k_sockets_enable_undefined_behavior_sanitizer "Enable undefined behavior sanitizer" OFF)
+    option(c2k_sockets_enable_address_sanitizer "Enable address sanitizer" OFF)
+    option(c2k_sockets_enable_thread_sanitizer "Enable thread sanitizer" OFF)
+    option(c2k_sockets_build_examples "Build example server and client applications" OFF)
+    option(c2k_sockets_build_tests "Build tests using Google Test" OFF)
 endif ()
 
 add_library(c2k_sockets_warnings INTERFACE)
-set_warnings(c2k_sockets_warnings ${warnings_as_errors})
+set_warnings(c2k_sockets_warnings ${c2k_sockets_warnings_as_errors})
 
 add_library(c2k_sockets_sanitizers INTERFACE)
-enable_sanitizers(c2k_sockets_sanitizers ${enable_address_sanitizer} ${enable_undefined_behavior_sanitizer} ${enable_thread_sanitizer})
+enable_sanitizers(
+        c2k_sockets_sanitizers
+        ${c2k_sockets_enable_address_sanitizer}
+        ${c2k_sockets_enable_undefined_behavior_sanitizer}
+        ${c2k_sockets_enable_thread_sanitizer}
+)
 
 add_library(c2k_sockets_options INTERFACE)
 target_link_libraries(c2k_sockets_options
