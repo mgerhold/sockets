@@ -153,16 +153,14 @@ namespace c2k {
         template<std::integral... Values>
         [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
         std::future<std::size_t> send(Values... values) {
-            auto package = (Package{} << ... << values);
+            auto package = Package{};
+            (package << ... << values);
             return send(package);
         }
 
-        template<std::size_t package_length>
         [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
-        std::future<std::size_t> send(Package<package_length> const package) {
-            auto data = std::vector<std::byte>{};
-            data.insert(data.begin(), package.data.cbegin(), package.data.cend());
-            return send(std::move(data));
+        std::future<std::size_t> send(Package const& package) {
+            return send(package.data);
         }
         // clang-format on
 

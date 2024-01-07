@@ -7,23 +7,21 @@
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
+#include <vector>
 
 namespace c2k {
-    template<std::size_t length = 0>
     struct Package final {
-        std::array<std::byte, length> data{};
+        std::vector<std::byte> data{};
 
-        Package() = default;
-        explicit Package(std::array<std::byte, length> data_) : data{ data_ } { }
+        explicit Package(std::vector<std::byte> data_ = {}) : data{ std::move(data_) } { }
 
         template<std::integral T>
-        friend constexpr auto operator<<(Package const package, T const value) {
-            static constexpr auto new_length = length + sizeof(value);
-            auto result = Package<new_length>{};
-            std::copy_n(package.data.cbegin(), package.data.size(), result.data.begin());
+        friend Package& operator<<(Package& package, T const value) {
+            auto buffer = std::array<std::byte, sizeof(value)>{};
             auto const network_value = to_network_byte_order(value);
-            std::memcpy(result.data.data() + length, &network_value, sizeof(network_value));
-            return result;
+            std::copy_n(reinterpret_cast<std::byte const*>(&network_value), sizeof(network_value), buffer.data());
+            package.data.insert(package.data.end(), buffer.cbegin(), buffer.cend());
+            return package;
         }
     };
 } // namespace c2k
