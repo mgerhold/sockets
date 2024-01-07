@@ -89,6 +89,8 @@ namespace c2k {
         );
 
     private:
+        static constexpr auto max_queue_length_threshold = std::size_t{ 1000 };
+
         struct SendTask {
             std::promise<std::size_t> promise;
             std::vector<std::byte> data;
@@ -165,6 +167,8 @@ namespace c2k {
 
         [[nodiscard]] std::future<std::vector<std::byte>> receive(std::size_t max_num_bytes);
         [[nodiscard]] std::future<std::string> receive_string(std::size_t max_num_bytes);
+
+        void close();
 
     private:
         [[nodiscard]] static bool process_receive_task(OsSocketHandle socket, ReceiveTask task);

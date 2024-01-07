@@ -466,12 +466,7 @@ namespace c2k {
     }
 
     ClientSocket::~ClientSocket() {
-        if (m_shared_state != nullptr) {
-            // if this object was moved from, the cleanup will be done by the object
-            // this object was moved into
-            m_shared_state->stop_running();
-            m_shared_state->clear_queues();
-        }
+        close();
     }
 
     // clang-format off
@@ -485,6 +480,11 @@ namespace c2k {
             if (not m_shared_state->is_running()) {
                 promise.set_value({});
                 m_shared_state->data_sent_condition_variable.notify_one();
+                return future;
+            }
+            if (send_tasks->size() > max_queue_length_threshold) {
+                promise.set_value({});
+                close();
                 return future;
             }
             send_tasks->emplace_back(std::move(promise), std::move(data));
@@ -513,6 +513,11 @@ namespace c2k {
                 m_shared_state->data_sent_condition_variable.notify_one();
                 return future;
             }
+            if (receive_tasks->size() > max_queue_length_threshold) {
+                promise.set_value({});
+                close();
+                return future;
+            }
             receive_tasks->emplace_back(std::move(promise), max_num_bytes);
         }
         m_shared_state->data_received_condition_variable.notify_one();
@@ -527,6 +532,15 @@ namespace c2k {
             std::memcpy(result.data(), data.data(), data.size());
             return result;
         });
+    }
+
+    void ClientSocket::close() {
+        if (m_shared_state != nullptr) {
+            // if this object was moved from, the cleanup will be done by the object
+            // this object was moved into
+            m_shared_state->stop_running();
+            m_shared_state->clear_queues();
+        }
     }
 
     [[nodiscard]] bool ClientSocket::process_receive_task(OsSocketHandle const socket, ReceiveTask task) {
