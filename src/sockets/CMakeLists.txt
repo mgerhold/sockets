@@ -11,6 +11,8 @@ add_library(c2k_sockets
         include/sockets/sockets.hpp
         include/sockets/detail/address_info.hpp
         include/sockets/detail/byte_order.hpp
+        include/sockets/detail/package.hpp
+        include/sockets/detail/extractor.hpp
 )
 
 target_include_directories(c2k_sockets PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

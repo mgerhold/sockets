@@ -1,3 +1,4 @@
+#include "sockets/detail/extractor.hpp"
 #include <iostream>
 #include <sockets/sockets.hpp>
 
@@ -5,13 +6,12 @@ static void run_sandbox_client() {
     using namespace c2k;
     auto socket = Sockets::create_client(AddressFamily::Unspecified, "localhost", 12345);
     std::cout << "connected to server at " << socket.remote_address() << '\n';
-    auto buffer = std::string{};
+    auto extractor = Extractor{};
     while (socket.is_connected()) {
-        buffer += socket.receive_string(512).get();
-        auto const newline_position = buffer.find('\n');
-        if (newline_position != std::string::npos) {
-            std::cout << buffer.substr(0, newline_position) << '\n'; // contains newline
-            buffer.erase(0, newline_position + 1);
+        extractor << socket.receive(512).get();
+        while (auto package = extractor.try_extract<int, int>()) {
+            auto const [x, y] = package.value();
+            std::cout << x << ',' << y << '\n';
         }
     }
 }

@@ -12,16 +12,14 @@ void run_sandbox_server() {
         std::cout << "client connected from " << socket.remote_address() << '\n';
         auto thread = std::jthread{ [client_connection = std::move(socket)]() mutable {
             static constexpr auto repetitions = 30;
-            for (int i = 0; i < repetitions; ++i) {
-                auto const text = std::to_string(i);
-                std::cout << "  sending \"" << text << "\" (" << (i + 1) << '/' << repetitions << ") to "
+            for (auto i = 0; i < repetitions; ++i) {
+                std::cout << "  sending \"" << i << ',' << i * 2 << "\" (" << (i + 1) << '/' << repetitions << ") to "
                           << client_connection.remote_address() << '\n';
-                client_connection.send(text + '\n').wait();
+                client_connection.send(i, i * 2).wait();
                 if (i < repetitions - 1) {
                     std::this_thread::sleep_for(1s);
                 }
             }
-            client_connection.send("thank you for travelling with Deutsche Bahn\n").wait();
             std::cout << "  farewell, little client!\n";
         } };
         thread.detach();
