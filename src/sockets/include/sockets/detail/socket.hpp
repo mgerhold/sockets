@@ -150,9 +150,8 @@ namespace c2k {
         [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
         std::future<std::size_t> send(std::string_view text);
 
-        template<std::integral... Values>
         [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
-        std::future<std::size_t> send(Values... values) {
+        std::future<std::size_t> send(std::integral auto... values) {
             auto package = Package{};
             (package << ... << values);
             return send(package);
