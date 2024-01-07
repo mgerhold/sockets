@@ -13,6 +13,17 @@
 #include <vector>
 
 namespace c2k {
+    namespace detail {
+        template<typename T, typename... Rest>
+        [[nodiscard]] std::size_t summed_sizeof() {
+            if constexpr (sizeof...(Rest) == 0) {
+                return sizeof(T);
+            } else {
+                return sizeof(T) + summed_sizeof<Rest...>();
+            }
+        }
+    } // namespace detail
+
     class Extractor final {
     private:
         std::vector<std::byte> m_data{};
@@ -29,14 +40,14 @@ namespace c2k {
         [[nodiscard]] auto try_extract() {
             static_assert(sizeof...(Ts) > 0, "at least one type argument must be specified");
             if constexpr (sizeof...(Ts) == 1) {
-                if (size() < sizeof...(Ts)) {
+                if (size() < detail::summed_sizeof<Ts...>()) {
                     return std::optional<Ts...>{ std::nullopt };
                 }
                 auto result = (Ts{}, ...);
                 *this >> result;
                 return std::optional<Ts...>{ result };
             } else {
-                if (size() < sizeof...(Ts)) {
+                if (size() < detail::summed_sizeof<Ts...>()) {
                     return std::optional<std::tuple<Ts...>>{};
                 }
                 return std::optional{ std::tuple<Ts...>{ [&] {
