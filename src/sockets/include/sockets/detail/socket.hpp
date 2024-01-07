@@ -89,8 +89,6 @@ namespace c2k {
         );
 
     private:
-        static constexpr auto max_queue_length_threshold = std::size_t{ 1000 };
-
         struct SendTask {
             std::promise<std::size_t> promise;
             std::vector<std::byte> data;

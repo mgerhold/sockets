@@ -482,11 +482,6 @@ namespace c2k {
                 m_shared_state->data_sent_condition_variable.notify_one();
                 return future;
             }
-            if (send_tasks->size() > max_queue_length_threshold) {
-                promise.set_value({});
-                close();
-                return future;
-            }
             send_tasks->emplace_back(std::move(promise), std::move(data));
         }
         m_shared_state->data_sent_condition_variable.notify_one();
@@ -511,11 +506,6 @@ namespace c2k {
             if (not m_shared_state->is_running()) {
                 promise.set_value({});
                 m_shared_state->data_sent_condition_variable.notify_one();
-                return future;
-            }
-            if (receive_tasks->size() > max_queue_length_threshold) {
-                promise.set_value({});
-                close();
                 return future;
             }
             receive_tasks->emplace_back(std::move(promise), max_num_bytes);
