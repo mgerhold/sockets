@@ -11,7 +11,10 @@
 namespace c2k {
     template<std::size_t length = 0>
     struct Package final {
-        std::array<std::byte, length> data;
+        std::array<std::byte, length> data{};
+
+        Package() = default;
+        explicit Package(std::array<std::byte, length> data_) : data{ data_ } { }
 
         template<std::integral T>
         friend constexpr auto operator<<(Package const package, T const value) {
