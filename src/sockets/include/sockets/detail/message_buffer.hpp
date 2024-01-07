@@ -10,18 +10,24 @@
 #include <vector>
 
 namespace c2k {
-    struct Package final {
+    struct MessageBuffer final {
         std::vector<std::byte> data{};
 
-        explicit Package(std::vector<std::byte> data_ = {}) : data{ std::move(data_) } { }
+        explicit MessageBuffer(std::vector<std::byte> data_ = {}) : data{ std::move(data_) } { }
 
         template<std::integral T>
-        friend Package& operator<<(Package& package, T const value) {
+        friend MessageBuffer& operator<<(MessageBuffer& package, T const value) {
             auto buffer = std::array<std::byte, sizeof(value)>{};
             auto const network_value = to_network_byte_order(value);
             std::copy_n(reinterpret_cast<std::byte const*>(&network_value), sizeof(network_value), buffer.data());
             package.data.insert(package.data.end(), buffer.cbegin(), buffer.cend());
             return package;
+        }
+
+        template<std::integral T>
+        friend MessageBuffer&& operator<<(MessageBuffer&& package, T const value) {
+            package << value;
+            return std::move(package);
         }
     };
 } // namespace c2k

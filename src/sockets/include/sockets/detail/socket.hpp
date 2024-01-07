@@ -2,8 +2,8 @@
 
 #include "address_family.hpp"
 #include "address_info.hpp"
+#include "message_buffer.hpp"
 #include "non_null_owner.hpp"
-#include "sockets/detail/package.hpp"
 #include "synchronized.hpp"
 #include "unique_value.hpp"
 #include <atomic>
@@ -152,13 +152,13 @@ namespace c2k {
 
         [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
         std::future<std::size_t> send(std::integral auto... values) {
-            auto package = Package{};
+            auto package = MessageBuffer{};
             (package << ... << values);
             return send(package);
         }
 
         [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
-        std::future<std::size_t> send(Package const& package) {
+        std::future<std::size_t> send(MessageBuffer const& package) {
             return send(package.data);
         }
         // clang-format on
