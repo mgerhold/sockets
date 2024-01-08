@@ -65,7 +65,7 @@ namespace c2k {
             auto buffer = std::remove_cvref_t<decltype(target)>{};
             std::copy_n(extractor.m_data.cbegin(), sizeof(target), reinterpret_cast<std::byte*>(&buffer));
             target = from_network_byte_order(buffer);
-            std::rotate(extractor.m_data.begin(), extractor.m_data.begin() + sizeof(target), extractor.m_data.end());
+            std::move(extractor.m_data.cbegin() + sizeof(target), extractor.m_data.cend(), extractor.m_data.begin());
             extractor.m_data.resize(extractor.m_data.size() - sizeof(target));
             return extractor;
         }
