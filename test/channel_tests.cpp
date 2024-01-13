@@ -92,3 +92,9 @@ TEST(ChannelTests, ChannelIsOpenUntilEndOfScope) {
     EXPECT_FALSE(sender.is_open());
     EXPECT_FALSE(receiver.is_open());
 }
+
+TEST(ChannelTests, SingleThread) {
+    auto [sender, receiver] = create_channel<int>();
+    sender.send(42);
+    EXPECT_EQ(42, receiver.receive());
+}
