@@ -29,7 +29,8 @@ void run_sandbox_server() {
 
     auto const ipv4_server = Sockets::create_server(AddressFamily::Ipv4, port, accept_client);
     auto const ipv6_server = Sockets::create_server(AddressFamily::Ipv6, port, accept_client);
-    std::cout << "listening on port " << port << " on IPv4 and IPv6...\n";
+    std::cout << "listening on " << ipv4_server.local_address() << " on IPv4 and IPv6...\n";
+    std::cout << "listening on " << ipv6_server.local_address() << " on IPv4 and IPv6...\n";
 
     // sleep forever to keep server alive
     std::promise<void>{}.get_future().wait();

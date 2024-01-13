@@ -189,7 +189,7 @@ namespace c2k {
                 );
                 return AddressInfo{ AddressFamily::Ipv4,
                                     std::move(ipv4_address),
-                                    static_cast<std::uint16_t>(ipv4_info->sin_port) };
+                                    from_network_byte_order(static_cast<std::uint16_t>(ipv4_info->sin_port)) };
             }
             case AF_INET6: {
                 auto const ipv6_info = reinterpret_cast<sockaddr_in6 const*>(&address);
@@ -215,7 +215,7 @@ namespace c2k {
                 );
                 return AddressInfo{ AddressFamily::Ipv6,
                                     std::move(ipv6_address),
-                                    static_cast<std::uint16_t>(ipv6_info->sin6_port) };
+                                    from_network_byte_order(static_cast<std::uint16_t>(ipv6_info->sin6_port)) };
             }
         }
         std::unreachable();
@@ -236,7 +236,7 @@ namespace c2k {
                 );
                 return AddressInfo{ AddressFamily::Ipv4,
                                     std::move(ipv4_address),
-                                    static_cast<std::uint16_t>(ipv4_info->sin_port) };
+                                    from_network_byte_order(static_cast<std::uint16_t>(ipv4_info->sin_port)) };
             }
             case AF_INET6: {
                 auto const ipv6_info = reinterpret_cast<sockaddr_in6 const*>(&address);
@@ -262,7 +262,7 @@ namespace c2k {
                 );
                 return AddressInfo{ AddressFamily::Ipv6,
                                     std::move(ipv6_address),
-                                    static_cast<std::uint16_t>(ipv6_info->sin6_port) };
+                                    from_network_byte_order(static_cast<std::uint16_t>(ipv6_info->sin6_port)) };
             }
         }
         std::unreachable();
