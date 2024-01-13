@@ -3,6 +3,7 @@
 #include <atomic>
 #include <cassert>
 #include <condition_variable>
+#include <exception>
 #include <memory>
 #include <mutex>
 #include <thread>
@@ -23,14 +24,14 @@ namespace c2k {
     template<typename T>
     class Locked final {
     private:
-        std::unique_lock<std::mutex> m_lock;
+        std::unique_lock<std::recursive_mutex> m_lock;
         std::weak_ptr<std::monostate> m_weak_ptr;
         std::thread::id m_initial_thread_id;
         T* m_data;
 
         friend class Synchronized<T>;
 
-        Locked(std::weak_ptr<std::monostate> weak_ptr, std::unique_lock<std::mutex> lock, T* const data)
+        Locked(std::weak_ptr<std::monostate> weak_ptr, std::unique_lock<std::recursive_mutex> lock, T* const data)
             : m_lock{ std::move(lock) },
               m_weak_ptr{ std::move(weak_ptr) },
               m_initial_thread_id{ std::this_thread::get_id() },
@@ -46,11 +47,16 @@ namespace c2k {
         }
 
     public:
+        Locked(Locked const& other) = delete;
+        Locked(Locked&& other) noexcept = default;
+        Locked& operator=(Locked const& other) = delete;
+        Locked& operator=(Locked&& other) noexcept = default;
+
         T const& value() && = delete;
 
         // clang-format off
         void wait(
-            std::condition_variable& condition_variable,
+            std::condition_variable_any& condition_variable,
             detail::Predicate<T&> auto&& predicate
         ) {
             // clang-format on
@@ -95,7 +101,7 @@ namespace c2k {
     template<typename T>
     class Synchronized final {
     private:
-        std::mutex m_mutex;
+        std::recursive_mutex m_mutex;
         T m_data;
         std::shared_ptr<std::monostate> m_active_lock;
 
@@ -107,6 +113,7 @@ namespace c2k {
         explicit Synchronized(T data) : m_data{ std::move(data) } { }
 
         ~Synchronized() {
+            // we have to ensure that we own the lock when the object lifetime ends
             auto lock = std::scoped_lock{ m_mutex };
         }
 

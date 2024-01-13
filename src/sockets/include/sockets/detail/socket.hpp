@@ -106,8 +106,8 @@ namespace c2k {
         public:
             Synchronized<std::deque<SendTask>> send_tasks{ std::deque<SendTask>{} };
             Synchronized<std::deque<ReceiveTask>> receive_tasks{ std::deque<ReceiveTask>{} };
-            std::condition_variable data_received_condition_variable;
-            std::condition_variable data_sent_condition_variable;
+            std::condition_variable_any data_received_condition_variable;
+            std::condition_variable_any data_sent_condition_variable;
 
             [[nodiscard]] bool is_running() const {
                 return *running;
