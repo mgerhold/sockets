@@ -132,4 +132,43 @@ namespace c2k {
 
         return { std::move(sender), std::move(receiver) };
     }
+
+    template<typename T>
+    class BidirectionalChannel;
+
+    template<typename T>
+    [[nodiscard]] std::pair<BidirectionalChannel<T>, BidirectionalChannel<T>> create_bidirectional_channel_pair();
+
+    template<typename T>
+    class BidirectionalChannel final {
+        friend std::pair<BidirectionalChannel, BidirectionalChannel> create_bidirectional_channel_pair<T>();
+
+    private:
+        Sender<T> m_sender;
+        Receiver<T> m_receiver;
+
+        BidirectionalChannel(Sender<T> sender, Receiver<T> receiver)
+            : m_sender{ std::move(sender) },
+              m_receiver{ std::move(receiver) } { }
+
+
+    public:
+        void send(T value) {
+            m_sender.send(std::move(value));
+        }
+
+        [[nodiscard]] T receive() {
+            return m_receiver.receive();
+        }
+    };
+
+    template<typename T>
+    [[nodiscard]] std::pair<BidirectionalChannel<T>, BidirectionalChannel<T>> create_bidirectional_channel_pair() {
+        auto [sender_a, receiver_a] = create_channel<T>();
+        auto [sender_b, receiver_b] = create_channel<T>();
+
+        auto channel_a = BidirectionalChannel<T>{ std::move(sender_a), std::move(receiver_b) };
+        auto channel_b = BidirectionalChannel<T>{ std::move(sender_b), std::move(receiver_a) };
+        return { std::move(channel_a), std::move(channel_b) };
+    }
 } // namespace c2k

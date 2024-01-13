@@ -98,3 +98,30 @@ TEST(ChannelTests, SingleThread) {
     sender.send(42);
     EXPECT_EQ(42, receiver.receive());
 }
+
+TEST(ChannelTests, BidirectionalChannels) {
+    auto [a, b] = create_bidirectional_channel_pair<int>();
+    a.send(42);
+    EXPECT_EQ(42, b.receive());
+    b.send(43);
+    EXPECT_EQ(43, a.receive());
+}
+
+TEST(ChannelTests, BidirectionalChannelsSepeateThreads) {
+    auto counter = std::atomic_int{};
+    auto const do_work = [&counter](BidirectionalChannel<int> channel) {
+        for (int i = 0; i < 100; ++i) {
+            channel.send(i);
+            EXPECT_EQ(channel.receive(), i);
+            ++counter;
+        }
+    };
+    {
+        auto [a, b] = create_bidirectional_channel_pair<int>();
+        auto threads = std::array{
+            std::jthread{ do_work, std::move(a) },
+            std::jthread{ do_work, std::move(b) },
+        };
+    }
+    EXPECT_EQ(counter, 200);
+}
