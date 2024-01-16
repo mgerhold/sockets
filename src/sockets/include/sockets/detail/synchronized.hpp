@@ -1,5 +1,6 @@
 #pragma once
 
+#include "channel.hpp"
 #include <atomic>
 #include <cassert>
 #include <condition_variable>
@@ -21,30 +22,19 @@ namespace c2k {
         };
     } // namespace detail
 
-    template<typename T>
+    /*template<typename T, typename Returner>
     class Locked final {
-    private:
-        std::unique_lock<std::recursive_mutex> m_lock;
-        std::weak_ptr<std::monostate> m_weak_ptr;
-        std::thread::id m_initial_thread_id;
-        T* m_data;
-
         friend class Synchronized<T>;
 
-        Locked(std::weak_ptr<std::monostate> weak_ptr, std::unique_lock<std::recursive_mutex> lock, T* const data)
-            : m_lock{ std::move(lock) },
-              m_weak_ptr{ std::move(weak_ptr) },
-              m_initial_thread_id{ std::this_thread::get_id() },
-              m_data{ data } { }
+    private:
+        std::unique_ptr<T> m_data;
+        Returner m_returner;
 
-        void throw_if_expired() const {
-            if (std::this_thread::get_id() != m_initial_thread_id) {
-                throw std::runtime_error{ "lock was moved across thread boundaries" };
-            }
-            if (m_weak_ptr.expired()) {
-                throw std::runtime_error{ "locked object does no longer exist" };
-            }
-        }
+        Locked(std::unique_ptr<T> data, Returner returner)
+            : m_data{ std::move(data) },
+              m_returner{ std::move(returner) } { }
+
+        void throw_if_expired() const { }
 
     public:
         Locked(Locked const& other) = delete;
@@ -52,17 +42,8 @@ namespace c2k {
         Locked& operator=(Locked const& other) = delete;
         Locked& operator=(Locked&& other) noexcept = default;
 
-        T const& value() && = delete;
-
-        // clang-format off
-        void wait(
-            std::condition_variable_any& condition_variable,
-            detail::Predicate<T&> auto&& predicate
-        ) {
-            // clang-format on
-            throw_if_expired();
-            assert(m_lock.owns_lock());
-            condition_variable.wait(m_lock, [&] { return predicate(*m_data); });
+        ~Locked() {
+            m_returner(std::move(*m_data));
         }
 
         [[nodiscard]] T const& value() const& {
@@ -90,41 +71,63 @@ namespace c2k {
         T const* operator->() && = delete;
 
         [[nodiscard]] T const* operator->() const& {
-            return m_data;
+            return m_data.get();
         }
 
         [[nodiscard]] T* operator->() & {
-            return m_data;
+            return m_data.get();
         }
-    };
+    };*/
 
     template<typename T>
     class Synchronized final {
     private:
         std::recursive_mutex m_mutex;
         T m_data;
-        std::shared_ptr<std::monostate> m_active_lock;
-
-        friend class Locked<T>;
 
     public:
         using value_type = T;
 
         explicit Synchronized(T data) : m_data{ std::move(data) } { }
 
-        ~Synchronized() {
-            // we have to ensure that we own the lock when the object lifetime ends
+        auto apply(std::invocable<T&> auto&& function) {
             auto lock = std::scoped_lock{ m_mutex };
+            return function(m_data);
         }
 
-        [[nodiscard]] Locked<T> lock() {
-            if (m_mutex.try_lock()) {
-                m_active_lock = {};
-                m_mutex.unlock();
-            }
+        auto apply(std::invocable<T const&> auto&& function) const {
+            auto lock = std::scoped_lock{ m_mutex };
+            return function(m_data);
+        }
+
+        void wait(std::condition_variable_any& condition_variable, detail::Predicate<T&> auto&& predicate) {
             auto lock = std::unique_lock{ m_mutex };
-            m_active_lock = std::make_shared<std::monostate>();
-            return Locked<T>{ std::weak_ptr{ m_active_lock }, std::move(lock), &m_data };
+            condition_variable.wait(lock, [&] { return predicate(m_data); });
+        }
+
+        void wait(std::condition_variable_any& condition_variable, detail::Predicate<T const&> auto&& predicate) const {
+            auto lock = std::unique_lock{ m_mutex };
+            condition_variable.wait(lock, [&] { return predicate(m_data); });
+        }
+
+        auto wait_and_apply(
+                std::condition_variable_any& condition_variable,
+                detail::Predicate<T&> auto&& predicate,
+                std::invocable<T&> auto&& function
+        ) {
+            auto lock = std::unique_lock{ m_mutex };
+            condition_variable.wait(lock, [&] { return predicate(m_data); });
+            return function(m_data);
+        }
+
+        auto wait_and_apply(
+                std::condition_variable_any& condition_variable,
+                detail::Predicate<T const&> auto&& predicate,
+                std::invocable<T const&> auto&& function
+        ) const {
+            auto lock = std::unique_lock{ m_mutex };
+            condition_variable.wait(lock, [&] { return predicate(m_data); });
+            return function(m_data);
         }
     };
 } // namespace c2k

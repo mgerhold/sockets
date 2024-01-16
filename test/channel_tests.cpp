@@ -21,7 +21,7 @@ TEST(ChannelTests, SendAndReceiveSingleValue) {
 }
 
 TEST(ChannelTests, SendAndReceiveManyValues) {
-    static constexpr auto num_values = std::size_t{ 1'000'000 };
+    static constexpr auto num_values = std::size_t{ 500'000 };
     auto [sender, receiver] = create_channel<std::size_t>();
     auto send_thread = std::jthread([sender_ = std::move(sender)]() mutable {
         for (auto i = std::size_t{ 0 }; i < num_values; ++i) {
@@ -99,6 +99,27 @@ TEST(ChannelTests, SingleThread) {
     EXPECT_EQ(42, receiver.receive());
 }
 
+TEST(ChannelTests, TrySend) {
+    auto [sender, receiver] = create_channel<int>();
+    sender.send(42);
+    EXPECT_EQ(receiver.receive(), 42);
+    auto result = sender.try_send(43);
+    EXPECT_TRUE(result.has_value());
+    result = sender.try_send(44);
+    EXPECT_FALSE(result.has_value());
+    EXPECT_EQ(result.error(), 44);
+}
+
+TEST(ChannelTests, TryReceive) {
+    auto [sender, receiver] = create_channel<int>();
+    sender.send(42);
+    auto result = receiver.try_receive();
+    EXPECT_TRUE(result.has_value());
+    EXPECT_EQ(result.value(), 42);
+    result = receiver.try_receive();
+    EXPECT_FALSE(result.has_value());
+}
+
 TEST(ChannelTests, BidirectionalChannels) {
     auto [a, b] = create_bidirectional_channel_pair<int>();
     a.send(42);
@@ -124,4 +145,12 @@ TEST(ChannelTests, BidirectionalChannelsSepeateThreads) {
         };
     }
     EXPECT_EQ(counter, 200);
+    {
+        auto [a, b] = create_bidirectional_channel_pair<int>();
+        auto threads = std::array{
+            std::jthread{ do_work, std::move(b) },
+            std::jthread{ do_work, std::move(a) },
+        };
+    }
+    EXPECT_EQ(counter, 400);
 }

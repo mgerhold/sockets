@@ -2,6 +2,7 @@
 
 #include <atomic>
 #include <cassert>
+#include <expected>
 #include <future>
 #include <memory>
 #include <mutex>
@@ -94,6 +95,20 @@ namespace c2k {
             this->state()->value = std::move(value);
             this->state()->condition_variable.notify_one();
         }
+
+        [[nodiscard]] std::expected<void, T> try_send(T value) {
+            if (this->state() == nullptr) {
+                throw ChannelError{ "cannot call try_send() on a moved-from channel" };
+            }
+            auto lock = std::unique_lock{ this->state()->mutex };
+            if (not this->state()->is_open or this->state()->value.has_value()) {
+                return std::unexpected{ std::move(value) };
+            }
+            assert(not this->state()->value.has_value());
+            this->state()->value = std::move(value);
+            this->state()->condition_variable.notify_one();
+            return {};
+        }
     };
 
     template<typename T>
@@ -117,7 +132,22 @@ namespace c2k {
             }
             assert(this->state()->value.has_value());
             auto result = std::move(this->state()->value.value());
-            this->state()->value = std::nullopt;
+            this->state()->value.reset();
+            this->state()->condition_variable.notify_one();
+            return result;
+        }
+
+        [[nodiscard]] std::optional<T> try_receive() {
+            if (this->state() == nullptr) {
+                throw ChannelError{ "cannot call try_receive() on a moved-from channel" };
+            }
+            auto lock = std::unique_lock{ this->state()->mutex };
+            if (not this->state()->is_open or not this->state()->value.has_value()) {
+                return std::nullopt;
+            }
+            assert(this->state()->value.has_value());
+            auto result = std::move(this->state()->value.value());
+            this->state()->value.reset();
             this->state()->condition_variable.notify_one();
             return result;
         }
@@ -157,8 +187,20 @@ namespace c2k {
             m_sender.send(std::move(value));
         }
 
+        [[nodiscard]] std::expected<void, T> try_send(T value) {
+            return m_sender.try_send(std::move(value));
+        }
+
         [[nodiscard]] T receive() {
             return m_receiver.receive();
+        }
+
+        [[nodiscard]] std::optional<T> try_receive() {
+            return m_receiver.try_receive();
+        }
+
+        [[nodiscard]] bool is_open() const {
+            return m_sender.is_open() and m_receiver.is_open();
         }
     };
 

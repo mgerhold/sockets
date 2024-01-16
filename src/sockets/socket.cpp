@@ -370,22 +370,20 @@ namespace c2k {
     }
 
     void ClientSocket::State::clear_queues() {
-        {
-            auto tasks = receive_tasks.lock();
-            while (not tasks->empty()) {
-                auto task = std::move(tasks->front());
-                tasks->pop_front();
+        receive_tasks.apply([this](std::deque<ReceiveTask>& tasks) {
+            while (not tasks.empty()) {
+                auto task = std::move(tasks.front());
+                tasks.pop_front();
                 task.promise.set_value({});
             }
-        }
-        {
-            auto tasks = send_tasks.lock();
-            while (not tasks->empty()) {
-                auto task = std::move(tasks->front());
-                tasks->pop_front();
+        });
+        send_tasks.apply([this](std::deque<SendTask>& tasks) {
+            while (not tasks.empty()) {
+                auto task = std::move(tasks.front());
+                tasks.pop_front();
                 task.promise.set_value(0);
             }
-        }
+        });
     }
 
     ClientSocket::ClientSocket(OsSocketHandle const os_socket_handle)
@@ -398,13 +396,14 @@ namespace c2k {
 
     template<typename Queue, typename Element = typename Queue::value_type>
     [[nodiscard]] static std::optional<Element> try_dequeue_task(Synchronized<Queue>& queue) {
-        auto tasks = queue.lock();
-        if (tasks->empty()) {
-            return std::nullopt;
-        }
-        auto result = std::move(tasks->front());
-        tasks->pop_front();
-        return result;
+        return queue.apply([](Queue& tasks) -> std::optional<Element> {
+            if (tasks.empty()) {
+                return std::nullopt;
+            }
+            auto result = std::move(tasks.front());
+            tasks.pop_front();
+            return result;
+        });
     }
 
     void ClientSocket::keep_sending(State& state, OsSocketHandle const socket) {
@@ -420,17 +419,9 @@ namespace c2k {
             }
 
             if (not processed_send_task) {
-                auto locked = state.send_tasks.lock();
-                if (locked->empty()) {
-                    // clang-format off
-                    locked.wait(
-                        state.data_sent_condition_variable,
-                        [&state](std::deque<SendTask> const& tasks) {
-                            return not state.is_running() or not tasks.empty();
-                        }
-                    );
-                    // clang-format on
-                }
+                state.send_tasks.wait(state.data_sent_condition_variable, [&state](std::deque<SendTask> const& tasks) {
+                    return not state.is_running() or not tasks.empty();
+                });
             }
         }
         state.clear_queues();
@@ -449,17 +440,12 @@ namespace c2k {
             }
 
             if (not processed_receive_task) {
-                auto locked = state.receive_tasks.lock();
-                if (locked->empty()) {
-                    // clang-format off
-                    locked.wait(
+                state.receive_tasks.wait(
                         state.data_received_condition_variable,
                         [&state](std::deque<ReceiveTask> const& tasks) {
                             return not state.is_running() or not tasks.empty();
                         }
-                    );
-                    // clang-format on
-                }
+                );
             }
         }
         state.clear_queues();
@@ -475,15 +461,22 @@ namespace c2k {
         // clang-format on
         auto promise = std::promise<std::size_t>{};
         auto future = promise.get_future();
-        {
-            auto send_tasks = m_shared_state->send_tasks.lock();
+        auto const return_immediately = m_shared_state->send_tasks.apply([&](std::deque<SendTask>& send_tasks) {
             if (not m_shared_state->is_running()) {
                 promise.set_value({});
                 m_shared_state->data_sent_condition_variable.notify_one();
-                return future;
+                return true;
             }
-            send_tasks->emplace_back(std::move(promise), std::move(data));
+            send_tasks.emplace_back(std::move(promise), std::move(data));
+            return false;
+        });
+
+        // todo: can this function be simplified? it was just converted to the new API of Synchronized<T>
+
+        if (return_immediately) {
+            return future;
         }
+
         m_shared_state->data_sent_condition_variable.notify_one();
         return future;
     }
@@ -501,15 +494,20 @@ namespace c2k {
     [[nodiscard]] std::future<std::vector<std::byte>> ClientSocket::receive(std::size_t const max_num_bytes) {
         auto promise = std::promise<std::vector<std::byte>>{};
         auto future = promise.get_future();
-        {
-            auto receive_tasks = m_shared_state->receive_tasks.lock();
-            if (not m_shared_state->is_running()) {
-                promise.set_value({});
-                m_shared_state->data_sent_condition_variable.notify_one();
-                return future;
-            }
-            receive_tasks->emplace_back(std::move(promise), max_num_bytes);
+        auto const return_immediately =
+                m_shared_state->receive_tasks.apply([&](std::deque<ReceiveTask>& receive_tasks) {
+                    if (not m_shared_state->is_running()) {
+                        promise.set_value({});
+                        m_shared_state->data_sent_condition_variable.notify_one();
+                        return true;
+                    }
+                    receive_tasks.emplace_back(std::move(promise), max_num_bytes);
+                    return false;
+                });
+        if (return_immediately) {
+            return future;
         }
+        // todo: can this also be simplified?
         m_shared_state->data_received_condition_variable.notify_one();
         return future;
     }
