@@ -61,6 +61,11 @@ jobs:
       - name: Build
         run: cmake --build build
 
-      - name: Test
+      - name: Build Tests
         run: |
           cmake --build build --target c2k_sockets_tests
+
+      - name: Run Tests
+        run: |
+          cd build
+          ctest
