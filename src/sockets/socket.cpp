@@ -1,5 +1,6 @@
 #include "socket_headers.hpp"
 #include "sockets/detail/byte_order.hpp"
+#include "sockets/detail/unreachable.hpp"
 #include "sockets/sockets.hpp"
 #include <cassert>
 #include <cstring>
@@ -21,7 +22,7 @@ namespace c2k {
             case AddressFamily::Ipv6:
                 return AF_INET6;
         }
-        std::unreachable();
+        unreachable();
     }
 
     [[nodiscard]] static constexpr addrinfo generate_hints(AddressFamily const address_family, bool const is_passive) {
@@ -66,7 +67,7 @@ namespace c2k {
                 case SelectStatusCategory::Except:
                     return select(static_cast<int>(socket + 1), nullptr, nullptr, &descriptors, &timeout);
                 default:
-                    std::unreachable();
+                    unreachable();
                     break;
             }
         }();
@@ -110,7 +111,7 @@ namespace c2k {
             case SocketOption::ReusePort:
                 return "ReusePort";
         }
-        std::unreachable();
+        unreachable();
     }
 
     static void set_socket_option(AbstractSocket::OsSocketHandle const socket, SocketOption const option) {
@@ -126,7 +127,7 @@ namespace c2k {
                 case SocketOption::ReusePort:
                     return reuse_port;
             }
-            std::unreachable();
+            unreachable();
         }();
         auto const level = [&]() -> int {
             switch (option) {
@@ -135,7 +136,7 @@ namespace c2k {
                 case SocketOption::ReusePort:
                     return SOL_SOCKET;
             }
-            std::unreachable();
+            unreachable();
         }();
         auto const result = ::setsockopt(socket, level, option_name, &flag, sizeof(flag));
         if (result < 0) {
@@ -218,7 +219,7 @@ namespace c2k {
                                     from_network_byte_order(static_cast<std::uint16_t>(ipv6_info->sin6_port)) };
             }
         }
-        std::unreachable();
+        unreachable();
     }
 #else
     [[nodiscard]] static AddressInfo extract_adress_info(sockaddr_storage const& address) {
@@ -265,7 +266,7 @@ namespace c2k {
                                     from_network_byte_order(static_cast<std::uint16_t>(ipv6_info->sin6_port)) };
             }
         }
-        std::unreachable();
+        unreachable();
     }
 #endif
 

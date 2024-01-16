@@ -1,7 +1,7 @@
 #pragma once
 
+#include "byteswap.hpp"
 #include <bit>
-#include <concepts>
 
 namespace c2k {
     inline constexpr auto network_byte_order = std::endian::big; // for IP communication
@@ -10,7 +10,7 @@ namespace c2k {
         if constexpr (std::endian::native == network_byte_order) {
             return value;
         } else {
-            return std::byteswap(value);
+            return byteswap(value);
         }
     }
 
