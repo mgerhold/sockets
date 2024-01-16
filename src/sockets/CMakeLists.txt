@@ -13,6 +13,8 @@ add_library(c2k_sockets
         include/sockets/detail/byte_order.hpp
         include/sockets/detail/message_buffer.hpp
         include/sockets/detail/extractor.hpp
+        include/sockets/detail/channel.hpp
+        include/sockets/detail/unreachable.hpp
 )
 
 target_include_directories(c2k_sockets PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -22,3 +24,4 @@ if (WIN32)
 endif ()
 
 target_link_libraries(c2k_sockets PRIVATE ${SOCKET_LIBRARIES} c2k_sockets_options)
+target_link_system_libraries(c2k_sockets PUBLIC tl::expected)

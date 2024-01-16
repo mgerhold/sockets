@@ -1,4 +1,5 @@
 #include <array>
+#include <functional>
 #include <gtest/gtest.h>
 #include <memory>
 #include <mutex>
@@ -18,6 +19,15 @@ TEST(Synchronized, CreateInstances) {
             Synchronized{ std::make_unique<std::string>("this is a test string for testing purposes") };
 }
 
+TEST(Synchronized, LockModifyRead) {
+    auto s = Synchronized{ 42 };
+    auto const first = s.apply(std::identity{});
+    EXPECT_EQ(first, 42);
+    s.apply([](int& i) { ++i; });
+    auto const second = s.apply(std::identity{});
+    EXPECT_EQ(second, 43);
+}
+
 TEST(Synchronized, AccessFromDifferentThreads) {
     static constexpr auto num_threads = std::size_t{ 2 };
     auto numbers = std::vector<std::size_t>{};
@@ -25,11 +35,10 @@ TEST(Synchronized, AccessFromDifferentThreads) {
     auto keep_increasing =
             [&](std::stop_token const& stop_token, std::size_t& loop_counter, Synchronized<std::size_t>& counter) {
                 while (not stop_token.stop_requested()) {
-                    {
-                        auto locked = counter.lock();
+                    counter.apply([&](std::size_t& value) {
                         auto lock = std::scoped_lock{ numbers_mutex };
-                        numbers.push_back((*locked)++);
-                    }
+                        numbers.push_back(value++);
+                    });
                     ++loop_counter;
                 }
             };
@@ -48,15 +57,44 @@ TEST(Synchronized, AccessFromDifferentThreads) {
         thread.join();
     }
 
-    auto locked = synchronized.lock();
-    EXPECT_EQ(*locked, numbers.size());
-    for (auto i = std::size_t{ 0 }; i < *locked; ++i) {
-        EXPECT_EQ(i, numbers.at(i));
-    }
+    synchronized.apply([&](auto const value) {
+        EXPECT_EQ(value, numbers.size());
+        for (auto i = std::size_t{ 0 }; i < value; ++i) {
+            EXPECT_EQ(i, numbers.at(i));
+        }
+    });
     static constexpr auto expected_fraction = 1.0 / static_cast<double>(num_threads);
+    static constexpr auto max_relative_deviation = 0.2;
+    static constexpr auto expected_min_fraction = expected_fraction * (1.0 - max_relative_deviation);
+    static constexpr auto expected_max_fraction = expected_fraction * (1.0 + max_relative_deviation);
     for (auto const& loop_counter : loop_counters) {
-        std::cout << "loop counter: " << loop_counter << '\n';
         EXPECT_GT(loop_counter, 0);
+        auto const fraction = static_cast<double>(loop_counter) / static_cast<double>(numbers.size());
+        // the following two expects are a bit "fishy" since they depend on the OS's scheduler, but we still
+        // keep them in
+        EXPECT_GE(fraction, expected_min_fraction);
+        EXPECT_LE(fraction, expected_max_fraction);
     }
     EXPECT_EQ(std::accumulate(loop_counters.cbegin(), loop_counters.cend(), std::size_t{ 0 }), numbers.size());
+}
+
+TEST(Synchronized, TryLockTwiceFromSameThread) {
+    auto synchronized = Synchronized{ 42 };
+    synchronized.apply([&](int& i) {
+        EXPECT_EQ(i, 42);
+        ++i;
+        EXPECT_EQ(i, 43);
+        synchronized.apply([&](int& j) {
+            EXPECT_EQ(i, 43);
+            EXPECT_EQ(j, 43);
+            ++i;
+            EXPECT_EQ(i, 44);
+            EXPECT_EQ(j, 44);
+            ++j;
+            EXPECT_EQ(i, 45);
+            EXPECT_EQ(j, 45);
+        });
+        EXPECT_EQ(i, 45);
+    });
+    EXPECT_EQ(synchronized.apply(std::identity{}), 45);
 }

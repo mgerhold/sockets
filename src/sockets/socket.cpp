@@ -1,9 +1,10 @@
 #include "socket_headers.hpp"
 #include "sockets/detail/byte_order.hpp"
+#include "sockets/detail/unreachable.hpp"
 #include "sockets/sockets.hpp"
 #include <cassert>
 #include <cstring>
-#include <format>
+#include <iomanip>
 #include <iostream>
 #include <memory>
 #include <sstream>
@@ -21,7 +22,7 @@ namespace c2k {
             case AddressFamily::Ipv6:
                 return AF_INET6;
         }
-        std::unreachable();
+        unreachable();
     }
 
     [[nodiscard]] static constexpr addrinfo generate_hints(AddressFamily const address_family, bool const is_passive) {
@@ -66,7 +67,7 @@ namespace c2k {
                 case SelectStatusCategory::Except:
                     return select(static_cast<int>(socket + 1), nullptr, nullptr, &descriptors, &timeout);
                 default:
-                    std::unreachable();
+                    unreachable();
                     break;
             }
         }();
@@ -110,7 +111,7 @@ namespace c2k {
             case SocketOption::ReusePort:
                 return "ReusePort";
         }
-        std::unreachable();
+        unreachable();
     }
 
     static void set_socket_option(AbstractSocket::OsSocketHandle const socket, SocketOption const option) {
@@ -126,7 +127,7 @@ namespace c2k {
                 case SocketOption::ReusePort:
                     return reuse_port;
             }
-            std::unreachable();
+            unreachable();
         }();
         auto const level = [&]() -> int {
             switch (option) {
@@ -135,11 +136,12 @@ namespace c2k {
                 case SocketOption::ReusePort:
                     return SOL_SOCKET;
             }
-            std::unreachable();
+            unreachable();
         }();
         auto const result = ::setsockopt(socket, level, option_name, &flag, sizeof(flag));
         if (result < 0) {
-            throw std::runtime_error{ std::format("failed to set {}", to_string(option)) };
+            using namespace std::string_literals;
+            throw std::runtime_error{ "failed to set "s + to_string(option) };
         }
     }
 
@@ -180,45 +182,40 @@ namespace c2k {
         switch (address.ss_family) {
             case AF_INET: {
                 auto const ipv4_info = reinterpret_cast<sockaddr_in const*>(&address);
-                auto ipv4_address = std::format(
-                        "{}.{}.{}.{}",
-                        ipv4_info->sin_addr.S_un.S_un_b.s_b1,
-                        ipv4_info->sin_addr.S_un.S_un_b.s_b2,
-                        ipv4_info->sin_addr.S_un.S_un_b.s_b3,
-                        ipv4_info->sin_addr.S_un.S_un_b.s_b4
-                );
+                auto ipv4_address = std::to_string(ipv4_info->sin_addr.S_un.S_un_b.s_b1) + "."
+                                    + std::to_string(ipv4_info->sin_addr.S_un.S_un_b.s_b2) + "."
+                                    + std::to_string(ipv4_info->sin_addr.S_un.S_un_b.s_b3) + "."
+                                    + std::to_string(ipv4_info->sin_addr.S_un.S_un_b.s_b4);
                 return AddressInfo{ AddressFamily::Ipv4,
                                     std::move(ipv4_address),
                                     from_network_byte_order(static_cast<std::uint16_t>(ipv4_info->sin_port)) };
             }
             case AF_INET6: {
                 auto const ipv6_info = reinterpret_cast<sockaddr_in6 const*>(&address);
-                auto ipv6_address = std::format(
-                        "{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:"
-                        "{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}",
-                        ipv6_info->sin6_addr.u.Byte[0],
-                        ipv6_info->sin6_addr.u.Byte[1],
-                        ipv6_info->sin6_addr.u.Byte[2],
-                        ipv6_info->sin6_addr.u.Byte[3],
-                        ipv6_info->sin6_addr.u.Byte[4],
-                        ipv6_info->sin6_addr.u.Byte[5],
-                        ipv6_info->sin6_addr.u.Byte[6],
-                        ipv6_info->sin6_addr.u.Byte[7],
-                        ipv6_info->sin6_addr.u.Byte[8],
-                        ipv6_info->sin6_addr.u.Byte[9],
-                        ipv6_info->sin6_addr.u.Byte[10],
-                        ipv6_info->sin6_addr.u.Byte[11],
-                        ipv6_info->sin6_addr.u.Byte[12],
-                        ipv6_info->sin6_addr.u.Byte[13],
-                        ipv6_info->sin6_addr.u.Byte[14],
-                        ipv6_info->sin6_addr.u.Byte[15]
-                );
+                auto stream = std::stringstream{};
+                stream << std::hex << std::setfill('0');
+                stream << std::setw(2) << ipv6_info->sin6_addr.u.Byte[0] << std::setw(2)
+                       << ipv6_info->sin6_addr.u.Byte[1] << ':';
+                stream << std::setw(2) << ipv6_info->sin6_addr.u.Byte[2] << std::setw(2)
+                       << ipv6_info->sin6_addr.u.Byte[3] << ':';
+                stream << std::setw(2) << ipv6_info->sin6_addr.u.Byte[4] << std::setw(2)
+                       << ipv6_info->sin6_addr.u.Byte[5] << ':';
+                stream << std::setw(2) << ipv6_info->sin6_addr.u.Byte[6] << std::setw(2)
+                       << ipv6_info->sin6_addr.u.Byte[7] << ':';
+                stream << std::setw(2) << ipv6_info->sin6_addr.u.Byte[8] << std::setw(2)
+                       << ipv6_info->sin6_addr.u.Byte[9] << ':';
+                stream << std::setw(2) << ipv6_info->sin6_addr.u.Byte[10] << std::setw(2)
+                       << ipv6_info->sin6_addr.u.Byte[11] << ':';
+                stream << std::setw(2) << ipv6_info->sin6_addr.u.Byte[12] << std::setw(2)
+                       << ipv6_info->sin6_addr.u.Byte[13] << ':';
+                stream << std::setw(2) << ipv6_info->sin6_addr.u.Byte[14] << std::setw(2)
+                       << ipv6_info->sin6_addr.u.Byte[15];
                 return AddressInfo{ AddressFamily::Ipv6,
-                                    std::move(ipv6_address),
+                                    std::move(stream).str(),
                                     from_network_byte_order(static_cast<std::uint16_t>(ipv6_info->sin6_port)) };
             }
         }
-        std::unreachable();
+        unreachable();
     }
 #else
     [[nodiscard]] static AddressInfo extract_adress_info(sockaddr_storage const& address) {
@@ -227,45 +224,40 @@ namespace c2k {
                 auto const ipv4_info = reinterpret_cast<sockaddr_in const*>(&address);
                 auto const ipv4_address_32 = from_network_byte_order(ipv4_info->sin_addr.s_addr);
                 static_assert(sizeof(ipv4_address_32) == 4);
-                auto ipv4_address = std::format(
-                        "{}.{}.{}.{}",
-                        (ipv4_address_32 >> 24) & 0xFF,
-                        (ipv4_address_32 >> 16) & 0xFF,
-                        (ipv4_address_32 >> 8) & 0xFF,
-                        (ipv4_address_32 >> 0) & 0xFF
-                );
+                auto ipv4_address = std::to_string((ipv4_address_32 >> 24) & 0xFF) + "."
+                                    + std::to_string((ipv4_address_32 >> 16) & 0xFF) + "."
+                                    + std::to_string((ipv4_address_32 >> 8) & 0xFF) + "."
+                                    + std::to_string((ipv4_address_32 >> 0) & 0xFF);
                 return AddressInfo{ AddressFamily::Ipv4,
                                     std::move(ipv4_address),
                                     from_network_byte_order(static_cast<std::uint16_t>(ipv4_info->sin_port)) };
             }
             case AF_INET6: {
                 auto const ipv6_info = reinterpret_cast<sockaddr_in6 const*>(&address);
-                auto ipv6_address = std::format(
-                        "{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:"
-                        "{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}",
-                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[0],
-                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[1],
-                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[2],
-                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[3],
-                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[4],
-                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[5],
-                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[6],
-                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[7],
-                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[8],
-                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[9],
-                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[10],
-                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[11],
-                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[12],
-                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[13],
-                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[14],
-                        ipv6_info->sin6_addr.__in6_u.__u6_addr8[15]
-                );
+                auto stream = std::stringstream{};
+                stream << std::hex << std::setfill('0');
+                stream << std::setw(2) << ipv6_info->sin6_addr.__in6_u.__u6_addr8[0] << std::setw(2)
+                       << ipv6_info->sin6_addr.__in6_u.__u6_addr8[1] << ':';
+                stream << std::setw(2) << ipv6_info->sin6_addr.__in6_u.__u6_addr8[2] << std::setw(2)
+                       << ipv6_info->sin6_addr.__in6_u.__u6_addr8[3] << ':';
+                stream << std::setw(2) << ipv6_info->sin6_addr.__in6_u.__u6_addr8[4] << std::setw(2)
+                       << ipv6_info->sin6_addr.__in6_u.__u6_addr8[5] << ':';
+                stream << std::setw(2) << ipv6_info->sin6_addr.__in6_u.__u6_addr8[6] << std::setw(2)
+                       << ipv6_info->sin6_addr.__in6_u.__u6_addr8[7] << ':';
+                stream << std::setw(2) << ipv6_info->sin6_addr.__in6_u.__u6_addr8[8] << std::setw(2)
+                       << ipv6_info->sin6_addr.__in6_u.__u6_addr8[9] << ':';
+                stream << std::setw(2) << ipv6_info->sin6_addr.__in6_u.__u6_addr8[10] << std::setw(2)
+                       << ipv6_info->sin6_addr.__in6_u.__u6_addr8[11] << ':';
+                stream << std::setw(2) << ipv6_info->sin6_addr.__in6_u.__u6_addr8[12] << std::setw(2)
+                       << ipv6_info->sin6_addr.__in6_u.__u6_addr8[13] << ':';
+                stream << std::setw(2) << ipv6_info->sin6_addr.__in6_u.__u6_addr8[14] << std::setw(2)
+                       << ipv6_info->sin6_addr.__in6_u.__u6_addr8[15];
                 return AddressInfo{ AddressFamily::Ipv6,
-                                    std::move(ipv6_address),
+                                    std::move(std::move(stream).str()),
                                     from_network_byte_order(static_cast<std::uint16_t>(ipv6_info->sin6_port)) };
             }
         }
-        std::unreachable();
+        unreachable();
     }
 #endif
 
@@ -370,22 +362,20 @@ namespace c2k {
     }
 
     void ClientSocket::State::clear_queues() {
-        {
-            auto tasks = receive_tasks.lock();
-            while (not tasks->empty()) {
-                auto task = std::move(tasks->front());
-                tasks->pop_front();
+        receive_tasks.apply([this](std::deque<ReceiveTask>& tasks) {
+            while (not tasks.empty()) {
+                auto task = std::move(tasks.front());
+                tasks.pop_front();
                 task.promise.set_value({});
             }
-        }
-        {
-            auto tasks = send_tasks.lock();
-            while (not tasks->empty()) {
-                auto task = std::move(tasks->front());
-                tasks->pop_front();
+        });
+        send_tasks.apply([this](std::deque<SendTask>& tasks) {
+            while (not tasks.empty()) {
+                auto task = std::move(tasks.front());
+                tasks.pop_front();
                 task.promise.set_value(0);
             }
-        }
+        });
     }
 
     ClientSocket::ClientSocket(OsSocketHandle const os_socket_handle)
@@ -398,13 +388,14 @@ namespace c2k {
 
     template<typename Queue, typename Element = typename Queue::value_type>
     [[nodiscard]] static std::optional<Element> try_dequeue_task(Synchronized<Queue>& queue) {
-        auto tasks = queue.lock();
-        if (tasks->empty()) {
-            return std::nullopt;
-        }
-        auto result = std::move(tasks->front());
-        tasks->pop_front();
-        return result;
+        return queue.apply([](Queue& tasks) -> std::optional<Element> {
+            if (tasks.empty()) {
+                return std::nullopt;
+            }
+            auto result = std::move(tasks.front());
+            tasks.pop_front();
+            return result;
+        });
     }
 
     void ClientSocket::keep_sending(State& state, OsSocketHandle const socket) {
@@ -420,17 +411,9 @@ namespace c2k {
             }
 
             if (not processed_send_task) {
-                auto locked = state.send_tasks.lock();
-                if (locked->empty()) {
-                    // clang-format off
-                    locked.wait(
-                        state.data_sent_condition_variable,
-                        [&state](std::deque<SendTask> const& tasks) {
-                            return not state.is_running() or not tasks.empty();
-                        }
-                    );
-                    // clang-format on
-                }
+                state.send_tasks.wait(state.data_sent_condition_variable, [&state](std::deque<SendTask> const& tasks) {
+                    return not state.is_running() or not tasks.empty();
+                });
             }
         }
         state.clear_queues();
@@ -449,17 +432,12 @@ namespace c2k {
             }
 
             if (not processed_receive_task) {
-                auto locked = state.receive_tasks.lock();
-                if (locked->empty()) {
-                    // clang-format off
-                    locked.wait(
+                state.receive_tasks.wait(
                         state.data_received_condition_variable,
                         [&state](std::deque<ReceiveTask> const& tasks) {
                             return not state.is_running() or not tasks.empty();
                         }
-                    );
-                    // clang-format on
-                }
+                );
             }
         }
         state.clear_queues();
@@ -475,15 +453,22 @@ namespace c2k {
         // clang-format on
         auto promise = std::promise<std::size_t>{};
         auto future = promise.get_future();
-        {
-            auto send_tasks = m_shared_state->send_tasks.lock();
+        auto const return_immediately = m_shared_state->send_tasks.apply([&](std::deque<SendTask>& send_tasks) {
             if (not m_shared_state->is_running()) {
                 promise.set_value({});
                 m_shared_state->data_sent_condition_variable.notify_one();
-                return future;
+                return true;
             }
-            send_tasks->emplace_back(std::move(promise), std::move(data));
+            send_tasks.emplace_back(std::move(promise), std::move(data));
+            return false;
+        });
+
+        // todo: can this function be simplified? it was just converted to the new API of Synchronized<T>
+
+        if (return_immediately) {
+            return future;
         }
+
         m_shared_state->data_sent_condition_variable.notify_one();
         return future;
     }
@@ -501,15 +486,20 @@ namespace c2k {
     [[nodiscard]] std::future<std::vector<std::byte>> ClientSocket::receive(std::size_t const max_num_bytes) {
         auto promise = std::promise<std::vector<std::byte>>{};
         auto future = promise.get_future();
-        {
-            auto receive_tasks = m_shared_state->receive_tasks.lock();
-            if (not m_shared_state->is_running()) {
-                promise.set_value({});
-                m_shared_state->data_sent_condition_variable.notify_one();
-                return future;
-            }
-            receive_tasks->emplace_back(std::move(promise), max_num_bytes);
+        auto const return_immediately =
+                m_shared_state->receive_tasks.apply([&](std::deque<ReceiveTask>& receive_tasks) {
+                    if (not m_shared_state->is_running()) {
+                        promise.set_value({});
+                        m_shared_state->data_sent_condition_variable.notify_one();
+                        return true;
+                    }
+                    receive_tasks.emplace_back(std::move(promise), max_num_bytes);
+                    return false;
+                });
+        if (return_immediately) {
+            return future;
         }
+        // todo: can this also be simplified?
         m_shared_state->data_received_condition_variable.notify_one();
         return future;
     }

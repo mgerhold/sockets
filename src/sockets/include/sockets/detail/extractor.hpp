@@ -70,7 +70,7 @@ namespace c2k {
         }
 
         friend Extractor& operator<<(Extractor& extractor, std::span<std::byte const> const data) {
-            extractor.m_data.insert(extractor.m_data.end(), data.cbegin(), data.cend());
+            extractor.m_data.insert(extractor.m_data.end(), data.begin(), data.end());
             return extractor;
         }
     };

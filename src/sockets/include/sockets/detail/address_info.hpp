@@ -1,8 +1,8 @@
 #pragma once
 
+#include "unreachable.hpp"
 #include <cstdint>
 #include <iostream>
-#include <utility>
 
 namespace c2k {
     struct AddressInfo {
@@ -19,7 +19,7 @@ namespace c2k {
                 case AddressFamily::Ipv6:
                     return ostream << '[' << address_info.address << "]:" << address_info.port;
             }
-            std::unreachable();
+            unreachable();
         }
     };
 } // namespace c2k
