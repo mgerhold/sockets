@@ -61,11 +61,6 @@ jobs:
       - name: Build
         run: cmake --build build
 
-      - name: Test (Linux)
-        if: matrix.os != 'windows-latest'
-        run: cmake --build build --target test
-
-      - name: Test (Windows)
-        if: matrix.os == 'windows-latest'
+      - name: Test
         run: |
           cmake --build build --target c2k_sockets_tests
