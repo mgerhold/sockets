@@ -34,8 +34,10 @@ jobs:
       - name: Install Clang 16
         if: matrix.compiler == 'clang-16'
         run: |
-          sudo apt-get update
-          sudo apt-get install clang-16 lldb-16 lld-16
+          wget https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          sudo ./llvm.sh 16
+          sudo apt-get install -y clang-16 lldb-16 lld-16
 
       - name: Install GCC 13
         if: matrix.compiler == 'gcc-13'
