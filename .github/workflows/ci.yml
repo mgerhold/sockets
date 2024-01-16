@@ -62,4 +62,4 @@ jobs:
         run: cmake --build build
 
       - name: Test
-        run: cmake --build build --target test project's test setup
+        run: cmake --build build --target test
