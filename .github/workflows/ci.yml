@@ -56,7 +56,12 @@ jobs:
         run: mkdir build
 
       - name: Configure CMake
+        if: matrix.compiler != 'msvc'
         run: cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
+
+      - name: Configure CMake
+        if: matrix.compiler == 'msvc'
+        run: cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} -Dc2k_sockets_enable_address_sanitizer=OFF
 
       - name: Build
         run: cmake --build build
