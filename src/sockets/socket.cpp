@@ -509,7 +509,7 @@ namespace c2k {
         std::size_t const max_num_bytes,
         Timeout const timeout
     ) { // clang-format on
-        return std::async([this, max_num_bytes, timeout]() -> std::vector<std::byte> {
+        return std::async(std::launch::async, [this, max_num_bytes, timeout]() -> std::vector<std::byte> {
             auto result = receive(max_num_bytes);
             if (result.wait_for(timeout) == std::future_status::timeout) {
                 return {};
@@ -519,7 +519,7 @@ namespace c2k {
     }
 
     [[nodiscard]] std::future<std::vector<std::byte>> ClientSocket::receive_exact(std::size_t const num_bytes) {
-        return std::async([this, num_bytes] {
+        return std::async(std::launch::async, [this, num_bytes] {
             auto buffer = std::vector<std::byte>{};
             buffer.reserve(num_bytes);
             while (true) {
@@ -539,7 +539,7 @@ namespace c2k {
         std::size_t const num_bytes,
         Timeout const timeout
     ) { // clang-format on
-        return std::async([this, num_bytes, timeout]() -> std::vector<std::byte> {
+        return std::async(std::launch::async, [this, num_bytes, timeout]() -> std::vector<std::byte> {
             auto result = receive_exact(num_bytes);
             if (result.wait_for(timeout) == std::future_status::timeout) {
                 throw TimeoutError{};
@@ -549,7 +549,7 @@ namespace c2k {
     }
 
     [[nodiscard]] std::future<std::string> ClientSocket::receive_string(std::size_t const max_num_bytes) {
-        return std::async([this, max_num_bytes]() -> std::string {
+        return std::async(std::launch::async, [this, max_num_bytes]() -> std::string {
             auto const data = receive(max_num_bytes).get();
             auto result = std::string{};
             result.resize(data.size());
