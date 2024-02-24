@@ -15,10 +15,16 @@
 #include <mutex>
 #include <optional>
 #include <span>
+#include <stdexcept>
 #include <string_view>
 #include <thread>
 
 namespace c2k {
+    class TimeoutError final : public std::runtime_error {
+    public:
+        TimeoutError() : std::runtime_error{ "operation timed out" } { }
+    };
+
     class ClientSocket;
 
     class AbstractSocket {
@@ -132,6 +138,7 @@ namespace c2k {
         static void keep_sending(State& state, OsSocketHandle socket);
         static void keep_receiving(State& state, OsSocketHandle socket);
 
+        using Timeout = std::chrono::steady_clock::duration;
 
     public:
         ClientSocket(ClientSocket&& other) noexcept = default;
@@ -164,6 +171,9 @@ namespace c2k {
         // clang-format on
 
         [[nodiscard]] std::future<std::vector<std::byte>> receive(std::size_t max_num_bytes);
+        [[nodiscard]] std::future<std::vector<std::byte>> receive(std::size_t max_num_bytes, Timeout timeout);
+        [[nodiscard]] std::future<std::vector<std::byte>> receive_exact(std::size_t num_bytes);
+        [[nodiscard]] std::future<std::vector<std::byte>> receive_exact(std::size_t num_bytes, Timeout timeout);
         [[nodiscard]] std::future<std::string> receive_string(std::size_t max_num_bytes);
 
         void close();

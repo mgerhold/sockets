@@ -504,6 +504,50 @@ namespace c2k {
         return future;
     }
 
+    // clang-format off
+    [[nodiscard]] std::future<std::vector<std::byte>> ClientSocket::receive(
+        std::size_t const max_num_bytes,
+        Timeout const timeout
+    ) { // clang-format on
+        return std::async([this, max_num_bytes, timeout]() -> std::vector<std::byte> {
+            auto result = receive(max_num_bytes);
+            if (result.wait_for(timeout) == std::future_status::timeout) {
+                return {};
+            }
+            return result.get();
+        });
+    }
+
+    [[nodiscard]] std::future<std::vector<std::byte>> ClientSocket::receive_exact(std::size_t const num_bytes) {
+        return std::async([this, num_bytes] {
+            auto buffer = std::vector<std::byte>{};
+            buffer.reserve(num_bytes);
+            while (true) {
+                auto const current_chunk = receive(buffer.size() - num_bytes).get();
+                std::copy(current_chunk.cbegin(), current_chunk.cend(), std::back_inserter(buffer));
+                if (buffer.size() >= num_bytes) {
+                    break;
+                }
+            }
+            assert(buffer.size() == num_bytes);
+            return buffer;
+        });
+    }
+
+    // clang-format off
+    [[nodiscard]] std::future<std::vector<std::byte>> ClientSocket::receive_exact(
+        std::size_t const num_bytes,
+        Timeout const timeout
+    ) { // clang-format on
+        return std::async([this, num_bytes, timeout]() -> std::vector<std::byte> {
+            auto result = receive_exact(num_bytes);
+            if (result.wait_for(timeout) == std::future_status::timeout) {
+                throw TimeoutError{};
+            }
+            return result.get();
+        });
+    }
+
     [[nodiscard]] std::future<std::string> ClientSocket::receive_string(std::size_t const max_num_bytes) {
         return std::async([this, max_num_bytes]() -> std::string {
             auto const data = receive(max_num_bytes).get();

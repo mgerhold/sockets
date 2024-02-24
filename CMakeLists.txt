@@ -10,7 +10,8 @@ include(${PROJECT_SOURCE_DIR}/dependencies.cmake)
 
 c2k_sockets_setup_dependencies()
 
-add_subdirectory(src)
+add_subdirectory(src bin)
+
 
 if (${c2k_sockets_build_examples})
     add_subdirectory(examples)
