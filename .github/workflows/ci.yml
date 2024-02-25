@@ -19,6 +19,7 @@ jobs:
               sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
               sudo apt update
               sudo apt install -y g++-13
+            build-type: [ Debug, Release ]
           - compiler-name: Clang 16
             cc: clang-16
             cxx: clang++-16
@@ -26,6 +27,7 @@ jobs:
               wget https://apt.llvm.org/llvm.sh
               chmod +x llvm.sh
               sudo ./llvm.sh 16
+            build-type: [ Debug, Release ]
 
     steps:
       - uses: actions/checkout@v3
@@ -36,7 +38,7 @@ jobs:
         run: |
           sudo update-alternatives --install /usr/bin/cc cc /usr/bin/${{ matrix.cc }} 100
           sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/${{ matrix.cxx }} 100
-          cmake -B build -G "Unix Makefiles"
+          cmake -B build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
       - name: Build
         run: cmake --build build
       - name: Run Tests
@@ -44,6 +46,9 @@ jobs:
 
   build-windows:
     runs-on: windows-latest
+    strategy:
+      matrix:
+        build-type: [ Debug, Release ]
     steps:
       - uses: actions/checkout@v3
       - name: Install Ninja
@@ -56,7 +61,7 @@ jobs:
           toolset: 14.30
           arch: x64
       - name: Configure CMake with Ninja and C++23
-        run: cmake -B build -G "Ninja" -DCMAKE_CXX_STANDARD=23
+        run: cmake -B build -G "Ninja" -DCMAKE_CXX_STANDARD=23 -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
       - name: Build with Ninja
         run: cmake --build build
       - name: Run Tests
