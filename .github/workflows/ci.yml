@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        build-type: [ Debug, Release ]
         include:
           - compiler-name: GCC 13
             cc: gcc-13
@@ -19,7 +20,6 @@ jobs:
               sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
               sudo apt update
               sudo apt install -y g++-13
-            build-type: [ Debug, Release ]
           - compiler-name: Clang 16
             cc: clang-16
             cxx: clang++-16
@@ -27,7 +27,6 @@ jobs:
               wget https://apt.llvm.org/llvm.sh
               chmod +x llvm.sh
               sudo ./llvm.sh 16
-            build-type: [ Debug, Release ]
 
     steps:
       - uses: actions/checkout@v3
