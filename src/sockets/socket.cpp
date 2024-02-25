@@ -612,8 +612,6 @@ namespace c2k {
                 return true;
             }
         }
-
-        std::unreachable();
     }
 
     [[nodiscard]] bool ClientSocket::process_send_task(OsSocketHandle const socket, SendTask task) {
