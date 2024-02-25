@@ -244,3 +244,45 @@ TEST(SocketsTests, ReceiveExactMultipleTimes) {
         EXPECT_EQ(expected_chunk, actual_chunk);
     }
 }
+
+
+TEST(SocketsTests, ServerInitialization) {
+    auto const server =
+            c2k::Sockets::create_server(c2k::AddressFamily::Ipv4, 0, []([[maybe_unused]] c2k::ClientSocket client) {});
+    EXPECT_TRUE(server.local_address().port != 0);
+}
+
+TEST(SocketsTests, ClientInitialization) {
+    static constexpr auto port = 8000;
+
+    auto server = c2k::Sockets::create_server(c2k::AddressFamily::Ipv4, port, [](auto) {});
+
+    auto client = c2k::Sockets::create_client(c2k::AddressFamily::Ipv4, localhost, port);
+    EXPECT_EQ(client.remote_address().port, port);
+}
+
+TEST(SocketsTests, SendAndReceiveMultipleTimes) {
+    auto promise = std::promise<std::vector<char>>{};
+    auto future = promise.get_future();
+    auto const server = c2k::Sockets::create_server(c2k::AddressFamily::Ipv4, 0, [&promise](c2k::ClientSocket client) {
+        auto result = std::vector<char>{};
+        for (auto i = 0; i < 5; i++) {
+            auto buffer = c2k::Extractor{};
+            buffer << client.receive(1).get();
+            result.push_back(buffer.try_extract<char>().value());
+        }
+        promise.set_value(result);
+    });
+
+    auto const port = server.local_address().port;
+    static constexpr auto value = 'B';
+    auto client = c2k::Sockets::create_client(c2k::AddressFamily::Ipv4, localhost, port);
+    for (auto i = 0; i < 5; i++) {
+        auto const num_bytes_sent = client.send(value).get();
+        EXPECT_EQ(num_bytes_sent, sizeof(value));
+    }
+
+    for (auto const& c : future.get()) {
+        EXPECT_EQ(c, value);
+    }
+}
