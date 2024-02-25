@@ -7,80 +7,95 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-linux:
-    runs-on: ubuntu-latest
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}-${{ matrix.config.os-version }}
     strategy:
+      fail-fast: false
       matrix:
-        include:
-          - compiler-name: GCC 13
-            cc: gcc-13
-            cxx: g++-13
-            install-script: |
-              sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-              sudo apt update
-              sudo apt install -y g++-13
-            build-type: Debug
-          - compiler-name: GCC 13
-            cc: gcc-13
-            cxx: g++-13
-            install-script: |
-              sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-              sudo apt update
-              sudo apt install -y g++-13
-            build-type: Release
-          - compiler-name: Clang 17
-            cc: clang-17
-            cxx: clang++-17
-            install-script: |
-              wget https://apt.llvm.org/llvm.sh
-              chmod +x llvm.sh
-              sudo ./llvm.sh 17
-              sudo apt install libstdc++-12-dev
-            build-type: Debug
-          - compiler-name: Clang 17
-            cc: clang-17
-            cxx: clang++-17
-            install-script: |
-              wget https://apt.llvm.org/llvm.sh
-              chmod +x llvm.sh
-              sudo ./llvm.sh 17
-              sudo apt install libstdc++-12-dev
-            build-type: Release
+        config:
+          - name: Windows MSVC Release
+            os: windows
+            os-version: 2022
+            msvc: true
+            buildtype: Release
+
+          - name: Windows MSVC Debug
+            os: windows
+            os-version: 2022
+            msvc: true
+            buildtype: Debug
+  
+          - name: Linux GCC Release
+            os: ubuntu
+            os-version: 22.04
+            buildtype: Release
+            clang: false
+
+          - name: Linux GCC Debug
+            os: ubuntu
+            os-version: 22.04
+            buildtype: Debug
+            clang: false
+            
+          - name: Linux Clang Release
+            os: ubuntu
+            os-version: 22.04
+            buildtype: Release
+            clang: true
+
+          - name: Linux Clang Debug
+            os: ubuntu
+            os-version: 22.04
+            buildtype: Debug
+            clang: true
+
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Install compiler (${{ matrix.compiler-name }})
+      - uses: actions/checkout@v4
+
+      - name: Setup MSVC (Windows)
+        if: matrix.config.os == 'windows' && matrix.config.msvc == true
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Install dependencies (Linux)
+        if: matrix.config.os == 'ubuntu'
         run: |
-          ${{ matrix.install-script }}
+          sudo apt-get update
+          sudo apt install curl pkg-config zip unzip tar cmake git -y
+  
+      - name: Install cmake >= 3.25 (Linux)
+        if: matrix.config.os == 'ubuntu'
+        run: |
+          sudo apt-get update
+          sudo apt-get install gpg wget
+          wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
+          echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ jammy main' | sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
+          sudo apt-get update
+          sudo apt-get install cmake -y
+
+      - name: Setup Clang (Linux)
+        if: matrix.config.os == 'ubuntu' && matrix.config.clang == true
+        uses: egor-tensin/setup-clang@v1
+        with:
+          version: 17
+          platform: x64
+
+      - name: Setup GCC (Linux)
+        if: matrix.config.os == 'ubuntu' && matrix.config.clang == false
+        uses: egor-tensin/setup-gcc@v1
+        with:
+          version: 13
+          platform: x64
+
+      - uses: abdes/gha-setup-ninja@master
+
       - name: Configure CMake
         run: |
-          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/${{ matrix.cc }} 100
-          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/${{ matrix.cxx }} 100
-          cmake -B build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
-      - name: Build
-        run: cmake --build build
-      - name: Run Tests
-        run: ctest --test-dir build --verbose
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.config.buildtype }} ${{github.workspace}} -G Ninja
 
-  build-windows:
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        build-type: [ Debug, Release ]
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install Ninja
-        run: choco install ninja
-      - name: Install CMake
-        run: choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
-      - name: Set up Visual Studio Environment
-        uses: ilammy/msvc-dev-cmd@v1
-        with:
-          toolset: 14.30
-          arch: x64
-      - name: Configure CMake with Ninja and C++23
-        run: cmake -B build -G "Ninja" -DCMAKE_CXX_STANDARD=23 -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
-      - name: Build with Ninja
-        run: cmake --build build
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build -j --config ${{ matrix.config.buildtype }}
+
       - name: Run Tests
-        run: ctest --test-dir build --verbose
+        run: ctest --test-dir ${{github.workspace}}/build --verbose
