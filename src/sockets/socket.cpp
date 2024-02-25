@@ -362,14 +362,14 @@ namespace c2k {
     }
 
     void ClientSocket::State::clear_queues() {
-        receive_tasks.apply([this](std::deque<ReceiveTask>& tasks) {
+        receive_tasks.apply([](std::deque<ReceiveTask>& tasks) {
             while (not tasks.empty()) {
                 auto task = std::move(tasks.front());
                 tasks.pop_front();
                 task.promise.set_value({});
             }
         });
-        send_tasks.apply([this](std::deque<SendTask>& tasks) {
+        send_tasks.apply([](std::deque<SendTask>& tasks) {
             while (not tasks.empty()) {
                 auto task = std::move(tasks.front());
                 tasks.pop_front();
