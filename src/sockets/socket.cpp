@@ -473,35 +473,8 @@ namespace c2k {
         return future;
     }
 
-    // clang-format off
-    [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
-    std::future<std::size_t> ClientSocket::send(std::string_view const text) {
-        // clang-format on
-        auto data = std::vector<std::byte>{};
-        data.resize(text.length(), std::byte{});
-        std::memcpy(data.data(), text.data(), text.size());
-        return send(std::move(data));
-    }
-
     [[nodiscard]] std::future<std::vector<std::byte>> ClientSocket::receive(std::size_t const max_num_bytes) {
-        auto promise = std::promise<std::vector<std::byte>>{};
-        auto future = promise.get_future();
-        auto const return_immediately =
-                m_shared_state->receive_tasks.apply([&](std::deque<ReceiveTask>& receive_tasks) {
-                    if (not m_shared_state->is_running()) {
-                        promise.set_value({});
-                        m_shared_state->data_sent_condition_variable.notify_one();
-                        return true;
-                    }
-                    receive_tasks.emplace_back(std::move(promise), max_num_bytes);
-                    return false;
-                });
-        if (return_immediately) {
-            return future;
-        }
-        // todo: can this also be simplified?
-        m_shared_state->data_received_condition_variable.notify_one();
-        return future;
+        return receive_implementation(max_num_bytes, ReceiveTask::Kind::MaxBytes, std::nullopt);
     }
 
     // clang-format off
@@ -509,29 +482,15 @@ namespace c2k {
         std::size_t const max_num_bytes,
         Timeout const timeout
     ) { // clang-format on
-        return std::async(std::launch::async, [this, max_num_bytes, timeout]() -> std::vector<std::byte> {
-            auto result = receive(max_num_bytes);
-            if (result.wait_for(timeout) == std::future_status::timeout) {
-                return {};
-            }
-            return result.get();
-        });
+        return receive_implementation(
+                max_num_bytes,
+                ReceiveTask::Kind::MaxBytes,
+                std::chrono::steady_clock::now() + timeout
+        );
     }
 
     [[nodiscard]] std::future<std::vector<std::byte>> ClientSocket::receive_exact(std::size_t const num_bytes) {
-        return std::async(std::launch::async, [this, num_bytes] {
-            auto buffer = std::vector<std::byte>{};
-            buffer.reserve(num_bytes);
-            while (true) {
-                auto const current_chunk = receive(buffer.size() - num_bytes).get();
-                std::copy(current_chunk.cbegin(), current_chunk.cend(), std::back_inserter(buffer));
-                if (buffer.size() >= num_bytes) {
-                    break;
-                }
-            }
-            assert(buffer.size() == num_bytes);
-            return buffer;
-        });
+        return receive_implementation(num_bytes, ReceiveTask::Kind::Exact, std::nullopt);
     }
 
     // clang-format off
@@ -539,23 +498,7 @@ namespace c2k {
         std::size_t const num_bytes,
         Timeout const timeout
     ) { // clang-format on
-        return std::async(std::launch::async, [this, num_bytes, timeout]() -> std::vector<std::byte> {
-            auto result = receive_exact(num_bytes);
-            if (result.wait_for(timeout) == std::future_status::timeout) {
-                throw TimeoutError{};
-            }
-            return result.get();
-        });
-    }
-
-    [[nodiscard]] std::future<std::string> ClientSocket::receive_string(std::size_t const max_num_bytes) {
-        return std::async(std::launch::async, [this, max_num_bytes]() -> std::string {
-            auto const data = receive(max_num_bytes).get();
-            auto result = std::string{};
-            result.resize(data.size());
-            std::memcpy(result.data(), data.data(), data.size());
-            return result;
-        });
+        return receive_implementation(num_bytes, ReceiveTask::Kind::Exact, std::chrono::steady_clock::now() + timeout);
     }
 
     void ClientSocket::close() {
@@ -567,36 +510,110 @@ namespace c2k {
         }
     }
 
+    // clang-format off
+    [[nodiscard]] std::future<std::vector<std::byte>> ClientSocket::receive_implementation(
+        std::size_t const max_num_bytes,
+        ReceiveTask::Kind const kind,
+        std::optional<std::chrono::steady_clock::time_point> const end_time
+    ) { // clang-format on
+        auto promise = std::promise<std::vector<std::byte>>{};
+        auto future = promise.get_future();
+        auto const return_immediately =
+                m_shared_state->receive_tasks.apply([&](std::deque<ReceiveTask>& receive_tasks) {
+                    if (not m_shared_state->is_running()) {
+                        promise.set_value({});
+                        m_shared_state->data_sent_condition_variable.notify_one();
+                        return true;
+                    }
+                    receive_tasks.emplace_back(
+                            std::move(promise),
+                            max_num_bytes,
+                            kind,
+                            end_time.has_value() ? end_time.value() : std::chrono::steady_clock::now() + default_timeout
+                    );
+                    return false;
+                });
+        if (return_immediately) {
+            return future;
+        }
+        // todo: can this also be simplified?
+        m_shared_state->data_received_condition_variable.notify_one();
+        return future;
+    }
+
     [[nodiscard]] bool ClientSocket::process_receive_task(OsSocketHandle const socket, ReceiveTask task) {
         if (not std::in_range<SendReceiveSize>(task.max_num_bytes)) {
             throw std::runtime_error{ "size of message to be received exceeds allowed maximum" };
         }
 
         auto receive_buffer = std::vector<std::byte>{};
-        receive_buffer.resize(task.max_num_bytes);
+        receive_buffer.reserve(task.max_num_bytes);
 
-        auto const receive_result =
-                recv(socket,
-                     reinterpret_cast<char*>(receive_buffer.data()),
-                     static_cast<SendReceiveSize>(receive_buffer.size()),
-                     0);
+        while (true) {
+            assert(receive_buffer.size() < task.max_num_bytes);
 
-        if (receive_result == 0) {
-            // connection has been gracefully closed => close socket
-            task.promise.set_value({});
-            return false;
+            if (std::chrono::steady_clock::now() >= task.end_time) {
+                if (task.kind == ReceiveTask::Kind::Exact) {
+                    try {
+                        throw TimeoutError{};
+                    } catch (...) {
+                        task.promise.set_exception(std::current_exception());
+                        return true;
+                    }
+                }
+
+                task.promise.set_value(std::move(receive_buffer));
+                return true;
+            }
+
+            if (not is_socket_ready(socket, SelectStatusCategory::Read, 10)) {
+                if (task.kind == ReceiveTask::Kind::Exact) {
+                    continue;
+                }
+
+                assert(task.kind == ReceiveTask::Kind::MaxBytes);
+                task.promise.set_value(std::move(receive_buffer));
+                return true;
+            }
+
+            auto current_chunk = std::vector<std::byte>{};
+            current_chunk.resize(task.max_num_bytes);
+
+            // clang-format off
+            auto const receive_result = recv(
+                socket,
+                reinterpret_cast<char*>(current_chunk.data()),
+                static_cast<SendReceiveSize>(task.max_num_bytes - receive_buffer.size()),
+                0
+            );
+            // clang-format on
+
+            if (receive_result == 0 or receive_result == socket_error) {
+                // connection has been gracefully closed or connection no longer active => close socket
+                if (task.kind == ReceiveTask::Kind::Exact) {
+                    try {
+                        throw ReadError{};
+                    } catch (...) {
+                        task.promise.set_exception(std::current_exception());
+                        return false;
+                    }
+                }
+
+                task.promise.set_value(std::move(receive_buffer));
+                return false;
+            }
+
+            current_chunk.resize(static_cast<std::size_t>(receive_result));
+            std::copy(current_chunk.cbegin(), current_chunk.cend(), std::back_inserter(receive_buffer));
+
+            if (task.kind == ReceiveTask::Kind::MaxBytes or receive_buffer.size() >= task.max_num_bytes) {
+                assert(receive_buffer.size() <= task.max_num_bytes);
+                task.promise.set_value(std::move(receive_buffer));
+                return true;
+            }
         }
 
-        if (receive_result == socket_error) {
-            // connection no longer active
-            task.promise.set_value({});
-            return false;
-        }
-
-        receive_buffer.resize(static_cast<std::size_t>(receive_result));
-
-        task.promise.set_value(std::move(receive_buffer));
-        return true;
+        std::unreachable();
     }
 
     [[nodiscard]] bool ClientSocket::process_send_task(OsSocketHandle const socket, SendTask task) {

@@ -25,6 +25,11 @@ namespace c2k {
         TimeoutError() : std::runtime_error{ "operation timed out" } { }
     };
 
+    class ReadError final : public std::runtime_error {
+    public:
+        ReadError() : std::runtime_error{ "error reading from socket" } { }
+    };
+
     class ClientSocket;
 
     class AbstractSocket {
@@ -98,11 +103,33 @@ namespace c2k {
         struct SendTask {
             std::promise<std::size_t> promise;
             std::vector<std::byte> data;
+
+            SendTask(std::promise<std::size_t> promise, std::vector<std::byte> data)
+                : promise{ std::move(promise) },
+                  data{ std::move(data) } { }
         };
 
         struct ReceiveTask {
+            enum class Kind {
+                Exact,
+                MaxBytes,
+            };
+
             std::promise<std::vector<std::byte>> promise;
             std::size_t max_num_bytes;
+            Kind kind;
+            std::chrono::steady_clock::time_point end_time;
+
+            ReceiveTask(
+                    std::promise<std::vector<std::byte>> promise,
+                    std::size_t const max_num_bytes,
+                    Kind const kind,
+                    std::chrono::steady_clock::time_point const end_time
+            )
+                : promise{ std::move(promise) },
+                  max_num_bytes{ max_num_bytes },
+                  kind{ kind },
+                  end_time{ end_time } { }
         };
 
         class State {
@@ -127,6 +154,9 @@ namespace c2k {
 
             void clear_queues();
         };
+
+        static constexpr auto default_timeout =
+                static_cast<std::chrono::steady_clock::duration>(std::chrono::seconds{ 1 });
 
         std::unique_ptr<State> m_shared_state{ std::make_unique<State>() };
         std::jthread m_send_thread;
@@ -155,9 +185,6 @@ namespace c2k {
         std::future<std::size_t> send(std::vector<std::byte> data);
 
         [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
-        std::future<std::size_t> send(std::string_view text);
-
-        [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
         std::future<std::size_t> send(std::integral auto... values) {
             auto package = MessageBuffer{};
             (package << ... << values);
@@ -174,11 +201,17 @@ namespace c2k {
         [[nodiscard]] std::future<std::vector<std::byte>> receive(std::size_t max_num_bytes, Timeout timeout);
         [[nodiscard]] std::future<std::vector<std::byte>> receive_exact(std::size_t num_bytes);
         [[nodiscard]] std::future<std::vector<std::byte>> receive_exact(std::size_t num_bytes, Timeout timeout);
-        [[nodiscard]] std::future<std::string> receive_string(std::size_t max_num_bytes);
 
         void close();
 
     private:
+        // clang-format off
+        [[nodiscard]] std::future<std::vector<std::byte>> receive_implementation(
+            std::size_t max_num_bytes,
+            ReceiveTask::Kind kind,
+            std::optional<std::chrono::steady_clock::time_point> end_time
+        );
+        // clang-format on
         [[nodiscard]] static bool process_receive_task(OsSocketHandle socket, ReceiveTask task);
         [[nodiscard]] static bool process_send_task(OsSocketHandle socket, SendTask task);
     };
