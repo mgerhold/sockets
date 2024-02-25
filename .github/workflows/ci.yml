@@ -28,21 +28,23 @@ jobs:
               sudo apt update
               sudo apt install -y g++-13
             build-type: Release
-          - compiler-name: Clang 16
-            cc: clang-16
-            cxx: clang++-16
+          - compiler-name: Clang 17
+            cc: clang-17
+            cxx: clang++-17
             install-script: |
               wget https://apt.llvm.org/llvm.sh
               chmod +x llvm.sh
-              sudo ./llvm.sh 16
+              sudo ./llvm.sh 17
+              sudo apt install libstdc++-12-dev
             build-type: Debug
-          - compiler-name: Clang 16
-            cc: clang-16
-            cxx: clang++-16
+          - compiler-name: Clang 17
+            cc: clang-17
+            cxx: clang++-17
             install-script: |
               wget https://apt.llvm.org/llvm.sh
               chmod +x llvm.sh
-              sudo ./llvm.sh 16
+              sudo ./llvm.sh 17
+              sudo apt install libstdc++-12-dev
             build-type: Release
 
     steps:

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdlib>
 #include <cstdint>
 
 #ifdef _WIN32

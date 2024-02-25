@@ -8,6 +8,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include(${PROJECT_SOURCE_DIR}/project_options.cmake)
 include(${PROJECT_SOURCE_DIR}/dependencies.cmake)
 
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+endif()
+
 c2k_sockets_setup_dependencies()
 
 add_subdirectory(src bin)

@@ -2,12 +2,12 @@
 
 #include <atomic>
 #include <cassert>
+#include <expected>
 #include <future>
 #include <memory>
 #include <mutex>
 #include <optional>
 #include <stdexcept>
-#include <expected>
 
 namespace c2k {
 
