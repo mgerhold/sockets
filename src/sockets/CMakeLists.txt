@@ -24,4 +24,3 @@ if (WIN32)
 endif ()
 
 target_link_libraries(c2k_sockets PRIVATE ${SOCKET_LIBRARIES} c2k_sockets_options)
-target_link_system_libraries(c2k_sockets PUBLIC tl::expected)
