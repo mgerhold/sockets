@@ -253,7 +253,7 @@ namespace c2k {
                 stream << std::setw(2) << ipv6_info->sin6_addr.__in6_u.__u6_addr8[14] << std::setw(2)
                        << ipv6_info->sin6_addr.__in6_u.__u6_addr8[15];
                 return AddressInfo{ AddressFamily::Ipv6,
-                                    std::move(std::move(stream).str()),
+                                    std::move(stream).str(),
                                     from_network_byte_order(static_cast<std::uint16_t>(ipv6_info->sin6_port)) };
             }
         }
