@@ -60,7 +60,7 @@ jobs:
       - name: Build
         run: cmake --build build
       - name: Run Tests
-        run: ctest --test-dir build --verbose --repeat=10
+        run: ctest --test-dir build --verbose --repeat until-fail:10
 
   build-windows:
     runs-on: windows-latest
@@ -83,4 +83,4 @@ jobs:
       - name: Build with Ninja
         run: cmake --build build
       - name: Run Tests
-        run: ctest --test-dir build --verbose --repeat=10
+        run: ctest --test-dir build --verbose --repeat until-fail:10
