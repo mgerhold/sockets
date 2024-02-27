@@ -1,6 +1,7 @@
 #include <future>
 #include <gtest/gtest.h>
 #include <numeric>
+#include <random>
 #include <sockets/sockets.hpp>
 
 static constexpr auto localhost = "127.0.0.1";
@@ -157,6 +158,7 @@ TEST(SocketsTests, ReceiveExactManyBytesWithExceededTimeoutThrowsException) {
             client.send(chunk).wait();
             std::this_thread::sleep_for(100ms);
         }
+        std::this_thread::sleep_for(1s);
     } };
 
     auto client_connection = future.get();
@@ -253,15 +255,16 @@ TEST(SocketsTests, ServerInitialization) {
 }
 
 TEST(SocketsTests, ClientInitialization) {
-    static constexpr auto port = 8000;
+    auto const server = c2k::Sockets::create_server(c2k::AddressFamily::Ipv4, 0, [](auto) {});
 
-    auto server = c2k::Sockets::create_server(c2k::AddressFamily::Ipv4, port, [](auto) {});
+    auto const port = server.local_address().port;
 
-    auto client = c2k::Sockets::create_client(c2k::AddressFamily::Ipv4, localhost, port);
+    auto const client = c2k::Sockets::create_client(c2k::AddressFamily::Ipv4, localhost, port);
     EXPECT_EQ(client.remote_address().port, port);
 }
 
 TEST(SocketsTests, SendAndReceiveMultipleTimes) {
+    using namespace std::chrono_literals;
     auto promise = std::promise<std::vector<char>>{};
     auto future = promise.get_future();
     auto const server = c2k::Sockets::create_server(c2k::AddressFamily::Ipv4, 0, [&promise](c2k::ClientSocket client) {
@@ -272,6 +275,7 @@ TEST(SocketsTests, SendAndReceiveMultipleTimes) {
             result.push_back(buffer.try_extract<char>().value());
         }
         promise.set_value(result);
+        std::this_thread::sleep_for(500ms); // keep client socket open for a bit longer
     });
 
     auto const port = server.local_address().port;

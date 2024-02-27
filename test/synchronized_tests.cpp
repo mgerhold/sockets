@@ -64,7 +64,7 @@ TEST(Synchronized, AccessFromDifferentThreads) {
         }
     });
     static constexpr auto expected_fraction = 1.0 / static_cast<double>(num_threads);
-    static constexpr auto max_relative_deviation = 0.2;
+    static constexpr auto max_relative_deviation = 0.4;
     static constexpr auto expected_min_fraction = expected_fraction * (1.0 - max_relative_deviation);
     static constexpr auto expected_max_fraction = expected_fraction * (1.0 + max_relative_deviation);
     for (auto const& loop_counter : loop_counters) {

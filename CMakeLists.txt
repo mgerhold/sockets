@@ -12,6 +12,11 @@ c2k_sockets_setup_dependencies()
 
 add_subdirectory(src bin)
 
+#export(
+#        TARGETS c2k_sockets c2k_sockets_options c2k_sockets_warnings c2k_sockets_sanitizers
+#        NAMESPACE c2k::
+#        FILE ${CMAKE_BINARY_DIR}/cmake/c2k-sockets-targets.cmake
+#)
 
 if (${c2k_sockets_build_examples})
     add_subdirectory(examples)

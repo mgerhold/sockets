@@ -103,11 +103,8 @@ TEST(ChannelTests, TrySend) {
     auto [sender, receiver] = create_channel<int>();
     sender.send(42);
     EXPECT_EQ(receiver.receive(), 42);
-    auto result = sender.try_send(43);
-    EXPECT_TRUE(result.has_value());
-    result = sender.try_send(44);
-    EXPECT_FALSE(result.has_value());
-    EXPECT_EQ(result.error(), 44);
+    EXPECT_TRUE(sender.try_send(43));
+    EXPECT_FALSE(sender.try_send(44));
 }
 
 TEST(ChannelTests, TryReceive) {
