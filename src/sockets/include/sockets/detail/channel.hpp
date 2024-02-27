@@ -96,18 +96,18 @@ namespace c2k {
             this->state()->condition_variable.notify_one();
         }
 
-        [[nodiscard]] std::expected<void, T> try_send(T value) {
+        [[nodiscard]] bool try_send(T value) {
             if (this->state() == nullptr) {
                 throw ChannelError{ "cannot call try_send() on a moved-from channel" };
             }
             auto lock = std::unique_lock{ this->state()->mutex };
             if (not this->state()->is_open or this->state()->value.has_value()) {
-                return std::unexpected{ std::move(value) };
+                return false;
             }
             assert(not this->state()->value.has_value());
             this->state()->value = std::move(value);
             this->state()->condition_variable.notify_one();
-            return {};
+            return true;
         }
     };
 
@@ -187,7 +187,7 @@ namespace c2k {
             m_sender.send(std::move(value));
         }
 
-        [[nodiscard]] std::expected<void, T> try_send(T value) {
+        [[nodiscard]] bool try_send(T value) {
             return m_sender.try_send(std::move(value));
         }
 
