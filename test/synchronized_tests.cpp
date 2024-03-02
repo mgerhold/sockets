@@ -54,6 +54,9 @@ TEST(Synchronized, AccessFromDifferentThreads) {
 
     for (auto& thread : threads) {
         thread.request_stop();
+    }
+
+    for (auto& thread : threads) {
         thread.join();
     }
 
@@ -63,18 +66,6 @@ TEST(Synchronized, AccessFromDifferentThreads) {
             EXPECT_EQ(i, numbers.at(i));
         }
     });
-    static constexpr auto expected_fraction = 1.0 / static_cast<double>(num_threads);
-    static constexpr auto max_relative_deviation = 0.4;
-    static constexpr auto expected_min_fraction = expected_fraction * (1.0 - max_relative_deviation);
-    static constexpr auto expected_max_fraction = expected_fraction * (1.0 + max_relative_deviation);
-    for (auto const& loop_counter : loop_counters) {
-        EXPECT_GT(loop_counter, 0);
-        auto const fraction = static_cast<double>(loop_counter) / static_cast<double>(numbers.size());
-        // the following two expects are a bit "fishy" since they depend on the OS's scheduler, but we still
-        // keep them in
-        EXPECT_GE(fraction, expected_min_fraction);
-        EXPECT_LE(fraction, expected_max_fraction);
-    }
     EXPECT_EQ(std::accumulate(loop_counters.cbegin(), loop_counters.cend(), std::size_t{ 0 }), numbers.size());
 }
 

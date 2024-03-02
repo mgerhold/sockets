@@ -552,14 +552,11 @@ namespace c2k {
         while (true) {
             assert(receive_buffer.size() < task.max_num_bytes);
 
-            if (std::chrono::steady_clock::now() >= task.end_time) {
+            auto const timeout_exceeded = std::chrono::steady_clock::now() >= task.end_time;
+            if (timeout_exceeded) {
                 if (task.kind == ReceiveTask::Kind::Exact) {
-                    try {
-                        throw TimeoutError{};
-                    } catch (...) {
-                        task.promise.set_exception(std::current_exception());
-                        return true;
-                    }
+                    task.promise.set_exception(std::make_exception_ptr(TimeoutError{}));
+                    return true;
                 }
 
                 task.promise.set_value(std::move(receive_buffer));
@@ -567,13 +564,7 @@ namespace c2k {
             }
 
             if (not is_socket_ready(socket, SelectStatusCategory::Read, 10)) {
-                if (task.kind == ReceiveTask::Kind::Exact) {
-                    continue;
-                }
-
-                assert(task.kind == ReceiveTask::Kind::MaxBytes);
-                task.promise.set_value(std::move(receive_buffer));
-                return true;
+                continue;
             }
 
             auto current_chunk = std::vector<std::byte>{};
@@ -591,12 +582,8 @@ namespace c2k {
             if (receive_result == 0 or receive_result == socket_error) {
                 // connection has been gracefully closed or connection no longer active => close socket
                 if (task.kind == ReceiveTask::Kind::Exact) {
-                    try {
-                        throw ReadError{};
-                    } catch (...) {
-                        task.promise.set_exception(std::current_exception());
-                        return false;
-                    }
+                    task.promise.set_exception(std::make_exception_ptr(ReadError{}));
+                    return false;
                 }
 
                 task.promise.set_value(std::move(receive_buffer));
@@ -619,16 +606,23 @@ namespace c2k {
             throw std::runtime_error{ "size of message to be sent exceeds allowed maximum" };
         }
         auto num_bytes_sent = std::size_t{ 0 };
-        auto send_pointer = reinterpret_cast<char const*>(task.data.data());
+        auto data_to_send = reinterpret_cast<char const*>(task.data.data());
         while (num_bytes_sent < task.data.size()) {
             auto const num_bytes_remaining = task.data.size() - num_bytes_sent;
-            auto const result = ::send(socket, send_pointer, static_cast<SendReceiveSize>(num_bytes_remaining), 0);
+            // clang-format off
+            auto const result = ::send(
+                socket,
+                data_to_send,
+                static_cast<SendReceiveSize>(num_bytes_remaining),
+                send_flags
+            );
+            // clang-format on
             if (result == socket_error) {
                 // connection no longer active
                 task.promise.set_value(0);
                 return false;
             }
-            send_pointer += result;
+            data_to_send += result;
             num_bytes_sent += static_cast<std::size_t>(result);
         }
         task.promise.set_value(num_bytes_sent);

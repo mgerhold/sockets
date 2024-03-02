@@ -1,7 +1,6 @@
 #include <future>
 #include <gtest/gtest.h>
 #include <numeric>
-#include <random>
 #include <sockets/sockets.hpp>
 
 static constexpr auto localhost = "127.0.0.1";
@@ -158,7 +157,6 @@ TEST(SocketsTests, ReceiveExactManyBytesWithExceededTimeoutThrowsException) {
             client.send(chunk).wait();
             std::this_thread::sleep_for(100ms);
         }
-        std::this_thread::sleep_for(1s);
     } };
 
     auto client_connection = future.get();
