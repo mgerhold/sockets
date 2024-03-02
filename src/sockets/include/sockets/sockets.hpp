@@ -23,7 +23,7 @@ namespace c2k {
         ~Sockets();
 
         // clang-format off
-        [[nodiscard]] static auto create_server(
+        [[nodiscard]] static ServerSocket create_server(
             AddressFamily const address_family,
             std::uint16_t const port,
             std::function<void(ClientSocket)> callback,

@@ -619,16 +619,23 @@ namespace c2k {
             throw std::runtime_error{ "size of message to be sent exceeds allowed maximum" };
         }
         auto num_bytes_sent = std::size_t{ 0 };
-        auto send_pointer = reinterpret_cast<char const*>(task.data.data());
+        auto data_to_send = reinterpret_cast<char const*>(task.data.data());
         while (num_bytes_sent < task.data.size()) {
             auto const num_bytes_remaining = task.data.size() - num_bytes_sent;
-            auto const result = ::send(socket, send_pointer, static_cast<SendReceiveSize>(num_bytes_remaining), 0);
+            // clang-format off
+            auto const result = ::send(
+                socket,
+                data_to_send,
+                static_cast<SendReceiveSize>(num_bytes_remaining),
+                send_flags
+            );
+            // clang-format on
             if (result == socket_error) {
                 // connection no longer active
                 task.promise.set_value(0);
                 return false;
             }
-            send_pointer += result;
+            data_to_send += result;
             num_bytes_sent += static_cast<std::size_t>(result);
         }
         task.promise.set_value(num_bytes_sent);
