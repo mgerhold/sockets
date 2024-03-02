@@ -54,6 +54,9 @@ TEST(Synchronized, AccessFromDifferentThreads) {
 
     for (auto& thread : threads) {
         thread.request_stop();
+    }
+
+    for (auto& thread : threads) {
         thread.join();
     }
 
