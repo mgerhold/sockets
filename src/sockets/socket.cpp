@@ -564,13 +564,7 @@ namespace c2k {
             }
 
             if (not is_socket_ready(socket, SelectStatusCategory::Read, 10)) {
-                if (task.kind == ReceiveTask::Kind::Exact) {
-                    continue;
-                }
-
-                assert(task.kind == ReceiveTask::Kind::MaxBytes);
-                task.promise.set_value(std::move(receive_buffer));
-                return true;
+                continue;
             }
 
             auto current_chunk = std::vector<std::byte>{};
