@@ -552,14 +552,11 @@ namespace c2k {
         while (true) {
             assert(receive_buffer.size() < task.max_num_bytes);
 
-            if (std::chrono::steady_clock::now() >= task.end_time) {
+            auto const timeout_exceeded = std::chrono::steady_clock::now() >= task.end_time;
+            if (timeout_exceeded) {
                 if (task.kind == ReceiveTask::Kind::Exact) {
-                    try {
-                        throw TimeoutError{};
-                    } catch (...) {
-                        task.promise.set_exception(std::current_exception());
-                        return true;
-                    }
+                    task.promise.set_exception(std::make_exception_ptr(TimeoutError{}));
+                    return true;
                 }
 
                 task.promise.set_value(std::move(receive_buffer));
@@ -591,12 +588,8 @@ namespace c2k {
             if (receive_result == 0 or receive_result == socket_error) {
                 // connection has been gracefully closed or connection no longer active => close socket
                 if (task.kind == ReceiveTask::Kind::Exact) {
-                    try {
-                        throw ReadError{};
-                    } catch (...) {
-                        task.promise.set_exception(std::current_exception());
-                        return false;
-                    }
+                    task.promise.set_exception(std::make_exception_ptr(ReadError{}));
+                    return false;
                 }
 
                 task.promise.set_value(std::move(receive_buffer));
