@@ -71,7 +71,7 @@ namespace c2k {
                     break;
             }
         }();
-        if (select_result == socket_error) {
+        if (select_result == constants::socket_error) {
             throw std::runtime_error{ "failed to call select on socket" };
         }
         return select_result == 1;
@@ -123,9 +123,9 @@ namespace c2k {
         auto const option_name = [&] {
             switch (option) {
                 case SocketOption::TcpNoDelay:
-                    return tcp_no_delay;
+                    return constants::tcp_no_delay;
                 case SocketOption::ReusePort:
-                    return reuse_port;
+                    return constants::reuse_port;
             }
             unreachable();
         }();
@@ -152,7 +152,7 @@ namespace c2k {
 
     [[nodiscard]] static AbstractSocket::OsSocketHandle create_socket(AddressInfos const& address_infos) {
         auto const socket = ::socket(address_infos->ai_family, address_infos->ai_socktype, address_infos->ai_protocol);
-        if (socket == invalid_socket) {
+        if (socket == constants::invalid_socket) {
             throw std::runtime_error{ "failed to create socket" };
         }
         set_all_default_socket_options(socket);
@@ -160,14 +160,19 @@ namespace c2k {
     }
 
     static void bind_socket(AbstractSocket::OsSocketHandle const socket, AddressInfos const& address_infos) {
-        if (bind(socket, address_infos->ai_addr, static_cast<SockLen>(address_infos->ai_addrlen)) == socket_error) {
+        // clang-format off
+        if (
+            bind(socket, address_infos->ai_addr, static_cast<constants::SockLen>(address_infos->ai_addrlen))
+            == constants::socket_error
+        ) { // clang-format on
             closesocket(socket);
             throw std::runtime_error{ "failed to bind socket" };
         }
     }
 
     static void connect_socket(AbstractSocket::OsSocketHandle const socket, AddressInfos const& address_infos) {
-        if (connect(socket, address_infos->ai_addr, static_cast<SockLen>(address_infos->ai_addrlen)) == socket_error) {
+        if (connect(socket, address_infos->ai_addr, static_cast<constants::SockLen>(address_infos->ai_addrlen))
+            == constants::socket_error) {
             closesocket(socket);
             throw std::runtime_error{ "unable to connect" };
         }
@@ -266,7 +271,7 @@ namespace c2k {
 #ifdef _WIN32
         auto local_info = SOCKADDR_STORAGE{};
         auto len = static_cast<int>(sizeof(local_info));
-        if (getsockname(os_socket_handle, reinterpret_cast<SOCKADDR*>(&local_info), &len) == socket_error) {
+        if (getsockname(os_socket_handle, reinterpret_cast<SOCKADDR*>(&local_info), &len) == constants::socket_error) {
             throw std::runtime_error{ "failed to get local address and port" };
         }
         m_local_address_info = extract_adress_info(local_info);
@@ -274,13 +279,13 @@ namespace c2k {
         // for server sockets, there is no remote address, so we ignore errors here
         auto remote_info = SOCKADDR_STORAGE{};
         len = static_cast<int>(sizeof(remote_info));
-        if (getpeername(os_socket_handle, reinterpret_cast<SOCKADDR*>(&remote_info), &len) != socket_error) {
+        if (getpeername(os_socket_handle, reinterpret_cast<SOCKADDR*>(&remote_info), &len) != constants::socket_error) {
             m_remote_address_info = extract_adress_info(remote_info);
         }
 #else
         auto local_info = sockaddr_storage{};
         auto len = static_cast<socklen_t>(sizeof(local_info));
-        if (getsockname(os_socket_handle, reinterpret_cast<sockaddr*>(&local_info), &len) == socket_error) {
+        if (getsockname(os_socket_handle, reinterpret_cast<sockaddr*>(&local_info), &len) == constants::socket_error) {
             throw std::runtime_error{ "failed to get local address and port" };
         }
         m_local_address_info = extract_adress_info(local_info);
@@ -288,7 +293,7 @@ namespace c2k {
         // for server sockets, there is no remote address, so we ignore errors here
         auto remote_info = sockaddr_storage{};
         len = static_cast<socklen_t>(sizeof(local_info));
-        if (getpeername(os_socket_handle, reinterpret_cast<sockaddr*>(&remote_info), &len) != socket_error) {
+        if (getpeername(os_socket_handle, reinterpret_cast<sockaddr*>(&remote_info), &len) != constants::socket_error) {
             m_remote_address_info = extract_adress_info(remote_info);
         }
 #endif
@@ -328,7 +333,7 @@ namespace c2k {
             auto const client_socket = accept(listen_socket, nullptr, nullptr);
             // clang-format off
             assert(
-                client_socket != invalid_socket
+                client_socket != constants::invalid_socket
                 and "successful acceptance is guaranteed by previous call to select"
             );
             // clang-format on
@@ -346,7 +351,7 @@ namespace c2k {
     )
         : AbstractSocket{ initialize_server_socket(address_family, port) } {
         assert(m_socket_descriptor.has_value() and "has been set via parent constructor");
-        if (listen(m_socket_descriptor.value(), SOMAXCONN) == socket_error) {
+        if (listen(m_socket_descriptor.value(), SOMAXCONN) == constants::socket_error) {
             throw std::runtime_error{ "failed to listen on socket" };
         }
 
@@ -542,7 +547,7 @@ namespace c2k {
     }
 
     [[nodiscard]] bool ClientSocket::process_receive_task(OsSocketHandle const socket, ReceiveTask task) {
-        if (not std::in_range<SendReceiveSize>(task.max_num_bytes)) {
+        if (not std::in_range<constants::SendReceiveSize>(task.max_num_bytes)) {
             throw std::runtime_error{ "size of message to be received exceeds allowed maximum" };
         }
 
@@ -574,12 +579,12 @@ namespace c2k {
             auto const receive_result = recv(
                 socket,
                 reinterpret_cast<char*>(current_chunk.data()),
-                static_cast<SendReceiveSize>(task.max_num_bytes - receive_buffer.size()),
+                static_cast<constants::SendReceiveSize>(task.max_num_bytes - receive_buffer.size()),
                 0
             );
             // clang-format on
 
-            if (receive_result == 0 or receive_result == socket_error) {
+            if (receive_result == 0 or receive_result == constants::socket_error) {
                 // connection has been gracefully closed or connection no longer active => close socket
                 if (task.kind == ReceiveTask::Kind::Exact) {
                     task.promise.set_exception(std::make_exception_ptr(ReadError{}));
@@ -602,7 +607,7 @@ namespace c2k {
     }
 
     [[nodiscard]] bool ClientSocket::process_send_task(OsSocketHandle const socket, SendTask task) {
-        if (not std::in_range<SendReceiveSize>(task.data.size())) {
+        if (not std::in_range<constants::SendReceiveSize>(task.data.size())) {
             throw std::runtime_error{ "size of message to be sent exceeds allowed maximum" };
         }
         auto num_bytes_sent = std::size_t{ 0 };
@@ -613,11 +618,11 @@ namespace c2k {
             auto const result = ::send(
                 socket,
                 data_to_send,
-                static_cast<SendReceiveSize>(num_bytes_remaining),
-                send_flags
+                static_cast<constants::SendReceiveSize>(num_bytes_remaining),
+                constants::send_flags
             );
             // clang-format on
-            if (result == socket_error) {
+            if (result == constants::socket_error) {
                 // connection no longer active
                 task.promise.set_value(0);
                 return false;
