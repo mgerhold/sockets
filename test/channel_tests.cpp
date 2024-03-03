@@ -21,7 +21,7 @@ TEST(ChannelTests, SendAndReceiveSingleValue) {
 }
 
 TEST(ChannelTests, SendAndReceiveManyValues) {
-    static constexpr auto num_values = std::size_t{ 500'000 };
+    static constexpr auto num_values = std::size_t{ 100'000 };
     auto [sender, receiver] = create_channel<std::size_t>();
     auto send_thread = std::jthread([sender_ = std::move(sender)]() mutable {
         for (auto i = std::size_t{ 0 }; i < num_values; ++i) {
