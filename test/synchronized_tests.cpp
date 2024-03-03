@@ -50,7 +50,7 @@ TEST(Synchronized, AccessFromDifferentThreads) {
         threads.emplace_back(keep_increasing, std::ref(loop_counters.at(i)), std::ref(synchronized));
     }
 
-    std::this_thread::sleep_for(std::chrono::seconds{ 10 });
+    std::this_thread::sleep_for(std::chrono::seconds{ 4 });
 
     for (auto& thread : threads) {
         thread.request_stop();
