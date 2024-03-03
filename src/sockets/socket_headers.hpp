@@ -1,13 +1,26 @@
 #pragma once
 
-#include <cstdlib>
 #include <cstdint>
+#include <cstdlib>
 
 #ifdef _WIN32
+
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
-namespace c2k {
+#else
+
+#include <netdb.h>
+#include <netinet/tcp.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#endif
+
+namespace c2k::constants {
+
+#ifdef _WIN32
 
     inline constexpr auto invalid_socket = std::uintptr_t{ INVALID_SOCKET };
     inline constexpr auto socket_error = SOCKET_ERROR;
@@ -18,16 +31,7 @@ namespace c2k {
     using SockLen = int;
     using SendReceiveSize = int;
 
-} // namespace c2k
 #else
-
-#include <netdb.h>
-#include <netinet/tcp.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <unistd.h>
-
-namespace c2k {
 
     inline constexpr auto invalid_socket = -1;
     inline constexpr auto socket_error = -1;
@@ -37,8 +41,11 @@ namespace c2k {
 
     using SockLen = unsigned int;
     using SendReceiveSize = std::size_t;
+#endif
 
-} // namespace c2k
+} // namespace c2k::constants
+
+#ifndef _WIN32
 
 inline int closesocket(int const socket) {
     return close(socket);
