@@ -60,6 +60,9 @@ TEST(SocketsTests, ReceiveExactManyBytes) {
     auto future = promise.get_future();
     auto const server = c2k::Sockets::create_server(c2k::AddressFamily::Ipv4, 0, [&promise](c2k::ClientSocket client) {
         promise.set_value(client.receive_exact(size).get());
+
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(200ms); // keep connection open a bit longer
     });
 
     auto const port = server.local_address().port;
@@ -97,6 +100,9 @@ TEST(SocketsTests, ReceiveExactManyBytesWithTimeout) {
     auto future = promise.get_future();
     auto const server = c2k::Sockets::create_server(c2k::AddressFamily::Ipv4, 0, [&promise](c2k::ClientSocket client) {
         promise.set_value(client.receive_exact(size, 1s).get());
+
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(200ms); // keep connection open a bit longer
     });
 
     auto const port = server.local_address().port;
