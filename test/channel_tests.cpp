@@ -39,7 +39,7 @@ TEST(ChannelTests, BidirectionalCommunication) {
     auto [sender_b, receiver_b] = create_channel<int>();
 
     auto count = std::atomic_int{};
-    static auto const lambda = [&count](Sender<int> sender, Receiver<int> receiver) {
+    auto const lambda = [&count](Sender<int> sender, Receiver<int> receiver) {
         for (auto i = 0; i < num_values; ++i) {
             sender.send(i);
             ASSERT_EQ(i, receiver.receive());
