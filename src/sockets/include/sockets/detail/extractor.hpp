@@ -15,7 +15,7 @@
 namespace c2k {
     namespace detail {
         template<typename T, typename... Rest>
-        [[nodiscard]] std::size_t summed_sizeof() {
+        [[nodiscard]] consteval std::size_t summed_sizeof() {
             if constexpr (sizeof...(Rest) == 0) {
                 return sizeof(T);
             } else {

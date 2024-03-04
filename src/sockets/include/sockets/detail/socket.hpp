@@ -202,6 +202,17 @@ namespace c2k {
         [[nodiscard]] std::future<std::vector<std::byte>> receive_exact(std::size_t num_bytes);
         [[nodiscard]] std::future<std::vector<std::byte>> receive_exact(std::size_t num_bytes, Timeout timeout);
 
+        template<std::integral... Ts>
+        [[nodiscard]] auto receive(Timeout const timeout = default_timeout) {
+            static constexpr auto total_size = detail::summed_sizeof<Ts...>();
+            auto future = receive_exact(total_size, timeout);
+            return std::async(std::launch::deferred, [future = std::move(future)]() mutable {
+                auto extractor = Extractor{ future.get() };
+                assert(extractor.size() == total_size);
+                return extractor.try_extract<Ts...>().value(); // should never fail since we have enough data
+            });
+        }
+
         void close();
 
     private:
