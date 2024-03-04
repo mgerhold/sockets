@@ -456,6 +456,9 @@ namespace c2k {
     [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
     std::future<std::size_t> ClientSocket::send(std::vector<std::byte> data) {
         // clang-format on
+        if (data.empty()) {
+            throw SendError{ "cannot send 0 bytes of data" };
+        }
         auto promise = std::promise<std::size_t>{};
         auto future = promise.get_future();
         auto const return_immediately = m_shared_state->send_tasks.apply([&](std::deque<SendTask>& send_tasks) {
@@ -521,6 +524,9 @@ namespace c2k {
         ReceiveTask::Kind const kind,
         std::optional<std::chrono::steady_clock::time_point> const end_time
     ) { // clang-format on
+        if (max_num_bytes == 0) {
+            throw ReadError{ "trying to receive 0 bytes makes no sense" };
+        }
         auto promise = std::promise<std::vector<std::byte>>{};
         auto future = promise.get_future();
         auto const return_immediately =
