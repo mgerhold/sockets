@@ -29,12 +29,15 @@ TEST(Synchronized, LockModifyRead) {
 }
 
 TEST(Synchronized, AccessFromDifferentThreads) {
+    using namespace std::chrono_literals;
+
     static constexpr auto num_threads = std::size_t{ 2 };
+    auto keep_running = std::atomic_bool{ true };
     auto numbers = std::vector<std::size_t>{};
     auto numbers_mutex = std::mutex{};
     auto keep_increasing =
-            [&](std::stop_token const& stop_token, std::size_t& loop_counter, Synchronized<std::size_t>& counter) {
-                while (not stop_token.stop_requested()) {
+            [&numbers_mutex, &numbers, &keep_running](std::size_t& loop_counter, Synchronized<std::size_t>& counter) {
+                while (keep_running) {
                     counter.apply([&](std::size_t& value) {
                         auto lock = std::scoped_lock{ numbers_mutex };
                         numbers.push_back(value++);
@@ -43,18 +46,15 @@ TEST(Synchronized, AccessFromDifferentThreads) {
                 }
             };
     auto loop_counters = std::array<std::size_t, num_threads>{};
-    auto threads = std::vector<std::jthread>{};
+    auto threads = std::vector<std::thread>{};
     threads.reserve(num_threads);
     auto synchronized = Synchronized{ std::size_t{} };
     for (auto i = std::size_t{ 0 }; i < num_threads; ++i) {
         threads.emplace_back(keep_increasing, std::ref(loop_counters.at(i)), std::ref(synchronized));
     }
 
-    std::this_thread::sleep_for(std::chrono::seconds{ 4 });
-
-    for (auto& thread : threads) {
-        thread.request_stop();
-    }
+    std::this_thread::sleep_for(4s);
+    keep_running = false;
 
     for (auto& thread : threads) {
         thread.join();

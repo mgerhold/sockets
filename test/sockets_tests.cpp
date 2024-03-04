@@ -60,6 +60,9 @@ TEST(SocketsTests, ReceiveExactManyBytes) {
     auto future = promise.get_future();
     auto const server = c2k::Sockets::create_server(c2k::AddressFamily::Ipv4, 0, [&promise](c2k::ClientSocket client) {
         promise.set_value(client.receive_exact(size).get());
+
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(200ms); // keep connection open a bit longer
     });
 
     auto const port = server.local_address().port;
@@ -97,6 +100,9 @@ TEST(SocketsTests, ReceiveExactManyBytesWithTimeout) {
     auto future = promise.get_future();
     auto const server = c2k::Sockets::create_server(c2k::AddressFamily::Ipv4, 0, [&promise](c2k::ClientSocket client) {
         promise.set_value(client.receive_exact(size, 1s).get());
+
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(200ms); // keep connection open a bit longer
     });
 
     auto const port = server.local_address().port;
@@ -287,4 +293,108 @@ TEST(SocketsTests, SendAndReceiveMultipleTimes) {
     for (auto const& c : future.get()) {
         EXPECT_EQ(c, value);
     }
+}
+
+TEST(SocketsTests, ReceiveIntegralValues) {
+    static constexpr auto values = std::tuple{ 124234, 97234L, 'a', true, short{ 13 }, std::uint64_t{ 1356469817 } };
+    auto server = c2k::Sockets::create_server(c2k::AddressFamily::Ipv4, 0, [](c2k::ClientSocket client) {
+        auto const num_bytes_sent = client.send(std::get<0>(values),
+                                                std::get<1>(values),
+                                                std::get<2>(values),
+                                                std::get<3>(values),
+                                                std::get<4>(values),
+                                                std::get<5>(values))
+                                            .get();
+        EXPECT_EQ(
+                num_bytes_sent,
+                sizeof(decltype(std::get<0>(values))) + sizeof(decltype(std::get<1>(values)))
+                        + sizeof(decltype(std::get<2>(values))) + sizeof(decltype(std::get<3>(values)))
+                        + sizeof(decltype(std::get<4>(values))) + sizeof(decltype(std::get<5>(values)))
+        );
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(100ms);
+    });
+
+    auto const port = server.local_address().port;
+
+    auto client = c2k::Sockets::create_client(c2k::AddressFamily::Ipv4, localhost, port);
+    auto const received = client.receive<
+                                        std::remove_cvref_t<decltype(std::get<0>(values))>,
+                                        std::remove_cvref_t<decltype(std::get<1>(values))>,
+                                        std::remove_cvref_t<decltype(std::get<2>(values))>,
+                                        std::remove_cvref_t<decltype(std::get<3>(values))>,
+                                        std::remove_cvref_t<decltype(std::get<4>(values))>,
+                                        std::remove_cvref_t<decltype(std::get<5>(values))>>()
+                                  .get();
+    EXPECT_EQ(received, values);
+}
+
+TEST(SocketsTests, ReceiveIntegralValuesExceedingDefaultTimeoutThrowsException) {
+    static constexpr auto values = std::tuple{ 124234, 97234L, 'a', true, short{ 13 }, std::uint64_t{ 1356469817 } };
+    auto server = c2k::Sockets::create_server(c2k::AddressFamily::Ipv4, 0, [](c2k::ClientSocket client) {
+        using namespace std::chrono_literals;
+
+        auto const num_bytes_sent = client.send(std::get<0>(values), std::get<1>(values), std::get<2>(values)).get();
+        EXPECT_EQ(
+                num_bytes_sent,
+                sizeof(decltype(std::get<0>(values))) + sizeof(decltype(std::get<1>(values)))
+                        + sizeof(decltype(std::get<2>(values)))
+        );
+
+        std::this_thread::sleep_for(1200ms);
+    });
+
+    auto const port = server.local_address().port;
+
+    auto client = c2k::Sockets::create_client(c2k::AddressFamily::Ipv4, localhost, port);
+
+    auto const code_that_should_throw = [&client] {
+        [[maybe_unused]] auto const received = client.receive<
+                                                             std::remove_cvref_t<decltype(std::get<0>(values))>,
+                                                             std::remove_cvref_t<decltype(std::get<1>(values))>,
+                                                             std::remove_cvref_t<decltype(std::get<2>(values))>,
+                                                             std::remove_cvref_t<decltype(std::get<3>(values))>,
+                                                             std::remove_cvref_t<decltype(std::get<4>(values))>,
+                                                             std::remove_cvref_t<decltype(std::get<5>(values))>>()
+                                                       .get();
+    };
+
+    EXPECT_THROW({ code_that_should_throw(); }, c2k::TimeoutError);
+}
+
+struct Vector2 {
+    double x;
+    double y;
+};
+
+TEST(SocketsTests, ReceiveIntegralValuesExceedingCustomTimeoutThrowsException) {
+    static constexpr auto values = std::tuple{ 124234, 97234L, 'a', true, short{ 13 }, std::uint64_t{ 1356469817 } };
+    using namespace std::chrono_literals;
+
+    auto server = c2k::Sockets::create_server(c2k::AddressFamily::Ipv4, 0, [](c2k::ClientSocket client) {
+        auto const num_bytes_sent = client.send(std::get<0>(values), std::get<1>(values), std::get<2>(values)).get();
+        EXPECT_EQ(
+                num_bytes_sent,
+                sizeof(decltype(std::get<0>(values))) + sizeof(decltype(std::get<1>(values)))
+                        + sizeof(decltype(std::get<2>(values)))
+        );
+        std::this_thread::sleep_for(300ms);
+    });
+
+    auto const port = server.local_address().port;
+
+    auto client = c2k::Sockets::create_client(c2k::AddressFamily::Ipv4, localhost, port);
+
+    auto const code_that_should_throw = [&client] {
+        [[maybe_unused]] auto const received = client.receive<
+                                                             std::remove_cvref_t<decltype(std::get<0>(values))>,
+                                                             std::remove_cvref_t<decltype(std::get<1>(values))>,
+                                                             std::remove_cvref_t<decltype(std::get<2>(values))>,
+                                                             std::remove_cvref_t<decltype(std::get<3>(values))>,
+                                                             std::remove_cvref_t<decltype(std::get<4>(values))>,
+                                                             std::remove_cvref_t<decltype(std::get<5>(values))>>(200ms)
+                                                       .get();
+    };
+
+    EXPECT_THROW({ code_that_should_throw(); }, c2k::TimeoutError);
 }
