@@ -197,12 +197,17 @@ namespace c2k {
         std::future<std::size_t> send(std::integral auto... values) {
             auto package = MessageBuffer{};
             (package << ... << values);
-            return send(package);
+            return send(std::move(package));
         }
 
         [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
         std::future<std::size_t> send(MessageBuffer const& package) {
-            return send(package.data);
+            return send(package.data());
+        }
+
+        [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
+        std::future<std::size_t> send(MessageBuffer&& package) {
+            return send(std::move(package).data());
         }
         // clang-format on
 
@@ -216,9 +221,9 @@ namespace c2k {
             static constexpr auto total_size = detail::summed_sizeof<Ts...>();
             auto future = receive_exact(total_size, timeout);
             return std::async(std::launch::deferred, [future = std::move(future)]() mutable {
-                auto extractor = Extractor{ future.get() };
-                assert(extractor.size() == total_size);
-                return extractor.try_extract<Ts...>().value(); // should never fail since we have enough data
+                auto message_buffer = MessageBuffer{ future.get() };
+                assert(message_buffer.size() == total_size);
+                return message_buffer.try_extract<Ts...>().value(); // should never fail since we have enough data
             });
         }
 
