@@ -37,6 +37,13 @@ namespace c2k {
 
     class ClientSocket;
 
+    /**
+     * @class AbstractSocket
+     * @brief Represents an abstract socket for communication
+     *
+     * This class provides a common interface and functionality for socket operations. It manages the
+     * socket descriptor, local and remote addresses.
+     */
     class AbstractSocket {
     public:
 #ifdef _WIN32
@@ -55,6 +62,14 @@ namespace c2k {
         explicit AbstractSocket(OsSocketHandle os_socket_handle);
 
     public:
+        /**
+         * Returns the operating system socket handle associated with the AbstractSocket.
+         *
+         * If the socket descriptor has a value, it returns the value encapsulated in std::optional.
+         * Otherwise, it returns std::nullopt.
+         *
+         * @return The operating system socket handle as std::optional<OsSocketHandle>.
+         */
         [[nodiscard]] std::optional<OsSocketHandle> os_socket_handle() const {
             if (not m_socket_descriptor.has_value()) {
                 return std::nullopt;
@@ -64,12 +79,22 @@ namespace c2k {
 
         AddressInfo const& local_address() && = delete;
 
+        /**
+         * @brief Get the local address information for the socket
+         *
+         * @return A constant reference to the AddressInfo object containing the local address information.
+         */
         [[nodiscard]] AddressInfo const& local_address() const& {
             return m_local_address_info;
         }
 
         AddressInfo const& remote_address() && = delete;
 
+        /**
+         * @brief Get the remote address information for the socket.
+         *
+         * @return A constant reference to the AddressInfo object representing the remote address information.
+         */
         [[nodiscard]] AddressInfo const& remote_address() const& {
             return m_remote_address_info;
         }
@@ -80,6 +105,14 @@ namespace c2k {
         initialize_server_socket(AddressFamily address_family, std::uint16_t port);
     }
 
+    /**
+     * @class ServerSocket
+     * @brief Represents a server socket that listens for incoming connections
+     *
+     * This class inherits from AbstractSocket and provides functionality to create a server socket
+     * and handle incoming connections. It starts a listening thread to actively accept incoming
+     * connections and a callback function to handle the new client sockets.
+     */
     class ServerSocket final : public AbstractSocket {
         friend class Sockets;
 
@@ -93,9 +126,21 @@ namespace c2k {
         ServerSocket& operator=(ServerSocket&& other) noexcept = default;
 
         ~ServerSocket();
+
+        /**
+         * @brief Stop the server listening thread.
+         */
         void stop();
     };
 
+    /**
+     * @class ClientSocket
+     * @brief Represents a client socket for communication
+     *
+     * This class extends the AbstractSocket class and provides additional functionality
+     * for sending and receiving data over a network connection. It manages send and
+     * receive tasks asynchronously and handles socket operations.
+     */
     class ClientSocket final : public AbstractSocket {
         friend class Sockets;
         friend void server_listen(
@@ -185,14 +230,42 @@ namespace c2k {
 
         ~ClientSocket();
 
+        /**
+         * @brief Checks if the socket is currently connected.
+         *
+         * This function returns a boolean value indicating whether the socket is currently connected or not.
+         *
+         * @return True if the socket is connected, false otherwise.
+         */
         [[nodiscard]] bool is_connected() const {
             return m_shared_state->is_running();
         }
 
         // clang-format off
+        /**
+         * @brief Sends the given data through the socket.
+         *
+         * The send method sends the provided data through the socket. It returns a std::future<std::size_t> that
+         * represents the amount of data that has been transmitted.
+         *
+         * If the data vector is empty, a SendError exception will be thrown.
+         *
+         * @param data The data to be sent through the socket.
+         * @return A std::future<std::size_t> that represents the amount of data that has been transmitted.
+         * @throws SendError If the data vector is empty.
+         */
         [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
         std::future<std::size_t> send(std::vector<std::byte> data);
 
+        /**
+         * @brief Sends data over the socket
+         *
+         * This method sends the given values over the socket. It constructs a message package by
+         * inserting the values into a message buffer. It then sends it using through the socket.
+         *
+         * @tparam std::integral... values The values to send
+         * @return A std::future<std::size_t> that will hold the number of bytes sent
+         */
         [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
         std::future<std::size_t> send(std::integral auto... values) {
             auto package = MessageBuffer{};
@@ -200,22 +273,112 @@ namespace c2k {
             return send(std::move(package));
         }
 
+        /**
+         * @brief Sends data over the socket.
+         *
+         * This method sends the given message over the socket.
+         *
+         * The send method returns a std::future<std::size_t> that represents the amount of data that has been
+         * transmitted.
+         *
+         * If the data vector is empty, a SendError exception will be thrown.
+         *
+         * @param package The message package to be sent through the socket.
+         * @return A std::future<std::size_t> that represents the amount of data that has been transmitted.
+         * @throws SendError If the data vector is empty.
+         */
         [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
         std::future<std::size_t> send(MessageBuffer const& package) {
             return send(package.data());
         }
 
+        /**
+         * @brief Sends data over the socket.
+         *
+         * This method sends the given message over the socket.
+         *
+         * The send method returns a std::future<std::size_t> that represents the amount of data that has been
+         * transmitted.
+         *
+         * If the data vector is empty, a SendError exception will be thrown.
+         *
+         * @param package The message package to be sent through the socket.
+         * @return A std::future<std::size_t> that represents the amount of data that has been transmitted.
+         * @throws SendError If the data vector is empty.
+         */
         [[nodiscard("discarding the return value may lead to the data to never be transmitted")]]
         std::future<std::size_t> send(MessageBuffer&& package) {
             return send(std::move(package).data());
         }
         // clang-format on
 
+        /**
+         * @brief Asynchronously receives up to a specified maximum number of bytes from the socket
+         *
+         * This method receives up to a specified number of bytes from the socket asynchronously.
+         * It returns an std::future object that can be used to retrieve the received data.
+         *
+         * @param max_num_bytes The maximum number of bytes to receive from the socket
+         *
+         * @return An std::future object representing the asynchronous receive operation.
+         *         The future will hold an std::vector<std::byte> containing the received bytes.
+         *         If no data is received within the default timeout of 1 second, an exception
+         *         will be stored in the future.
+         */
         [[nodiscard]] std::future<std::vector<std::byte>> receive(std::size_t max_num_bytes);
+
+        /**
+         * @brief Asynchronously receives up to a specified maximum number of bytes from the socket
+         *
+         * This method receives up to a specified number of bytes from the socket asynchronously.
+         * It returns an std::future object that can be used to retrieve the received data.
+         *
+         * @param max_num_bytes The maximum number of bytes to receive from the socket
+         * @param timeout The maximum amount of time to wait for incoming data
+         *
+         * @return An std::future object representing the asynchronous receive operation.
+         *         The future will hold an std::vector<std::byte> containing the received bytes.
+         *         If no data is received within the specified timeout, an exception will be stored
+         *         in the future.
+         */
         [[nodiscard]] std::future<std::vector<std::byte>> receive(std::size_t max_num_bytes, Timeout timeout);
+
+        /**
+         * @brief Receives a specified number of bytes from the client socket
+         *
+         * This method receives exactly the specified number of bytes from the client socket. It returns a
+         * future object that will be fulfilled with a vector of bytes containing the received data.
+         *
+         * @param num_bytes The number of bytes to receive
+         * @return A future that holds the received bytes as a vector of std::byte. If the operation
+         *         cannot be completed within the default timeout of 1 second, an exception will be stored
+         *         in the future.
+         */
         [[nodiscard]] std::future<std::vector<std::byte>> receive_exact(std::size_t num_bytes);
+
+        /**
+         * @brief Receives a specified number of bytes from the socket
+         *
+         * This method receives exactly the specified number of bytes from the client socket. It returns a
+         * future object that will be fulfilled with a vector of bytes containing the received data.
+         *
+         * @param num_bytes The number of bytes to receive
+         * @param timeout The timeout for the receive operation
+         * @return A future that holds the received bytes as a vector of std::byte. If the operation
+         *         cannot be completed within the specified timeout, an exception will be stored in the
+         *         future.
+         */
         [[nodiscard]] std::future<std::vector<std::byte>> receive_exact(std::size_t num_bytes, Timeout timeout);
 
+        /**
+         * Reads one or multiple integral values from the socket.
+         *
+         * @tparam Ts std::integral... The types of the values to read from the socket
+         * @param timeout The timeout for the receive operation
+         * @return A future that holds either the read value, if only one type parameter was provided, or
+         *         a tuple of all the read values according to the provided types. If the operation cannot
+         *         be completed within the specified timeout, an exception will be stored in the future.
+         */
         template<std::integral... Ts>
         [[nodiscard]] auto receive(Timeout const timeout = default_timeout) {
             static constexpr auto total_size = detail::summed_sizeof<Ts...>();
@@ -227,6 +390,12 @@ namespace c2k {
             });
         }
 
+        /**
+         * @brief Closes the client socket
+         *
+         * This method closes the client socket and performs necessary cleanup operations. It stops
+         * the socket from running and clears any pending queues.
+         */
         void close();
 
     private:
