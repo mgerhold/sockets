@@ -22,6 +22,21 @@ if (${c2k_sockets_build_examples})
     add_subdirectory(examples)
 endif ()
 
+if (${c2k_sockets_run_cppcheck})
+    find_program(CPPCHECK_FOUND cppcheck)
+    if (CPPCHECK_FOUND)
+        set(CMAKE_CXX_CPPCHECK
+                ${CPPCHECK_FOUND}
+                "--enable=all"
+                "--std=c++23"
+                "--suppress=missingIncludeSystem"
+        )
+        message("Cppcheck found: ${CMAKE_CXX_CPPCHECK}")
+    else ()
+        message("Cppcheck not found, falling back to built-in compiler")
+    endif ()
+endif ()
+
 if (${c2k_sockets_build_tests})
     enable_testing()
     add_subdirectory(test)
