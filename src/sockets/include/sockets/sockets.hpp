@@ -3,7 +3,6 @@
 #include "detail/address_family.hpp"
 #include "detail/address_info.hpp"
 #include "detail/byte_order.hpp"
-#include "detail/extractor.hpp"
 #include "detail/message_buffer.hpp"
 #include "detail/non_null_owner.hpp"
 #include "detail/socket.hpp"

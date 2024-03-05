@@ -12,9 +12,9 @@ add_library(c2k_sockets
         include/sockets/detail/address_info.hpp
         include/sockets/detail/byte_order.hpp
         include/sockets/detail/message_buffer.hpp
-        include/sockets/detail/extractor.hpp
         include/sockets/detail/channel.hpp
         include/sockets/detail/unreachable.hpp
+        include/sockets/detail/utils.hpp
 )
 
 target_include_directories(c2k_sockets PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

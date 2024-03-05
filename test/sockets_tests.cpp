@@ -19,9 +19,9 @@ TEST(SocketsTests, SendAndReceive) {
     auto promise = std::promise<char>{};
     auto future = promise.get_future();
     auto const server = c2k::Sockets::create_server(c2k::AddressFamily::Ipv4, 0, [&promise](c2k::ClientSocket client) {
-        auto buffer = c2k::Extractor{};
-        buffer << client.receive(1).get();
-        promise.set_value(buffer.try_extract<char>().value());
+        auto message_buffer = c2k::MessageBuffer{};
+        message_buffer << client.receive(1).get();
+        promise.set_value(message_buffer.try_extract<char>().value());
     });
 
     auto const port = server.local_address().port;
@@ -37,7 +37,7 @@ TEST(SocketsTests, ReceiveExact) {
     auto promise = std::promise<int>{};
     auto future = promise.get_future();
     auto const server = c2k::Sockets::create_server(c2k::AddressFamily::Ipv4, 0, [&promise](c2k::ClientSocket client) {
-        auto buffer = c2k::Extractor{};
+        auto buffer = c2k::MessageBuffer{};
         buffer << client.receive_exact(sizeof(int)).get();
         promise.set_value(buffer.try_extract<int>().value());
     });
@@ -274,7 +274,7 @@ TEST(SocketsTests, SendAndReceiveMultipleTimes) {
     auto const server = c2k::Sockets::create_server(c2k::AddressFamily::Ipv4, 0, [&promise](c2k::ClientSocket client) {
         auto result = std::vector<char>{};
         for (auto i = 0; i < 5; i++) {
-            auto buffer = c2k::Extractor{};
+            auto buffer = c2k::MessageBuffer{};
             buffer << client.receive(1).get();
             result.push_back(buffer.try_extract<char>().value());
         }
