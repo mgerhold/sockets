@@ -153,6 +153,10 @@ namespace c2k {
 
             void stop_running() {
                 *running = false;
+                // we have to ensure that running is set to false while holding the lock, otherwise we have a
+                // race condition regarding the condition variables which can lead to the threads blocking indefinitely
+                receive_tasks.apply([this](auto const&) { *running = false; });
+                send_tasks.apply([this](auto const&) { *running = false; });
                 data_received_condition_variable.notify_one();
                 data_sent_condition_variable.notify_one();
             }
