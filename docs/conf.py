@@ -20,3 +20,5 @@ exhale_args = {
     "rootFileName": "library_root.rst",
     "rootFileTitle": "Library API",
 }
+
+primary_domain = "cpp"
