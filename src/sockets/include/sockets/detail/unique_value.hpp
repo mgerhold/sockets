@@ -4,6 +4,18 @@
 #include <optional>
 
 namespace c2k {
+    /**
+     * @class UniqueValue
+     * @brief Represents a unique value with a customizable deleter.
+     *
+     * This class stores a single value of type T, which can be accessed through
+     * member functions. The value is owned uniquely by this class and will be
+     * deleted when the object is destroyed or when a new value is assigned to it.
+     * Additionally, the user can provide a callable object (deleter) to be called
+     * when the value needs to be deleted.
+     * This is similar to `std::unique_ptr<T>`, except that it doesn't store the
+     * contained value on the free store.
+     */
     template<typename T, typename Deleter = std::function<void(T)>>
     class UniqueValue final {
     private:
