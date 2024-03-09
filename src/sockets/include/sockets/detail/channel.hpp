@@ -11,6 +11,12 @@
 
 namespace c2k {
 
+    /**
+     * \brief Exception class for channel-related errors.
+     *
+     * This class is a subclass of std::runtime_error and is used to throw exceptions
+     * when there are errors related to channels.
+     */
     class ChannelError final : public std::runtime_error {
         using std::runtime_error::runtime_error;
     };
@@ -72,6 +78,9 @@ namespace c2k {
         };
     } // namespace detail
 
+    /**
+     * \brief Class for sending values through a channel.
+     */
     template<typename T>
     class Sender final : public detail::ChannelBase<T> {
         friend std::pair<Sender, Receiver<T>> create_channel<T>();
@@ -80,6 +89,12 @@ namespace c2k {
         using detail::ChannelBase<T>::ChannelBase;
 
     public:
+        /**
+         * \brief Sends a value through the channel. The call may block until the value can be sent.
+         *
+         * \param value The value to be sent through the channel.
+         * \throw ChannelError If the channel has already been closed or if send() is called on a moved-from channel.
+         */
         void send(T value) {
             if (this->state() == nullptr) {
                 throw ChannelError{ "cannot call send() on a moved-from channel" };
@@ -96,6 +111,18 @@ namespace c2k {
             this->state()->condition_variable.notify_one();
         }
 
+
+        /**
+         * \brief Attempts to send a value through the channel without blocking.
+         *
+         * This method attempts to send a value through the channel without blocking. If the channel has already been
+         * closed or if try_send() is called on a moved-from channel, a ChannelError exception is thrown.
+         *
+         * \param value The value to be sent through the channel.
+         * \return True if the value was successfully sent, false otherwise.
+         * \throws ChannelError If the channel has already been closed or if try_send() is called on a moved-from
+         *                      channel.
+         */
         [[nodiscard]] bool try_send(T value) {
             if (this->state() == nullptr) {
                 throw ChannelError{ "cannot call try_send() on a moved-from channel" };
@@ -111,6 +138,9 @@ namespace c2k {
         }
     };
 
+    /**
+     * \brief A class that represents a receiver in a channel.
+     */
     template<typename T>
     class Receiver final : public detail::ChannelBase<T> {
         friend std::pair<Sender<T>, Receiver> create_channel<T>();
@@ -119,6 +149,12 @@ namespace c2k {
         using detail::ChannelBase<T>::ChannelBase;
 
     public:
+        /**
+         * \brief Receives a value from the channel. This call blocks until a value is received.
+         *
+         * \return The value received from the channel.
+         * \throws ChannelError Thrown when the channel has already been moved from or closed.
+         */
         [[nodiscard]] T receive() {
             if (this->state() == nullptr) {
                 throw ChannelError{ "cannot call receive() on a moved-from channel" };
@@ -137,6 +173,15 @@ namespace c2k {
             return result;
         }
 
+        /**
+         * \brief Attempts to receive a value from the channel.
+         *
+         * This method tries to receive a value from the channel and does not block if no value is available.
+         * If the channel has been moved from or closed, a ChannelError exception is thrown.
+         *
+         * \return An optional containing the received value if available, or std::nullopt if no value is available.
+         * \throws ChannelError Thrown when the channel has already been moved from or closed.
+         */
         [[nodiscard]] std::optional<T> try_receive() {
             if (this->state() == nullptr) {
                 throw ChannelError{ "cannot call try_receive() on a moved-from channel" };
@@ -153,6 +198,15 @@ namespace c2k {
         }
     };
 
+    /**
+     * \brief Creates a channel for sending and receiving data.
+     *
+     * This function creates and returns a pair consisting of a sender and a receiver for
+     * the specified data type T.
+     *
+     * \tparam T The type of data to be sent and received.
+     * \return A pair of Sender and Receiver objects.
+     */
     template<typename T>
     [[nodiscard]] std::pair<Sender<T>, Receiver<T>> create_channel() {
         auto state = std::make_shared<detail::ChannelState<T>>();
@@ -169,6 +223,9 @@ namespace c2k {
     template<typename T>
     [[nodiscard]] std::pair<BidirectionalChannel<T>, BidirectionalChannel<T>> create_bidirectional_channel_pair();
 
+    /**
+     * \brief A bidirectional communication channel that allows sending and receiving data from both ends.
+     */
     template<typename T>
     class BidirectionalChannel final {
         friend std::pair<BidirectionalChannel, BidirectionalChannel> create_bidirectional_channel_pair<T>();
@@ -183,27 +240,72 @@ namespace c2k {
 
 
     public:
+        /**
+         * \brief Sends a value using the m_sender object.
+         *
+         * \param value The value to be sent.
+         * \throws ChannelError If the channel has already been closed or if try_send() is called on a moved-from
+         *                      channel.
+         */
         void send(T value) {
             m_sender.send(std::move(value));
         }
 
+
+        /**
+         * \brief Attempts to send a value through the channel without blocking.
+         *
+         * \param value The value to be sent through the channel.
+         * \return True if the value was successfully sent, false otherwise.
+         * \throws ChannelError If the channel has already been closed or if try_send() is called on a moved-from
+         *                      channel.
+         */
         [[nodiscard]] bool try_send(T value) {
             return m_sender.try_send(std::move(value));
         }
 
+        /**
+         * \brief Receive a value from the channel. This function blocks until a value is received from the channel.
+         *
+         * \tparam T The type of the value to receive.
+         * \return The received value.
+         * \throws ChannelError If the channel has already been closed or if try_send() is called on a moved-from
+         *                      channel.
+         */
         [[nodiscard]] T receive() {
             return m_receiver.receive();
         }
 
+        /**
+         * \brief Attempts to receive a value from the channel without blocking.
+         *
+         * \tparam T The type of the value to receive.
+         * \return An optional containing the received value if available, or std::nullopt if no value is available.
+         * \throws ChannelError Thrown when the channel has already been moved from or closed.
+         */
         [[nodiscard]] std::optional<T> try_receive() {
             return m_receiver.try_receive();
         }
 
+        /**
+         * \brief Checks if the channel is open.
+         *
+         * \return True if the channel is open, false otherwise.
+         */
         [[nodiscard]] bool is_open() const {
             return m_sender.is_open() and m_receiver.is_open();
         }
     };
 
+    /**
+     * \brief Creates a pair of bidirectional channels.
+     *
+     * This function creates a pair of bidirectional channels. It returns an `std::pair` containing two instances of
+     * `BidirectionalChannel<T>`, where `T` is the type of the channel values.
+     *
+     * \tparam T The type of the channel values.
+     * \return A `std::pair` containing two instances of `BidirectionalChannel<T>`.
+     */
     template<typename T>
     [[nodiscard]] std::pair<BidirectionalChannel<T>, BidirectionalChannel<T>> create_bidirectional_channel_pair() {
         auto [sender_a, receiver_a] = create_channel<T>();

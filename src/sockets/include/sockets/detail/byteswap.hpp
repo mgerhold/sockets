@@ -5,6 +5,17 @@
 #include <bit>
 #include <concepts>
 
+/**
+ * @brief Swap the byte order of a value.
+ *
+ * This function swaps the byte order of a given value.
+ * If the compiler supports `std::byteswap`, the function uses it.
+ * Otherwise, it reverses the byte representation manually.
+ *
+ * @tparam T The type of the value.
+ * @param value The value to swap the byte order of.
+ * @return The value with the byte order swapped.
+ */
 template<std::integral T>
 constexpr T byteswap(T value) noexcept {
 #ifdef __cpp_lib_byteswap
