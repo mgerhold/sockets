@@ -129,17 +129,37 @@
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN3c2k8ReceiverE">
 <span id="_CPPv3I0EN3c2k8ReceiverE"></span><span id="_CPPv2I0EN3c2k8ReceiverE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classc2k_1_1Receiver"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Receiver</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">c2k</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classc2k_1_1detail_1_1ChannelBase.html#_CPPv4I0EN3c2k6detail11ChannelBaseE" title="c2k::detail::ChannelBase"><span class="n"><span class="pre">ChannelBase</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN3c2k8ReceiverE" title="c2k::Receiver::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN3c2k8ReceiverE" title="Link to this definition"></a><br /></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><p>A class that represents a receiver in a channel. </p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3c2k8Receiver7receiveEv">
 <span id="_CPPv3N3c2k8Receiver7receiveEv"></span><span id="_CPPv2N3c2k8Receiver7receiveEv"></span><span id="c2k::Receiver::receive"></span><span class="target" id="classc2k_1_1Receiver_1a292515236c639c269c69ca20ead87976"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3c2k8ReceiverE" title="c2k::Receiver::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">receive</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k8Receiver7receiveEv" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Receives a value from the channel. This call blocks until a value is received. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classc2k_1_1ChannelError.html#_CPPv4N3c2k12ChannelErrorE" title="c2k::ChannelError"><span class="n">ChannelError</span></a></span></span> – Thrown when the channel has already been moved from or closed. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value received from the channel. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3c2k8Receiver11try_receiveEv">
 <span id="_CPPv3N3c2k8Receiver11try_receiveEv"></span><span id="_CPPv2N3c2k8Receiver11try_receiveEv"></span><span id="c2k::Receiver::try_receive"></span><span class="target" id="classc2k_1_1Receiver_1aa18044289cb28093e997fe5af87c441c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN3c2k8ReceiverE" title="c2k::Receiver::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">try_receive</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k8Receiver11try_receiveEv" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Attempts to receive a value from the channel. </p>
+<p>This method tries to receive a value from the channel and does not block if no value is available. If the channel has been moved from or closed, a <a class="reference internal" href="classc2k_1_1ChannelError.html#classc2k_1_1ChannelError"><span class="std std-ref">ChannelError</span></a> exception is thrown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classc2k_1_1ChannelError.html#_CPPv4N3c2k12ChannelErrorE" title="c2k::ChannelError"><span class="n">ChannelError</span></a></span></span> – Thrown when the channel has already been moved from or closed. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An optional containing the received value if available, or std::nullopt if no value is available. </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>

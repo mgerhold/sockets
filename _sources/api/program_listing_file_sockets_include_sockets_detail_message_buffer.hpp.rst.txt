@@ -31,6 +31,7 @@ Program Listing for File message_buffer.hpp
    
        public:
            MessageBuffer() = default;
+   
            explicit MessageBuffer(std::vector<std::byte> data) : m_data{ std::move(data) } { }
    
            [[nodiscard]] std::size_t size() const {
@@ -46,18 +47,18 @@ Program Listing for File message_buffer.hpp
            }
    
            template<std::integral T>
-           friend MessageBuffer& operator<<(MessageBuffer& package, T const value) {
+           friend MessageBuffer& operator<<(MessageBuffer& message_buffer, T const value) {
                auto buffer = std::array<std::byte, sizeof(value)>{};
                auto const network_value = to_network_byte_order(value);
                std::copy_n(reinterpret_cast<std::byte const*>(&network_value), sizeof(network_value), buffer.data());
-               package.m_data.insert(package.m_data.end(), buffer.cbegin(), buffer.cend());
-               return package;
+               message_buffer.m_data.insert(message_buffer.m_data.end(), buffer.cbegin(), buffer.cend());
+               return message_buffer;
            }
    
            template<std::integral T>
-           friend MessageBuffer&& operator<<(MessageBuffer&& package, T const value) {
-               package << value;
-               return std::move(package);
+           friend MessageBuffer&& operator<<(MessageBuffer&& message_buffer, T const value) {
+               message_buffer << value;
+               return std::move(message_buffer);
            }
    
            template<std::integral... Ts>

@@ -126,7 +126,9 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3c2k11unreachableEv">
 <span id="_CPPv3N3c2k11unreachableEv"></span><span id="_CPPv2N3c2k11unreachableEv"></span><span id="c2k::unreachable"></span><span class="target" id="unreachable_8hpp_1a61e71d7964b56e90b288ee015963696a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">c2k</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">unreachable</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k11unreachableEv" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">unreachable</span></code> function is used to mark a point in the code as unreachable. </p>
+<p>The <code class="docutils literal notranslate"><span class="pre">unreachable</span></code> function uses conditional compilation to invoke the appropriate mechanism for marking the code as unreachable. If the compiler supports the <code class="docutils literal notranslate"><span class="pre">__cpp_lib_unreachable</span></code> feature defined in the C++17 standard, it uses <code class="docutils literal notranslate"><span class="pre">std::unreachable()</span></code>. Otherwise, it falls back to compiler-specific mechanisms. For MSVC, it uses <code class="docutils literal notranslate"><span class="pre">__assume(false)</span></code>, and for GCC and Clang, it uses <code class="docutils literal notranslate"><span class="pre">__builtin_unreachable()</span></code>. </p>
+</dd></dl>
 
 </section>
 </section>

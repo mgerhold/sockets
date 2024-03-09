@@ -98,63 +98,6 @@
 <span class="w">        </span><span class="p">};</span>
 <span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="c1">// namespace detail</span>
 
-<span class="w">    </span><span class="cm">/*template&lt;typename T, typename Returner&gt;</span>
-<span class="cm">    class Locked final {</span>
-<span class="cm">        friend class Synchronized&lt;T&gt;;</span>
-
-<span class="cm">    private:</span>
-<span class="cm">        std::unique_ptr&lt;T&gt; m_data;</span>
-<span class="cm">        Returner m_returner;</span>
-
-<span class="cm">        Locked(std::unique_ptr&lt;T&gt; data, Returner returner)</span>
-<span class="cm">            : m_data{ std::move(data) },</span>
-<span class="cm">              m_returner{ std::move(returner) } { }</span>
-
-<span class="cm">        void throw_if_expired() const { }</span>
-
-<span class="cm">    public:</span>
-<span class="cm">        Locked(Locked const&amp; other) = delete;</span>
-<span class="cm">        Locked(Locked&amp;&amp; other) noexcept = default;</span>
-<span class="cm">        Locked&amp; operator=(Locked const&amp; other) = delete;</span>
-<span class="cm">        Locked&amp; operator=(Locked&amp;&amp; other) noexcept = default;</span>
-
-<span class="cm">        ~Locked() {</span>
-<span class="cm">            m_returner(std::move(*m_data));</span>
-<span class="cm">        }</span>
-
-<span class="cm">        [[nodiscard]] T const&amp; value() const&amp; {</span>
-<span class="cm">            throw_if_expired();</span>
-<span class="cm">            return *m_data;</span>
-<span class="cm">        }</span>
-
-<span class="cm">        [[nodiscard]] T&amp; value() &amp; {</span>
-<span class="cm">            throw_if_expired();</span>
-<span class="cm">            return *m_data;</span>
-<span class="cm">        }</span>
-
-<span class="cm">        T const&amp; operator*() &amp;&amp; = delete;</span>
-
-<span class="cm">        [[nodiscard]] T const&amp; operator*() const&amp; {</span>
-<span class="cm">            throw_if_expired();</span>
-<span class="cm">            return value();</span>
-<span class="cm">        }</span>
-
-<span class="cm">        [[nodiscard]] T&amp; operator*() &amp; {</span>
-<span class="cm">            throw_if_expired();</span>
-<span class="cm">            return value();</span>
-<span class="cm">        }</span>
-
-<span class="cm">        T const* operator-&gt;() &amp;&amp; = delete;</span>
-
-<span class="cm">        [[nodiscard]] T const* operator-&gt;() const&amp; {</span>
-<span class="cm">            return m_data.get();</span>
-<span class="cm">        }</span>
-
-<span class="cm">        [[nodiscard]] T* operator-&gt;() &amp; {</span>
-<span class="cm">            return m_data.get();</span>
-<span class="cm">        }</span>
-<span class="cm">    };*/</span>
-
 <span class="w">    </span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
 <span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">Synchronized</span><span class="w"> </span><span class="k">final</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">private</span><span class="o">:</span>

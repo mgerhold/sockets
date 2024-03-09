@@ -126,7 +126,20 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I_NSt8integralEE8byteswap1T1T">
 <span id="_CPPv3I_NSt8integralEE8byteswap1T"></span><span id="_CPPv2I_NSt8integralEE8byteswap1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">integral</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="byteswap_8hpp_1af444b5478f7ed9d836d32e512e4badd0"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_NSt8integralEE8byteswap1T1T" title="byteswap::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">byteswap</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_NSt8integralEE8byteswap1T1T" title="byteswap::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I_NSt8integralEE8byteswap1T1T" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Swap the byte order of a value. </p>
+<p>This function swaps the byte order of a given value. If the compiler supports <code class="docutils literal notranslate"><span class="pre">std::byteswap</span></code>, the function uses it. Otherwise, it reverses the byte representation manually.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – The type of the value. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>value</strong> – The value to swap the byte order of. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The value with the byte order swapped. </p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 </section>

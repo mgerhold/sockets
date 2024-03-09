@@ -108,6 +108,7 @@ Program Listing for File channel.hpp
                this->state()->condition_variable.notify_one();
            }
    
+   
            [[nodiscard]] bool try_send(T value) {
                if (this->state() == nullptr) {
                    throw ChannelError{ "cannot call try_send() on a moved-from channel" };
@@ -198,6 +199,7 @@ Program Listing for File channel.hpp
            void send(T value) {
                m_sender.send(std::move(value));
            }
+   
    
            [[nodiscard]] bool try_send(T value) {
                return m_sender.try_send(std::move(value));

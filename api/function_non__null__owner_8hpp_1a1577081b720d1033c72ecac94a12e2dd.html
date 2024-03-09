@@ -126,7 +126,28 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0DpEN3c2k19make_non_null_ownerE12NonNullOwnerI1TEDpRR4Args">
 <span id="_CPPv3I0DpEN3c2k19make_non_null_ownerEDpRR4Args"></span><span id="_CPPv2I0DpEN3c2k19make_non_null_ownerEDpRR4Args"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="non__null__owner_8hpp_1a1577081b720d1033c72ecac94a12e2dd"></span><a class="reference internal" href="classc2k_1_1NonNullOwner.html#_CPPv4I_NSt21default_initializableEEN3c2k12NonNullOwnerE" title="c2k::NonNullOwner"><span class="n"><span class="pre">NonNullOwner</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0DpEN3c2k19make_non_null_ownerE12NonNullOwnerI1TEDpRR4Args" title="c2k::make_non_null_owner::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">c2k</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">make_non_null_owner</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0DpEN3c2k19make_non_null_ownerE12NonNullOwnerI1TEDpRR4Args" title="c2k::make_non_null_owner::Args"><span class="n"><span class="pre">Args</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">args</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0DpEN3c2k19make_non_null_ownerE12NonNullOwnerI1TEDpRR4Args" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Creates a <code class="docutils literal notranslate"><a class="reference internal" href="classc2k_1_1NonNullOwner.html#classc2k_1_1NonNullOwner"><span class="std std-ref"><span class="pre">NonNullOwner</span></span></a></code> object. </p>
+<p>This function creates and returns a <code class="docutils literal notranslate"><a class="reference internal" href="classc2k_1_1NonNullOwner.html#classc2k_1_1NonNullOwner"><span class="std std-ref"><span class="pre">NonNullOwner</span></span></a></code> object, which is used to manage ownership of a dynamically allocated object that cannot be <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>.</p>
+<p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="classc2k_1_1NonNullOwner.html#classc2k_1_1NonNullOwner"><span class="std std-ref">NonNullOwner</span></a></p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – The type of object to be owned. </p></li>
+<li><p><strong>Args</strong> – The types of arguments to be passed to the object’s constructor. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>args</strong> – The arguments to be forwarded to the object’s constructor. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A <code class="docutils literal notranslate"><a class="reference internal" href="classc2k_1_1NonNullOwner.html#classc2k_1_1NonNullOwner"><span class="std std-ref"><span class="pre">NonNullOwner</span></span></a></code> object that owns the newly created object of type <code class="docutils literal notranslate"><span class="pre">T</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 </section>

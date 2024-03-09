@@ -120,32 +120,84 @@
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN3c2k20BidirectionalChannelE">
 <span id="_CPPv3I0EN3c2k20BidirectionalChannelE"></span><span id="_CPPv2I0EN3c2k20BidirectionalChannelE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classc2k_1_1BidirectionalChannel"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BidirectionalChannel</span></span></span><a class="headerlink" href="#_CPPv4I0EN3c2k20BidirectionalChannelE" title="Link to this definition"></a><br /></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><p>A bidirectional communication channel that allows sending and receiving data from both ends. </p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3c2k20BidirectionalChannel4sendE1T">
 <span id="_CPPv3N3c2k20BidirectionalChannel4sendE1T"></span><span id="_CPPv2N3c2k20BidirectionalChannel4sendE1T"></span><span id="c2k::BidirectionalChannel::send__T"></span><span class="target" id="classc2k_1_1BidirectionalChannel_1aaedd5efa577fb2fce73655f21803a9b7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">send</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN3c2k20BidirectionalChannelE" title="c2k::BidirectionalChannel::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k20BidirectionalChannel4sendE1T" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Sends a value using the m_sender object. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> – The value to be sent. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classc2k_1_1ChannelError.html#_CPPv4N3c2k12ChannelErrorE" title="c2k::ChannelError"><span class="n">ChannelError</span></a></span></span> – If the channel has already been closed or if <a class="reference internal" href="#classc2k_1_1BidirectionalChannel_1a4e1d0dc45d7862e19ce0102ca2ff9527"><span class="std std-ref">try_send()</span></a> is called on a moved-from channel. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3c2k20BidirectionalChannel8try_sendE1T">
 <span id="_CPPv3N3c2k20BidirectionalChannel8try_sendE1T"></span><span id="_CPPv2N3c2k20BidirectionalChannel8try_sendE1T"></span><span id="c2k::BidirectionalChannel::try_send__T"></span><span class="target" id="classc2k_1_1BidirectionalChannel_1a4e1d0dc45d7862e19ce0102ca2ff9527"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">try_send</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN3c2k20BidirectionalChannelE" title="c2k::BidirectionalChannel::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k20BidirectionalChannel8try_sendE1T" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Attempts to send a value through the channel without blocking. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> – The value to be sent through the channel. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classc2k_1_1ChannelError.html#_CPPv4N3c2k12ChannelErrorE" title="c2k::ChannelError"><span class="n">ChannelError</span></a></span></span> – If the channel has already been closed or if <a class="reference internal" href="#classc2k_1_1BidirectionalChannel_1a4e1d0dc45d7862e19ce0102ca2ff9527"><span class="std std-ref">try_send()</span></a> is called on a moved-from channel. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the value was successfully sent, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3c2k20BidirectionalChannel7receiveEv">
 <span id="_CPPv3N3c2k20BidirectionalChannel7receiveEv"></span><span id="_CPPv2N3c2k20BidirectionalChannel7receiveEv"></span><span id="c2k::BidirectionalChannel::receive"></span><span class="target" id="classc2k_1_1BidirectionalChannel_1ad505b14fbe117cdca804ee2b7db7c5b6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3c2k20BidirectionalChannelE" title="c2k::BidirectionalChannel::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">receive</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k20BidirectionalChannel7receiveEv" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Receive a value from the channel. This function blocks until a value is received from the channel. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – The type of the value to receive. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classc2k_1_1ChannelError.html#_CPPv4N3c2k12ChannelErrorE" title="c2k::ChannelError"><span class="n">ChannelError</span></a></span></span> – If the channel has already been closed or if <a class="reference internal" href="#classc2k_1_1BidirectionalChannel_1a4e1d0dc45d7862e19ce0102ca2ff9527"><span class="std std-ref">try_send()</span></a> is called on a moved-from channel. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The received value. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3c2k20BidirectionalChannel11try_receiveEv">
 <span id="_CPPv3N3c2k20BidirectionalChannel11try_receiveEv"></span><span id="_CPPv2N3c2k20BidirectionalChannel11try_receiveEv"></span><span id="c2k::BidirectionalChannel::try_receive"></span><span class="target" id="classc2k_1_1BidirectionalChannel_1a54e89d6d9be7cd22b1dbf0a182276942"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN3c2k20BidirectionalChannelE" title="c2k::BidirectionalChannel::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">try_receive</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k20BidirectionalChannel11try_receiveEv" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Attempts to receive a value from the channel without blocking. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – The type of the value to receive. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classc2k_1_1ChannelError.html#_CPPv4N3c2k12ChannelErrorE" title="c2k::ChannelError"><span class="n">ChannelError</span></a></span></span> – Thrown when the channel has already been moved from or closed. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An optional containing the received value if available, or std::nullopt if no value is available. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3c2k20BidirectionalChannel7is_openEv">
 <span id="_CPPv3NK3c2k20BidirectionalChannel7is_openEv"></span><span id="_CPPv2NK3c2k20BidirectionalChannel7is_openEv"></span><span id="c2k::BidirectionalChannel::is_openC"></span><span class="target" id="classc2k_1_1BidirectionalChannel_1a13579c824ee6ecfa887c0c8a014ee17c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_open</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3c2k20BidirectionalChannel7is_openEv" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Checks if the channel is open. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the channel is open, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>

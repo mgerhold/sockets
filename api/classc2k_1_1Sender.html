@@ -129,17 +129,40 @@
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN3c2k6SenderE">
 <span id="_CPPv3I0EN3c2k6SenderE"></span><span id="_CPPv2I0EN3c2k6SenderE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classc2k_1_1Sender"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Sender</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">c2k</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classc2k_1_1detail_1_1ChannelBase.html#_CPPv4I0EN3c2k6detail11ChannelBaseE" title="c2k::detail::ChannelBase"><span class="n"><span class="pre">ChannelBase</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN3c2k6SenderE" title="c2k::Sender::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN3c2k6SenderE" title="Link to this definition"></a><br /></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><p>Class for sending values through a channel. </p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3c2k6Sender4sendE1T">
 <span id="_CPPv3N3c2k6Sender4sendE1T"></span><span id="_CPPv2N3c2k6Sender4sendE1T"></span><span id="c2k::Sender::send__T"></span><span class="target" id="classc2k_1_1Sender_1a964dc81b7a1710f25f80c929fc552aaa"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">send</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN3c2k6SenderE" title="c2k::Sender::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k6Sender4sendE1T" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Sends a value through the channel. The call may block until the value can be sent. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> – The value to be sent through the channel. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classc2k_1_1ChannelError.html#_CPPv4N3c2k12ChannelErrorE" title="c2k::ChannelError"><span class="n">ChannelError</span></a></span></span> – If the channel has already been closed or if <a class="reference internal" href="#classc2k_1_1Sender_1a964dc81b7a1710f25f80c929fc552aaa"><span class="std std-ref">send()</span></a> is called on a moved-from channel. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3c2k6Sender8try_sendE1T">
 <span id="_CPPv3N3c2k6Sender8try_sendE1T"></span><span id="_CPPv2N3c2k6Sender8try_sendE1T"></span><span id="c2k::Sender::try_send__T"></span><span class="target" id="classc2k_1_1Sender_1af54447771134bc14b5f6fa5b61170d6f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">try_send</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN3c2k6SenderE" title="c2k::Sender::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k6Sender8try_sendE1T" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Attempts to send a value through the channel without blocking. </p>
+<p>This method attempts to send a value through the channel without blocking. If the channel has already been closed or if <a class="reference internal" href="#classc2k_1_1Sender_1af54447771134bc14b5f6fa5b61170d6f"><span class="std std-ref">try_send()</span></a> is called on a moved-from channel, a <a class="reference internal" href="classc2k_1_1ChannelError.html#classc2k_1_1ChannelError"><span class="std std-ref">ChannelError</span></a> exception is thrown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> – The value to be sent through the channel. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classc2k_1_1ChannelError.html#_CPPv4N3c2k12ChannelErrorE" title="c2k::ChannelError"><span class="n">ChannelError</span></a></span></span> – If the channel has already been closed or if <a class="reference internal" href="#classc2k_1_1Sender_1af54447771134bc14b5f6fa5b61170d6f"><span class="std std-ref">try_send()</span></a> is called on a moved-from channel. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the value was successfully sent, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>

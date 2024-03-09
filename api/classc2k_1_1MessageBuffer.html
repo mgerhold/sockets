@@ -120,60 +120,152 @@
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3c2k13MessageBufferE">
 <span id="_CPPv3N3c2k13MessageBufferE"></span><span id="_CPPv2N3c2k13MessageBufferE"></span><span id="c2k::MessageBuffer"></span><span class="target" id="classc2k_1_1MessageBuffer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MessageBuffer</span></span></span><a class="headerlink" href="#_CPPv4N3c2k13MessageBufferE" title="Link to this definition"></a><br /></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><p>A class for storing and manipulating message data. </p>
+<p>The <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> class provides operations to store and manipulate message data. It allows appending data to the buffer, extracting values from the buffer, and providing access to the underlying buffer data. It automatically handles converting between network byte order and native byte order. </p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3c2k13MessageBuffer13MessageBufferEv">
 <span id="_CPPv3N3c2k13MessageBuffer13MessageBufferEv"></span><span id="_CPPv2N3c2k13MessageBuffer13MessageBufferEv"></span><span id="c2k::MessageBuffer::MessageBuffer"></span><span class="target" id="classc2k_1_1MessageBuffer_1aab3557dbfb4556f938d4dcfca1624f7c"></span><span class="sig-name descname"><span class="n"><span class="pre">MessageBuffer</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3c2k13MessageBuffer13MessageBufferEv" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Creates a <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> object with an empty data buffer. </p>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3c2k13MessageBuffer13MessageBufferENSt6vectorINSt4byteEEE">
 <span id="_CPPv3N3c2k13MessageBuffer13MessageBufferENSt6vectorINSt4byteEEE"></span><span id="_CPPv2N3c2k13MessageBuffer13MessageBufferENSt6vectorINSt4byteEEE"></span><span id="c2k::MessageBuffer::MessageBuffer__std::vector:std::byte:"></span><span class="target" id="classc2k_1_1MessageBuffer_1acc2b311dc8f8da65fab66fcf94a17494"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MessageBuffer</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k13MessageBuffer13MessageBufferENSt6vectorINSt4byteEEE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Creates a <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> object using the specified data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – The vector containing the data to be stored in the <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3c2k13MessageBuffer4sizeEv">
 <span id="_CPPv3NK3c2k13MessageBuffer4sizeEv"></span><span id="_CPPv2NK3c2k13MessageBuffer4sizeEv"></span><span id="c2k::MessageBuffer::sizeC"></span><span class="target" id="classc2k_1_1MessageBuffer_1ac503bd95c66a2a234ab413dd90ee2c34"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3c2k13MessageBuffer4sizeEv" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Returns the size of the <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The size of the <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> in bytes. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NKR3c2k13MessageBuffer4dataEv">
 <span id="_CPPv3NKR3c2k13MessageBuffer4dataEv"></span><span id="_CPPv2NKR3c2k13MessageBuffer4dataEv"></span><span id="c2k::MessageBuffer::dataCR"></span><span class="target" id="classc2k_1_1MessageBuffer_1ad121de43cfb83eb8d64c627ed92d4766"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><a class="headerlink" href="#_CPPv4NKR3c2k13MessageBuffer4dataEv" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Returns a reference to the underlying data vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A const reference to the underlying data vector. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NO3c2k13MessageBuffer4dataEv">
 <span id="_CPPv3NO3c2k13MessageBuffer4dataEv"></span><span id="_CPPv2NO3c2k13MessageBuffer4dataEv"></span><span id="c2k::MessageBuffer::dataO"></span><span class="target" id="classc2k_1_1MessageBuffer_1ac7662b40fc874b9c843b3ef58bb563fd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">&amp;&amp;</span></span><a class="headerlink" href="#_CPPv4NO3c2k13MessageBuffer4dataEv" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Returns the data vector by moving it. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The data vector of the <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> object. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I_DpNSt8integralEEN3c2k13MessageBuffer11try_extractEDav">
 <span id="_CPPv3I_DpNSt8integralEEN3c2k13MessageBuffer11try_extractEv"></span><span id="_CPPv2I_DpNSt8integralEEN3c2k13MessageBuffer11try_extractEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">integral</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Ts</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classc2k_1_1MessageBuffer_1af5917d90bb946a1e7f1e1160bc7a4c66"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">try_extract</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_DpNSt8integralEEN3c2k13MessageBuffer11try_extractEDav" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Tries to extract values from the <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a>. </p>
+<p>This function tries to extract values from the <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> based on the specified types. Converting between network byte order and native byte order is handled automatically. If the size of the <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> is not sufficient to extract all the specified types, an empty optional is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Ts</strong> – The types of the values to extract. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An optional containing the extracted value (if only one), an optional containing an std::tuple or of the requested values, or an empty optional if extraction fails. </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-friends">Friends</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I_NSt8integralEEN3c2k13MessageBufferlsER13MessageBufferR13MessageBufferK1T">
-<span id="_CPPv3I_NSt8integralEEN3c2k13MessageBufferlsER13MessageBufferK1T"></span><span id="_CPPv2I_NSt8integralEEN3c2k13MessageBufferlsER13MessageBufferK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">integral</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classc2k_1_1MessageBuffer_1aaf1454d19bb99ff82e02cb1d6f11bbf3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3c2k13MessageBufferE" title="c2k::MessageBuffer"><span class="n"><span class="pre">MessageBuffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3c2k13MessageBufferE" title="c2k::MessageBuffer"><span class="n"><span class="pre">MessageBuffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">package</span></span>, <a class="reference internal" href="#_CPPv4I_NSt8integralEEN3c2k13MessageBufferlsER13MessageBufferR13MessageBufferK1T" title="c2k::MessageBuffer::operator&lt;&lt;::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_NSt8integralEEN3c2k13MessageBufferlsER13MessageBufferR13MessageBufferK1T" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<span id="_CPPv3I_NSt8integralEEN3c2k13MessageBufferlsER13MessageBufferK1T"></span><span id="_CPPv2I_NSt8integralEEN3c2k13MessageBufferlsER13MessageBufferK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">integral</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classc2k_1_1MessageBuffer_1aa5ee09092301e53c29cabeb1bd2f11b7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3c2k13MessageBufferE" title="c2k::MessageBuffer"><span class="n"><span class="pre">MessageBuffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3c2k13MessageBufferE" title="c2k::MessageBuffer"><span class="n"><span class="pre">MessageBuffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">message_buffer</span></span>, <a class="reference internal" href="#_CPPv4I_NSt8integralEEN3c2k13MessageBufferlsER13MessageBufferR13MessageBufferK1T" title="c2k::MessageBuffer::operator&lt;&lt;::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_NSt8integralEEN3c2k13MessageBufferlsER13MessageBufferR13MessageBufferK1T" title="Link to this definition"></a><br /></dt>
+<dd><p>Overloaded insertion operator for appending a value to a <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a>. </p>
+<p>This operator allows appending a value of type T to a <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> object. The value is first converted to network byte order, and then appended to the <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a>’s internal data storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message_buffer</strong> – The <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> to append the value to. </p></li>
+<li><p><strong>value</strong> – The value to be appended to the <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A reference to the modified <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> object. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I_NSt8integralEEN3c2k13MessageBufferlsERR13MessageBufferRR13MessageBufferK1T">
-<span id="_CPPv3I_NSt8integralEEN3c2k13MessageBufferlsERR13MessageBufferK1T"></span><span id="_CPPv2I_NSt8integralEEN3c2k13MessageBufferlsERR13MessageBufferK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">integral</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classc2k_1_1MessageBuffer_1a93b20416b675f04c0afd701d9bb00d9d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3c2k13MessageBufferE" title="c2k::MessageBuffer"><span class="n"><span class="pre">MessageBuffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3c2k13MessageBufferE" title="c2k::MessageBuffer"><span class="n"><span class="pre">MessageBuffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">package</span></span>, <a class="reference internal" href="#_CPPv4I_NSt8integralEEN3c2k13MessageBufferlsERR13MessageBufferRR13MessageBufferK1T" title="c2k::MessageBuffer::operator&lt;&lt;::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_NSt8integralEEN3c2k13MessageBufferlsERR13MessageBufferRR13MessageBufferK1T" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<span id="_CPPv3I_NSt8integralEEN3c2k13MessageBufferlsERR13MessageBufferK1T"></span><span id="_CPPv2I_NSt8integralEEN3c2k13MessageBufferlsERR13MessageBufferK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">integral</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classc2k_1_1MessageBuffer_1adce8e410bb5c9464edadecfaeacac581"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3c2k13MessageBufferE" title="c2k::MessageBuffer"><span class="n"><span class="pre">MessageBuffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3c2k13MessageBufferE" title="c2k::MessageBuffer"><span class="n"><span class="pre">MessageBuffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">message_buffer</span></span>, <a class="reference internal" href="#_CPPv4I_NSt8integralEEN3c2k13MessageBufferlsERR13MessageBufferRR13MessageBufferK1T" title="c2k::MessageBuffer::operator&lt;&lt;::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_NSt8integralEEN3c2k13MessageBufferlsERR13MessageBufferRR13MessageBufferK1T" title="Link to this definition"></a><br /></dt>
+<dd><p>Overloaded insertion operator for appending a value to a <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a>. </p>
+<p>This operator allows appending a value of type T to a <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> object. The value is first converted to network byte order, and then appended to the <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a>’s internal data storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message_buffer</strong> – The <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> to append the value to. </p></li>
+<li><p><strong>value</strong> – The value to be appended to the <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A reference to the modified <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> object. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3c2k13MessageBufferrsER13MessageBufferRNSt8integralE">
 <span id="_CPPv3N3c2k13MessageBufferrsER13MessageBufferRNSt8integralE"></span><span id="_CPPv2N3c2k13MessageBufferrsER13MessageBufferRNSt8integralE"></span><span id="c2k::MessageBuffer::rshift-operator__MessageBufferR.std::integralR"></span><span class="target" id="classc2k_1_1MessageBuffer_1ad4d9446994f01b0dd1f1445efade9945"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3c2k13MessageBufferE" title="c2k::MessageBuffer"><span class="n"><span class="pre">MessageBuffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&gt;&gt;</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3c2k13MessageBufferE" title="c2k::MessageBuffer"><span class="n"><span class="pre">MessageBuffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">message_buffer</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">integral</span></span><span class="w"> </span><span class="k"><span class="pre">auto</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">target</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k13MessageBufferrsER13MessageBufferRNSt8integralE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Overloads the &gt;&gt; operator for extracting data from a <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> into an integral type. </p>
+<p>This function extracts a value from a <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> and stores it in the provided integral type, after converting it from network byte order to native byte order. If the <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> does not contain enough data to extract the value, a std::runtime_error is thrown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message_buffer</strong> – The <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> from which to extract the value. </p></li>
+<li><p><strong>target</strong> – The integral type variable in which to store the extracted value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">runtime_error</span></span></span> – if not enough data is available in the <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a>. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A reference to the original <a class="reference internal" href="#classc2k_1_1MessageBuffer"><span class="std std-ref">MessageBuffer</span></a> object after extraction.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3c2k13MessageBufferlsER13MessageBufferKNSt4spanIKNSt4byteEEE">
 <span id="_CPPv3N3c2k13MessageBufferlsER13MessageBufferKNSt4spanIKNSt4byteEEE"></span><span id="_CPPv2N3c2k13MessageBufferlsER13MessageBufferKNSt4spanIKNSt4byteEEE"></span><span id="c2k::MessageBuffer::lshift-operator__MessageBufferR.std::span:std::byteC:C"></span><span class="target" id="classc2k_1_1MessageBuffer_1acbae62b3d7d61ce1eb55e50a89834069"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3c2k13MessageBufferE" title="c2k::MessageBuffer"><span class="n"><span class="pre">MessageBuffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3c2k13MessageBufferE" title="c2k::MessageBuffer"><span class="n"><span class="pre">MessageBuffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">message_buffer</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">span</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k13MessageBufferlsER13MessageBufferKNSt4spanIKNSt4byteEEE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Appends the provided data to the message buffer. </p>
+<p>The <code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;</span></code> function allows appending <code class="docutils literal notranslate"><span class="pre">data</span></code> to the <code class="docutils literal notranslate"><span class="pre">message_buffer</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message_buffer</strong> – The message buffer to append data to. </p></li>
+<li><p><strong>data</strong> – The data to append to the message buffer. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A reference to the <code class="docutils literal notranslate"><span class="pre">message_buffer</span></code> after the data has been appended. </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>

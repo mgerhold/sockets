@@ -126,7 +126,21 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4IDpEN3c2k6detail13summed_sizeofENSt6size_tEv">
 <span id="_CPPv3IDpEN3c2k6detail13summed_sizeofEv"></span><span id="_CPPv2IDpEN3c2k6detail13summed_sizeofEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Ts</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="utils_8hpp_1a54ac1e28648991582adf63e9f9b6b1ce"></span><span class="k"><span class="pre">consteval</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">c2k</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">summed_sizeof</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpEN3c2k6detail13summed_sizeofENSt6size_tEv" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Calculate the combined size of multiple types. </p>
+<p>This function calculates and returns the sum of the sizes of the specified types. The size is calculated using the sizeof operator.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is a consteval, which means it will be evaluated at compile-time. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Ts</strong> – The types whose sizes are to be summed. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The combined size of the types.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 </section>
