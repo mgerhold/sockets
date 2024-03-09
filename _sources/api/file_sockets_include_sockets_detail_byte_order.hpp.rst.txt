@@ -1,0 +1,73 @@
+
+.. _file_sockets_include_sockets_detail_byte_order.hpp:
+
+File byte_order.hpp
+===================
+
+|exhale_lsh| :ref:`Parent directory <dir_sockets_include_sockets_detail>` (``sockets/include/sockets/detail``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``sockets/include/sockets/detail/byte_order.hpp``)
+--------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_sockets_include_sockets_detail_byte_order.hpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``bit``
+
+- ``byteswap.hpp`` (:ref:`file_sockets_include_sockets_detail_byteswap.hpp`)
+
+
+
+Included By
+-----------
+
+
+- :ref:`file_sockets_include_sockets_detail_message_buffer.hpp`
+
+- :ref:`file_sockets_include_sockets_sockets.hpp`
+
+- :ref:`file_sockets_socket.cpp`
+
+
+
+
+Namespaces
+----------
+
+
+- :ref:`namespace_c2k`
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_byte__order_8hpp_1a8748bb18b795889c01a6326f53e2ab4e`
+
+- :ref:`exhale_function_byte__order_8hpp_1a668fa02275bc6fa6d5342b3d3efb030e`
+
+
+Variables
+---------
+
+
+- :ref:`exhale_variable_byte__order_8hpp_1accc2e0dcc557c1d62a76ce1c1469ffbc`
+

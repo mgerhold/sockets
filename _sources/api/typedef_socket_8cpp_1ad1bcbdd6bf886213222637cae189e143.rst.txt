@@ -1,0 +1,14 @@
+.. _exhale_typedef_socket_8cpp_1ad1bcbdd6bf886213222637cae189e143:
+
+Typedef c2k::AddressInfos
+=========================
+
+- Defined in :ref:`file_sockets_socket.cpp`
+
+
+Typedef Documentation
+---------------------
+
+
+.. doxygentypedef:: c2k::AddressInfos
+   :project: Sockets

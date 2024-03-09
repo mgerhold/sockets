@@ -1,0 +1,32 @@
+
+.. _program_listing_file_sockets_include_sockets_detail_unreachable.hpp:
+
+Program Listing for File unreachable.hpp
+========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sockets_include_sockets_detail_unreachable.hpp>` (``sockets/include/sockets/detail/unreachable.hpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #pragma once
+   
+   #include <version>
+   #ifdef __cpp_lib_unreachable
+   #include <utility>
+   #endif
+   
+   namespace c2k {
+       [[noreturn]] inline void unreachable() {
+   #ifdef __cpp_lib_unreachable
+           std::unreachable();
+   #else
+   #if defined(_MSC_VER) && !defined(__clang__) // MSVC
+           __assume(false);
+   #else                                        // GCC, Clang
+           __builtin_unreachable();
+   #endif
+   #endif
+       }
+   } // namespace c2k

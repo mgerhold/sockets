@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class ServerSocket &mdash; Sockets  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class Sockets" href="classc2k_1_1Sockets.html" />
+    <link rel="prev" title="Class SendError" href="classc2k_1_1SendError.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sockets
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Some important topic</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#namespaces">Namespaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1AddressInfo.html">Struct AddressInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1ClientSocket_1_1ReceiveTask.html">Struct ClientSocket::ReceiveTask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1ClientSocket_1_1SendTask.html">Struct ClientSocket::SendTask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1detail_1_1ChannelState.html">Template Struct ChannelState</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1AbstractSocket.html">Class AbstractSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1BidirectionalChannel.html">Template Class BidirectionalChannel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ChannelError.html">Class ChannelError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ClientSocket.html">Class ClientSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ClientSocket_1_1State.html">Class ClientSocket::State</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1detail_1_1ChannelBase.html">Template Class ChannelBase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1MessageBuffer.html">Class MessageBuffer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1NonNullOwner.html">Template Class NonNullOwner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ReadError.html">Class ReadError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Receiver.html">Template Class Receiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Sender.html">Template Class Sender</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1SendError.html">Class SendError</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Class ServerSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Sockets.html">Class Sockets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Synchronized.html">Template Class Synchronized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1TimeoutError.html">Class TimeoutError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1UniqueValue.html">Template Class UniqueValue</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#enums">Enums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#variables">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#typedefs">Typedefs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sockets</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="library_root.html">Library API</a></li>
+      <li class="breadcrumb-item active">Class ServerSocket</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/classc2k_1_1ServerSocket.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-serversocket">
+<span id="exhale-class-classc2k-1-1serversocket"></span><h1>Class ServerSocket<a class="headerlink" href="#class-serversocket" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_sockets_include_sockets_detail_socket.hpp.html#file-sockets-include-sockets-detail-socket-hpp"><span class="std std-ref">File socket.hpp</span></a></p></li>
+</ul>
+<section id="inheritance-relationships">
+<h2>Inheritance Relationships<a class="headerlink" href="#inheritance-relationships" title="Link to this heading"></a></h2>
+<section id="base-type">
+<h3>Base Type<a class="headerlink" href="#base-type" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">c2k::AbstractSocket</span></code> (<a class="reference internal" href="classc2k_1_1AbstractSocket.html#exhale-class-classc2k-1-1abstractsocket"><span class="std std-ref">Class AbstractSocket</span></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ServerSocketE">
+<span id="_CPPv3N3c2k12ServerSocketE"></span><span id="_CPPv2N3c2k12ServerSocketE"></span><span id="c2k::ServerSocket"></span><span class="target" id="classc2k_1_1ServerSocket"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ServerSocket</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">c2k</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classc2k_1_1AbstractSocket.html#_CPPv4N3c2k14AbstractSocketE" title="c2k::AbstractSocket"><span class="n"><span class="pre">AbstractSocket</span></span></a><a class="headerlink" href="#_CPPv4N3c2k12ServerSocketE" title="Link to this definition"></a><br /></dt>
+<dd><p>Represents a server socket that listens for incoming connections. </p>
+<p>This class inherits from <a class="reference internal" href="classc2k_1_1AbstractSocket.html#classc2k_1_1AbstractSocket"><span class="std std-ref">AbstractSocket</span></a> and provides functionality to create a server socket and handle incoming connections. It starts a listening thread to actively accept incoming connections and a callback function to handle the new client sockets. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ServerSocket12ServerSocketERR12ServerSocket">
+<span id="_CPPv3N3c2k12ServerSocket12ServerSocketERR12ServerSocket"></span><span id="_CPPv2N3c2k12ServerSocket12ServerSocketERR12ServerSocket"></span><span id="c2k::ServerSocket::ServerSocket__ServerSocketRR"></span><span class="target" id="classc2k_1_1ServerSocket_1a88d6c143cc111ad56c6ef3f1033b3325"></span><span class="sig-name descname"><span class="n"><span class="pre">ServerSocket</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3c2k12ServerSocket12ServerSocketERR12ServerSocket" title="c2k::ServerSocket::ServerSocket"><span class="n"><span class="pre">ServerSocket</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3c2k12ServerSocket12ServerSocketERR12ServerSocket" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ServerSocketaSERR12ServerSocket">
+<span id="_CPPv3N3c2k12ServerSocketaSERR12ServerSocket"></span><span id="_CPPv2N3c2k12ServerSocketaSERR12ServerSocket"></span><span id="c2k::ServerSocket::assign-operator__ServerSocketRR"></span><span class="target" id="classc2k_1_1ServerSocket_1a449fbebf82ede199c7fa723d52941a3b"></span><a class="reference internal" href="#_CPPv4N3c2k12ServerSocketE" title="c2k::ServerSocket"><span class="n"><span class="pre">ServerSocket</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3c2k12ServerSocketE" title="c2k::ServerSocket"><span class="n"><span class="pre">ServerSocket</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3c2k12ServerSocketaSERR12ServerSocket" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ServerSocketD0Ev">
+<span id="_CPPv3N3c2k12ServerSocketD0Ev"></span><span id="_CPPv2N3c2k12ServerSocketD0Ev"></span><span id="c2k::ServerSocket::~ServerSocket"></span><span class="target" id="classc2k_1_1ServerSocket_1af09fca8fab07bca682f2fd201a2d33cf"></span><span class="sig-name descname"><span class="n"><span class="pre">~ServerSocket</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k12ServerSocketD0Ev" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ServerSocket4stopEv">
+<span id="_CPPv3N3c2k12ServerSocket4stopEv"></span><span id="_CPPv2N3c2k12ServerSocket4stopEv"></span><span id="c2k::ServerSocket::stop"></span><span class="target" id="classc2k_1_1ServerSocket_1af5feee9664531fd3c39827ab20539125"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stop</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k12ServerSocket4stopEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Stop the server listening thread. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classc2k_1_1SendError.html" class="btn btn-neutral float-left" title="Class SendError" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classc2k_1_1Sockets.html" class="btn btn-neutral float-right" title="Class Sockets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Michael Gerhold.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

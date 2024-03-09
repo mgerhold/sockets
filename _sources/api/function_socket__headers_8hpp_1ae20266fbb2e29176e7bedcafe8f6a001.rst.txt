@@ -1,0 +1,14 @@
+.. _exhale_function_socket__headers_8hpp_1ae20266fbb2e29176e7bedcafe8f6a001:
+
+Function closesocket
+====================
+
+- Defined in :ref:`file_sockets_socket_headers.hpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: closesocket(int const)
+   :project: Sockets

@@ -1,0 +1,74 @@
+
+.. _file_sockets_include_sockets_sockets.hpp:
+
+File sockets.hpp
+================
+
+|exhale_lsh| :ref:`Parent directory <dir_sockets_include_sockets>` (``sockets/include/sockets``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``sockets/include/sockets/sockets.hpp``)
+----------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_sockets_include_sockets_sockets.hpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``detail/address_family.hpp`` (:ref:`file_sockets_include_sockets_detail_address_family.hpp`)
+
+- ``detail/address_info.hpp`` (:ref:`file_sockets_include_sockets_detail_address_info.hpp`)
+
+- ``detail/byte_order.hpp`` (:ref:`file_sockets_include_sockets_detail_byte_order.hpp`)
+
+- ``detail/message_buffer.hpp`` (:ref:`file_sockets_include_sockets_detail_message_buffer.hpp`)
+
+- ``detail/non_null_owner.hpp`` (:ref:`file_sockets_include_sockets_detail_non_null_owner.hpp`)
+
+- ``detail/socket.hpp`` (:ref:`file_sockets_include_sockets_detail_socket.hpp`)
+
+- ``detail/synchronized.hpp`` (:ref:`file_sockets_include_sockets_detail_synchronized.hpp`)
+
+- ``detail/unique_value.hpp`` (:ref:`file_sockets_include_sockets_detail_unique_value.hpp`)
+
+
+
+Included By
+-----------
+
+
+- :ref:`file_sockets_socket.cpp`
+
+- :ref:`file_sockets_sockets.cpp`
+
+
+
+
+Namespaces
+----------
+
+
+- :ref:`namespace_c2k`
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classc2k_1_1Sockets`
+

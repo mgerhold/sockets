@@ -1,0 +1,49 @@
+
+.. _file_sockets_sockets.cpp:
+
+File sockets.cpp
+================
+
+|exhale_lsh| :ref:`Parent directory <dir_sockets>` (``sockets``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``sockets/sockets.cpp``)
+------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_sockets_sockets.cpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``iostream``
+
+- ``socket_headers.hpp`` (:ref:`file_sockets_socket_headers.hpp`)
+
+- ``sockets/sockets.hpp`` (:ref:`file_sockets_include_sockets_sockets.hpp`)
+
+
+
+
+
+
+Namespaces
+----------
+
+
+- :ref:`namespace_c2k`
+

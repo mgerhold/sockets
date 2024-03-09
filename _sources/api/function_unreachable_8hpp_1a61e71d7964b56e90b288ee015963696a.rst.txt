@@ -1,0 +1,14 @@
+.. _exhale_function_unreachable_8hpp_1a61e71d7964b56e90b288ee015963696a:
+
+Function c2k::unreachable
+=========================
+
+- Defined in :ref:`file_sockets_include_sockets_detail_unreachable.hpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::unreachable()
+   :project: Sockets

@@ -1,0 +1,14 @@
+.. _exhale_function_socket_8cpp_1a6e336f97b91fcd41b0bd6700913a3427:
+
+Function c2k::set_socket_option
+===============================
+
+- Defined in :ref:`file_sockets_socket.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::set_socket_option(AbstractSocket::OsSocketHandle const, SocketOption const)
+   :project: Sockets

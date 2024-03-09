@@ -1,0 +1,14 @@
+.. _exhale_variable_synchronized_8hpp_1a60c6625171b531b9e4e30d2569af4bc8:
+
+Variable c2k::detail::Predicate
+===============================
+
+- Defined in :ref:`file_sockets_include_sockets_detail_synchronized.hpp`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: c2k::detail::Predicate
+   :project: Sockets

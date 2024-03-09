@@ -1,0 +1,14 @@
+.. _exhale_variable_socket__headers_8hpp_1a9cb815cf3b73050d533351cf5aecbc31:
+
+Variable c2k::constants::socket_error
+=====================================
+
+- Defined in :ref:`file_sockets_socket_headers.hpp`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: c2k::constants::socket_error
+   :project: Sockets

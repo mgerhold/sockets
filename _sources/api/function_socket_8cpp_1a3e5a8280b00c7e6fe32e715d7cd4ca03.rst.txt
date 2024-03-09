@@ -1,0 +1,14 @@
+.. _exhale_function_socket_8cpp_1a3e5a8280b00c7e6fe32e715d7cd4ca03:
+
+Function c2k::initialize_client_socket
+======================================
+
+- Defined in :ref:`file_sockets_socket.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::initialize_client_socket(AddressFamily const, std::string const&, std::uint16_t const)
+   :project: Sockets

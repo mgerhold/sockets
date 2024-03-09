@@ -1,0 +1,17 @@
+.. _exhale_struct_structc2k_1_1AddressInfo:
+
+Struct AddressInfo
+==================
+
+- Defined in :ref:`file_sockets_include_sockets_detail_address_info.hpp`
+
+
+Struct Documentation
+--------------------
+
+
+.. doxygenstruct:: c2k::AddressInfo
+   :project: Sockets
+   :members:
+   :protected-members:
+   :undoc-members:

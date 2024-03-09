@@ -1,0 +1,38 @@
+
+.. _namespace_c2k__detail:
+
+Namespace c2k::detail
+=====================
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_struct_structc2k_1_1detail_1_1ChannelState`
+
+- :ref:`exhale_class_classc2k_1_1detail_1_1ChannelBase`
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_socket_8hpp_1ac097c6b60819186b5c3e85509858fa15`
+
+- :ref:`exhale_function_utils_8hpp_1a54ac1e28648991582adf63e9f9b6b1ce`
+
+
+Variables
+---------
+
+
+- :ref:`exhale_variable_synchronized_8hpp_1a60c6625171b531b9e4e30d2569af4bc8`

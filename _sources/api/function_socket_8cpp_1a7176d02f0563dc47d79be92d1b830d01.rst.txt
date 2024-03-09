@@ -1,0 +1,14 @@
+.. _exhale_function_socket_8cpp_1a7176d02f0563dc47d79be92d1b830d01:
+
+Function c2k::extract_adress_info
+=================================
+
+- Defined in :ref:`file_sockets_socket.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::extract_adress_info(sockaddr_storage const&)
+   :project: Sockets

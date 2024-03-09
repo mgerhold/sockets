@@ -1,0 +1,75 @@
+
+.. _file_sockets_include_sockets_detail_non_null_owner.hpp:
+
+File non_null_owner.hpp
+=======================
+
+|exhale_lsh| :ref:`Parent directory <dir_sockets_include_sockets_detail>` (``sockets/include/sockets/detail``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``sockets/include/sockets/detail/non_null_owner.hpp``)
+------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_sockets_include_sockets_detail_non_null_owner.hpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``cassert``
+
+- ``concepts``
+
+- ``iostream``
+
+- ``memory``
+
+- ``utility``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file_sockets_include_sockets_detail_socket.hpp`
+
+- :ref:`file_sockets_include_sockets_sockets.hpp`
+
+
+
+
+Namespaces
+----------
+
+
+- :ref:`namespace_c2k`
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classc2k_1_1NonNullOwner`
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_non__null__owner_8hpp_1a1577081b720d1033c72ecac94a12e2dd`
+

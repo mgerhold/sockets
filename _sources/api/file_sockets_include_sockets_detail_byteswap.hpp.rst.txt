@@ -1,0 +1,57 @@
+
+.. _file_sockets_include_sockets_detail_byteswap.hpp:
+
+File byteswap.hpp
+=================
+
+|exhale_lsh| :ref:`Parent directory <dir_sockets_include_sockets_detail>` (``sockets/include/sockets/detail``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``sockets/include/sockets/detail/byteswap.hpp``)
+------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_sockets_include_sockets_detail_byteswap.hpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``algorithm``
+
+- ``array``
+
+- ``bit``
+
+- ``concepts``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file_sockets_include_sockets_detail_byte_order.hpp`
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_byteswap_8hpp_1af444b5478f7ed9d836d32e512e4badd0`
+

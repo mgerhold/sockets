@@ -1,0 +1,14 @@
+.. _exhale_function_socket_8cpp_1a8f7a55f6204fa42202f4903b4e745fc4:
+
+Function c2k::initialize_server_socket
+======================================
+
+- Defined in :ref:`file_sockets_socket.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::initialize_server_socket(AddressFamily const, std::uint16_t const)
+   :project: Sockets

@@ -1,0 +1,14 @@
+.. _exhale_function_socket_8cpp_1acd33764745eaf0d6d1809a48e10b1ff6:
+
+Function c2k::is_socket_ready
+=============================
+
+- Defined in :ref:`file_sockets_socket.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::is_socket_ready(AbstractSocket::OsSocketHandle const, SelectStatusCategory const, std::size_t const)
+   :project: Sockets

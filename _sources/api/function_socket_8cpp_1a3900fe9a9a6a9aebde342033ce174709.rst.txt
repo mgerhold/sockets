@@ -1,0 +1,14 @@
+.. _exhale_function_socket_8cpp_1a3900fe9a9a6a9aebde342033ce174709:
+
+Function c2k::to_ai_family
+==========================
+
+- Defined in :ref:`file_sockets_socket.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::to_ai_family(AddressFamily const)
+   :project: Sockets

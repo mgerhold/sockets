@@ -1,0 +1,14 @@
+.. _exhale_enum_socket_8cpp_1a454f1f69e20908509ce5a4d1e611ea51:
+
+Enum SocketOption
+=================
+
+- Defined in :ref:`file_sockets_socket.cpp`
+
+
+Enum Documentation
+------------------
+
+
+.. doxygenenum:: c2k::SocketOption
+   :project: Sockets

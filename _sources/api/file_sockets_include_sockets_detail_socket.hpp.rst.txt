@@ -1,0 +1,117 @@
+
+.. _file_sockets_include_sockets_detail_socket.hpp:
+
+File socket.hpp
+===============
+
+|exhale_lsh| :ref:`Parent directory <dir_sockets_include_sockets_detail>` (``sockets/include/sockets/detail``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``sockets/include/sockets/detail/socket.hpp``)
+----------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_sockets_include_sockets_detail_socket.hpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``address_family.hpp`` (:ref:`file_sockets_include_sockets_detail_address_family.hpp`)
+
+- ``address_info.hpp`` (:ref:`file_sockets_include_sockets_detail_address_info.hpp`)
+
+- ``atomic``
+
+- ``cstdint``
+
+- ``deque``
+
+- ``functional``
+
+- ``future``
+
+- ``memory``
+
+- ``message_buffer.hpp`` (:ref:`file_sockets_include_sockets_detail_message_buffer.hpp`)
+
+- ``mutex``
+
+- ``non_null_owner.hpp`` (:ref:`file_sockets_include_sockets_detail_non_null_owner.hpp`)
+
+- ``optional``
+
+- ``span``
+
+- ``stdexcept``
+
+- ``string_view``
+
+- ``synchronized.hpp`` (:ref:`file_sockets_include_sockets_detail_synchronized.hpp`)
+
+- ``thread``
+
+- ``unique_value.hpp`` (:ref:`file_sockets_include_sockets_detail_unique_value.hpp`)
+
+
+
+Included By
+-----------
+
+
+- :ref:`file_sockets_include_sockets_sockets.hpp`
+
+
+
+
+Namespaces
+----------
+
+
+- :ref:`namespace_c2k`
+
+- :ref:`namespace_c2k__detail`
+
+
+Classes
+-------
+
+
+- :ref:`exhale_struct_structc2k_1_1ClientSocket_1_1ReceiveTask`
+
+- :ref:`exhale_struct_structc2k_1_1ClientSocket_1_1SendTask`
+
+- :ref:`exhale_class_classc2k_1_1AbstractSocket`
+
+- :ref:`exhale_class_classc2k_1_1ClientSocket`
+
+- :ref:`exhale_class_classc2k_1_1ClientSocket_1_1State`
+
+- :ref:`exhale_class_classc2k_1_1ReadError`
+
+- :ref:`exhale_class_classc2k_1_1SendError`
+
+- :ref:`exhale_class_classc2k_1_1ServerSocket`
+
+- :ref:`exhale_class_classc2k_1_1TimeoutError`
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_socket_8hpp_1ac097c6b60819186b5c3e85509858fa15`
+

@@ -1,0 +1,14 @@
+.. _exhale_function_socket_8cpp_1aaa8546d456ca1baa1e801121e3d53728:
+
+Template Function c2k::try_dequeue_task
+=======================================
+
+- Defined in :ref:`file_sockets_socket.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::try_dequeue_task(Synchronized<Queue>&)
+   :project: Sockets

@@ -1,0 +1,14 @@
+.. _exhale_function_socket_8cpp_1a9d0dfdb452bc50d1def49f5c09e22607:
+
+Function c2k::generate_fd_set
+=============================
+
+- Defined in :ref:`file_sockets_socket.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::generate_fd_set(AbstractSocket::OsSocketHandle const)
+   :project: Sockets

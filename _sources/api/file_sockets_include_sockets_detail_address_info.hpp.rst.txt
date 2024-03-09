@@ -1,0 +1,64 @@
+
+.. _file_sockets_include_sockets_detail_address_info.hpp:
+
+File address_info.hpp
+=====================
+
+|exhale_lsh| :ref:`Parent directory <dir_sockets_include_sockets_detail>` (``sockets/include/sockets/detail``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``sockets/include/sockets/detail/address_info.hpp``)
+----------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_sockets_include_sockets_detail_address_info.hpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``cstdint``
+
+- ``iostream``
+
+- ``unreachable.hpp`` (:ref:`file_sockets_include_sockets_detail_unreachable.hpp`)
+
+
+
+Included By
+-----------
+
+
+- :ref:`file_sockets_include_sockets_detail_socket.hpp`
+
+- :ref:`file_sockets_include_sockets_sockets.hpp`
+
+
+
+
+Namespaces
+----------
+
+
+- :ref:`namespace_c2k`
+
+
+Classes
+-------
+
+
+- :ref:`exhale_struct_structc2k_1_1AddressInfo`
+

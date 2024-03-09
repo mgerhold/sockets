@@ -1,0 +1,14 @@
+.. _exhale_function_socket_8cpp_1a755e58b0f57785fa6936f69a77b0657e:
+
+Function c2k::socket_deleter
+============================
+
+- Defined in :ref:`file_sockets_socket.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::socket_deleter(AbstractSocket::OsSocketHandle const)
+   :project: Sockets

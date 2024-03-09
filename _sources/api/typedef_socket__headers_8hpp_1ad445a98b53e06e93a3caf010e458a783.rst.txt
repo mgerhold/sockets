@@ -1,0 +1,14 @@
+.. _exhale_typedef_socket__headers_8hpp_1ad445a98b53e06e93a3caf010e458a783:
+
+Typedef c2k::constants::SockLen
+===============================
+
+- Defined in :ref:`file_sockets_socket_headers.hpp`
+
+
+Typedef Documentation
+---------------------
+
+
+.. doxygentypedef:: c2k::constants::SockLen
+   :project: Sockets

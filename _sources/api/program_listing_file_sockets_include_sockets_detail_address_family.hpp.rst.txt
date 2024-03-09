@@ -1,0 +1,21 @@
+
+.. _program_listing_file_sockets_include_sockets_detail_address_family.hpp:
+
+Program Listing for File address_family.hpp
+===========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sockets_include_sockets_detail_address_family.hpp>` (``sockets/include/sockets/detail/address_family.hpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #pragma once
+   
+   namespace c2k {
+       enum class AddressFamily {
+           Unspecified,
+           Ipv4,
+           Ipv6,
+       };
+   }

@@ -1,0 +1,14 @@
+.. _exhale_enum_address__family_8hpp_1a9b5a6d1a9930d330e1ab802d8c07167f:
+
+Enum AddressFamily
+==================
+
+- Defined in :ref:`file_sockets_include_sockets_detail_address_family.hpp`
+
+
+Enum Documentation
+------------------
+
+
+.. doxygenenum:: c2k::AddressFamily
+   :project: Sockets

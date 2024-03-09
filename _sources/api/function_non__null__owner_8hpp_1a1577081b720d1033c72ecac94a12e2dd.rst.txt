@@ -1,0 +1,14 @@
+.. _exhale_function_non__null__owner_8hpp_1a1577081b720d1033c72ecac94a12e2dd:
+
+Template Function c2k::make_non_null_owner
+==========================================
+
+- Defined in :ref:`file_sockets_include_sockets_detail_non_null_owner.hpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::make_non_null_owner(Args&&...)
+   :project: Sockets

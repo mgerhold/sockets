@@ -1,0 +1,14 @@
+.. _exhale_function_socket_8cpp_1ada5407599374413dacadd141c9f388ed:
+
+Function c2k::create_socket
+===========================
+
+- Defined in :ref:`file_sockets_socket.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::create_socket(AddressInfos const&)
+   :project: Sockets

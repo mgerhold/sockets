@@ -1,0 +1,39 @@
+
+.. _program_listing_file_sockets_include_sockets_detail_address_info.hpp:
+
+Program Listing for File address_info.hpp
+=========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sockets_include_sockets_detail_address_info.hpp>` (``sockets/include/sockets/detail/address_info.hpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #pragma once
+   
+   #include "unreachable.hpp"
+   #include <cstdint>
+   #include <iostream>
+   
+   namespace c2k {
+       struct AddressInfo {
+           AddressFamily family = AddressFamily::Unspecified;
+   
+           std::string address;
+   
+           std::uint16_t port;
+   
+           friend std::ostream& operator<<(std::ostream& ostream, AddressInfo const& address_info) {
+               switch (address_info.family) {
+                   case AddressFamily::Unspecified:
+                       return ostream << "<unspecified address family>";
+                   case AddressFamily::Ipv4:
+                       return ostream << address_info.address << ':' << address_info.port;
+                   case AddressFamily::Ipv6:
+                       return ostream << '[' << address_info.address << "]:" << address_info.port;
+               }
+               unreachable();
+           }
+       };
+   } // namespace c2k

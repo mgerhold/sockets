@@ -1,0 +1,14 @@
+.. _exhale_function_utils_8hpp_1a54ac1e28648991582adf63e9f9b6b1ce:
+
+Template Function c2k::detail::summed_sizeof
+============================================
+
+- Defined in :ref:`file_sockets_include_sockets_detail_utils.hpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::detail::summed_sizeof()
+   :project: Sockets

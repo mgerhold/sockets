@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class ClientSocket &mdash; Sockets  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class ClientSocket::State" href="classc2k_1_1ClientSocket_1_1State.html" />
+    <link rel="prev" title="Class ChannelError" href="classc2k_1_1ChannelError.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sockets
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Some important topic</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#namespaces">Namespaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1AddressInfo.html">Struct AddressInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1ClientSocket_1_1ReceiveTask.html">Struct ClientSocket::ReceiveTask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1ClientSocket_1_1SendTask.html">Struct ClientSocket::SendTask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1detail_1_1ChannelState.html">Template Struct ChannelState</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1AbstractSocket.html">Class AbstractSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1BidirectionalChannel.html">Template Class BidirectionalChannel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ChannelError.html">Class ChannelError</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Class ClientSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ClientSocket_1_1State.html">Class ClientSocket::State</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1detail_1_1ChannelBase.html">Template Class ChannelBase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1MessageBuffer.html">Class MessageBuffer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1NonNullOwner.html">Template Class NonNullOwner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ReadError.html">Class ReadError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Receiver.html">Template Class Receiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Sender.html">Template Class Sender</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1SendError.html">Class SendError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ServerSocket.html">Class ServerSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Sockets.html">Class Sockets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Synchronized.html">Template Class Synchronized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1TimeoutError.html">Class TimeoutError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1UniqueValue.html">Template Class UniqueValue</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#enums">Enums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#variables">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#typedefs">Typedefs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sockets</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="library_root.html">Library API</a></li>
+      <li class="breadcrumb-item active">Class ClientSocket</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/classc2k_1_1ClientSocket.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-clientsocket">
+<span id="exhale-class-classc2k-1-1clientsocket"></span><h1>Class ClientSocket<a class="headerlink" href="#class-clientsocket" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_sockets_include_sockets_detail_socket.hpp.html#file-sockets-include-sockets-detail-socket-hpp"><span class="std std-ref">File socket.hpp</span></a></p></li>
+</ul>
+<section id="nested-relationships">
+<h2>Nested Relationships<a class="headerlink" href="#nested-relationships" title="Link to this heading"></a></h2>
+<section id="nested-types">
+<h3>Nested Types<a class="headerlink" href="#nested-types" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="structc2k_1_1ClientSocket_1_1ReceiveTask.html#exhale-struct-structc2k-1-1clientsocket-1-1receivetask"><span class="std std-ref">Struct ClientSocket::ReceiveTask</span></a></p></li>
+<li><p><a class="reference internal" href="structc2k_1_1ClientSocket_1_1SendTask.html#exhale-struct-structc2k-1-1clientsocket-1-1sendtask"><span class="std std-ref">Struct ClientSocket::SendTask</span></a></p></li>
+<li><p><a class="reference internal" href="classc2k_1_1ClientSocket_1_1State.html#exhale-class-classc2k-1-1clientsocket-1-1state"><span class="std std-ref">Class ClientSocket::State</span></a></p></li>
+</ul>
+</section>
+</section>
+<section id="inheritance-relationships">
+<h2>Inheritance Relationships<a class="headerlink" href="#inheritance-relationships" title="Link to this heading"></a></h2>
+<section id="base-type">
+<h3>Base Type<a class="headerlink" href="#base-type" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">c2k::AbstractSocket</span></code> (<a class="reference internal" href="classc2k_1_1AbstractSocket.html#exhale-class-classc2k-1-1abstractsocket"><span class="std std-ref">Class AbstractSocket</span></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocketE">
+<span id="_CPPv3N3c2k12ClientSocketE"></span><span id="_CPPv2N3c2k12ClientSocketE"></span><span id="c2k::ClientSocket"></span><span class="target" id="classc2k_1_1ClientSocket"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ClientSocket</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">c2k</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classc2k_1_1AbstractSocket.html#_CPPv4N3c2k14AbstractSocketE" title="c2k::AbstractSocket"><span class="n"><span class="pre">AbstractSocket</span></span></a><a class="headerlink" href="#_CPPv4N3c2k12ClientSocketE" title="Link to this definition"></a><br /></dt>
+<dd><p>Represents a client socket for communication. </p>
+<p>This class extends the <a class="reference internal" href="classc2k_1_1AbstractSocket.html#classc2k_1_1AbstractSocket"><span class="std std-ref">AbstractSocket</span></a> class and provides additional functionality for sending and receiving data over a network connection. It manages send and receive tasks asynchronously and handles socket operations. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket12ClientSocketERR12ClientSocket">
+<span id="_CPPv3N3c2k12ClientSocket12ClientSocketERR12ClientSocket"></span><span id="_CPPv2N3c2k12ClientSocket12ClientSocketERR12ClientSocket"></span><span id="c2k::ClientSocket::ClientSocket__ClientSocketRR"></span><span class="target" id="classc2k_1_1ClientSocket_1a6aaf841e74356bf16a30bd222fc2a232"></span><span class="sig-name descname"><span class="n"><span class="pre">ClientSocket</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3c2k12ClientSocket12ClientSocketERR12ClientSocket" title="c2k::ClientSocket::ClientSocket"><span class="n"><span class="pre">ClientSocket</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket12ClientSocketERR12ClientSocket" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocketaSERR12ClientSocket">
+<span id="_CPPv3N3c2k12ClientSocketaSERR12ClientSocket"></span><span id="_CPPv2N3c2k12ClientSocketaSERR12ClientSocket"></span><span id="c2k::ClientSocket::assign-operator__ClientSocketRR"></span><span class="target" id="classc2k_1_1ClientSocket_1a76e3fece93b13db55cce7913e8840d3d"></span><a class="reference internal" href="#_CPPv4N3c2k12ClientSocketE" title="c2k::ClientSocket"><span class="n"><span class="pre">ClientSocket</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3c2k12ClientSocketE" title="c2k::ClientSocket"><span class="n"><span class="pre">ClientSocket</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocketaSERR12ClientSocket" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocketD0Ev">
+<span id="_CPPv3N3c2k12ClientSocketD0Ev"></span><span id="_CPPv2N3c2k12ClientSocketD0Ev"></span><span id="c2k::ClientSocket::~ClientSocket"></span><span class="target" id="classc2k_1_1ClientSocket_1a4ce51f6238ac9f072f59f296162d77dc"></span><span class="sig-name descname"><span class="n"><span class="pre">~ClientSocket</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocketD0Ev" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3c2k12ClientSocket12is_connectedEv">
+<span id="_CPPv3NK3c2k12ClientSocket12is_connectedEv"></span><span id="_CPPv2NK3c2k12ClientSocket12is_connectedEv"></span><span id="c2k::ClientSocket::is_connectedC"></span><span class="target" id="classc2k_1_1ClientSocket_1a5fabd0863a2213f9c79b4eef7a5aa464"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_connected</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3c2k12ClientSocket12is_connectedEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Checks if the socket is currently connected. </p>
+<p>This function returns a boolean value indicating whether the socket is currently connected or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the socket is connected, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket4sendENSt6vectorINSt4byteEEE">
+<span id="_CPPv3N3c2k12ClientSocket4sendENSt6vectorINSt4byteEEE"></span><span id="_CPPv2N3c2k12ClientSocket4sendENSt6vectorINSt4byteEEE"></span><span id="c2k::ClientSocket::send__std::vector:std::byte:"></span><span class="target" id="classc2k_1_1ClientSocket_1a9975bc4e11555b577d95df7e317c05bf"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">future</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">send</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket4sendENSt6vectorINSt4byteEEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sends the given data through the socket. </p>
+<p>The send method sends the provided data through the socket. It returns a std::future&lt;std::size_t&gt; that represents the amount of data that has been transmitted.</p>
+<p>If the data vector is empty, a SendError exception will be thrown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – The data to be sent through the socket. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classc2k_1_1SendError.html#_CPPv4N3c2k9SendErrorE" title="c2k::SendError"><span class="n">SendError</span></a></span></span> – If the data vector is empty. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A std::future&lt;std::size_t&gt; that represents the amount of data that has been transmitted. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket4sendEDpNSt8integralE">
+<span id="_CPPv3N3c2k12ClientSocket4sendEDpNSt8integralE"></span><span id="_CPPv2N3c2k12ClientSocket4sendEDpNSt8integralE"></span><span id="c2k::ClientSocket::send__std::integralDp"></span><span class="target" id="classc2k_1_1ClientSocket_1a27551dc732d449d1ca0f28627e6a4608"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">future</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">send</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">integral</span></span><span class="w"> </span><span class="k"><span class="pre">auto</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">values</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket4sendEDpNSt8integralE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sends data over the socket. </p>
+<p>This method sends the given values over the socket. It constructs a message package by inserting the values into a message buffer. It then sends it using through the socket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>std::integral...</strong> – values The values to send </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A std::future&lt;std::size_t&gt; that will hold the number of bytes sent </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket4sendERK13MessageBuffer">
+<span id="_CPPv3N3c2k12ClientSocket4sendERK13MessageBuffer"></span><span id="_CPPv2N3c2k12ClientSocket4sendERK13MessageBuffer"></span><span id="c2k::ClientSocket::send__MessageBufferCR"></span><span class="target" id="classc2k_1_1ClientSocket_1aa1e8c7c160898cc46f876fe21646b462"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">future</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">send</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="classc2k_1_1MessageBuffer.html#_CPPv4N3c2k13MessageBufferE" title="c2k::MessageBuffer"><span class="n"><span class="pre">MessageBuffer</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">package</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket4sendERK13MessageBuffer" title="Link to this definition"></a><br /></dt>
+<dd><p>Sends data over the socket. </p>
+<p>This method sends the given message over the socket.</p>
+<p>The send method returns a std::future&lt;std::size_t&gt; that represents the amount of data that has been transmitted.</p>
+<p>If the data vector is empty, a SendError exception will be thrown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>package</strong> – The message package to be sent through the socket. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classc2k_1_1SendError.html#_CPPv4N3c2k9SendErrorE" title="c2k::SendError"><span class="n">SendError</span></a></span></span> – If the data vector is empty. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A std::future&lt;std::size_t&gt; that represents the amount of data that has been transmitted. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket4sendERR13MessageBuffer">
+<span id="_CPPv3N3c2k12ClientSocket4sendERR13MessageBuffer"></span><span id="_CPPv2N3c2k12ClientSocket4sendERR13MessageBuffer"></span><span id="c2k::ClientSocket::send__MessageBufferRR"></span><span class="target" id="classc2k_1_1ClientSocket_1a3a12a03cb553d5b1dd140398e16f9999"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">future</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">send</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="classc2k_1_1MessageBuffer.html#_CPPv4N3c2k13MessageBufferE" title="c2k::MessageBuffer"><span class="n"><span class="pre">MessageBuffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">package</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket4sendERR13MessageBuffer" title="Link to this definition"></a><br /></dt>
+<dd><p>Sends data over the socket. </p>
+<p>This method sends the given message over the socket.</p>
+<p>The send method returns a std::future&lt;std::size_t&gt; that represents the amount of data that has been transmitted.</p>
+<p>If the data vector is empty, a SendError exception will be thrown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>package</strong> – The message package to be sent through the socket. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classc2k_1_1SendError.html#_CPPv4N3c2k9SendErrorE" title="c2k::SendError"><span class="n">SendError</span></a></span></span> – If the data vector is empty. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A std::future&lt;std::size_t&gt; that represents the amount of data that has been transmitted. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket7receiveENSt6size_tE">
+<span id="_CPPv3N3c2k12ClientSocket7receiveENSt6size_tE"></span><span id="_CPPv2N3c2k12ClientSocket7receiveENSt6size_tE"></span><span id="c2k::ClientSocket::receive__std::s"></span><span class="target" id="classc2k_1_1ClientSocket_1a61c364bb772c97d7958366545b929b72"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">future</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">receive</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">max_num_bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket7receiveENSt6size_tE" title="Link to this definition"></a><br /></dt>
+<dd><p>Asynchronously receives up to a specified maximum number of bytes from the socket. </p>
+<p>This method receives up to a specified number of bytes from the socket asynchronously. It returns an std::future object that can be used to retrieve the received data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>max_num_bytes</strong> – The maximum number of bytes to receive from the socket</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An std::future object representing the asynchronous receive operation. The future will hold an std::vector&lt;std::byte&gt; containing the received bytes. If no data is received within the default timeout of 1 second, an exception will be stored in the future. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket7receiveENSt6size_tE7Timeout">
+<span id="_CPPv3N3c2k12ClientSocket7receiveENSt6size_tE7Timeout"></span><span id="_CPPv2N3c2k12ClientSocket7receiveENSt6size_tE7Timeout"></span><span id="c2k::ClientSocket::receive__std::s.Timeout"></span><span class="target" id="classc2k_1_1ClientSocket_1a96cbff73c96fab0887b55c3a74d9ea63"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">future</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">receive</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">max_num_bytes</span></span>, <span class="n"><span class="pre">Timeout</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket7receiveENSt6size_tE7Timeout" title="Link to this definition"></a><br /></dt>
+<dd><p>Asynchronously receives up to a specified maximum number of bytes from the socket. </p>
+<p>This method receives up to a specified number of bytes from the socket asynchronously. It returns an std::future object that can be used to retrieve the received data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_num_bytes</strong> – The maximum number of bytes to receive from the socket </p></li>
+<li><p><strong>timeout</strong> – The maximum amount of time to wait for incoming data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An std::future object representing the asynchronous receive operation. The future will hold an std::vector&lt;std::byte&gt; containing the received bytes. If no data is received within the specified timeout, an exception will be stored in the future. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket13receive_exactENSt6size_tE">
+<span id="_CPPv3N3c2k12ClientSocket13receive_exactENSt6size_tE"></span><span id="_CPPv2N3c2k12ClientSocket13receive_exactENSt6size_tE"></span><span id="c2k::ClientSocket::receive_exact__std::s"></span><span class="target" id="classc2k_1_1ClientSocket_1ab9a95461589f14c0f7459d72af71f4cb"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">future</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">receive_exact</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket13receive_exactENSt6size_tE" title="Link to this definition"></a><br /></dt>
+<dd><p>Receives a specified number of bytes from the client socket. </p>
+<p>This method receives exactly the specified number of bytes from the client socket. It returns a future object that will be fulfilled with a vector of bytes containing the received data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>num_bytes</strong> – The number of bytes to receive </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A future that holds the received bytes as a vector of std::byte. If the operation cannot be completed within the default timeout of 1 second, an exception will be stored in the future. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket13receive_exactENSt6size_tE7Timeout">
+<span id="_CPPv3N3c2k12ClientSocket13receive_exactENSt6size_tE7Timeout"></span><span id="_CPPv2N3c2k12ClientSocket13receive_exactENSt6size_tE7Timeout"></span><span id="c2k::ClientSocket::receive_exact__std::s.Timeout"></span><span class="target" id="classc2k_1_1ClientSocket_1a3a07c13646c18702133768efad7a7560"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">future</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">receive_exact</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_bytes</span></span>, <span class="n"><span class="pre">Timeout</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket13receive_exactENSt6size_tE7Timeout" title="Link to this definition"></a><br /></dt>
+<dd><p>Receives a specified number of bytes from the socket. </p>
+<p>This method receives exactly the specified number of bytes from the client socket. It returns a future object that will be fulfilled with a vector of bytes containing the received data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_bytes</strong> – The number of bytes to receive </p></li>
+<li><p><strong>timeout</strong> – The timeout for the receive operation </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A future that holds the received bytes as a vector of std::byte. If the operation cannot be completed within the specified timeout, an exception will be stored in the future. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_DpNSt8integralEEN3c2k12ClientSocket7receiveEDaK7Timeout">
+<span id="_CPPv3I_DpNSt8integralEEN3c2k12ClientSocket7receiveEK7Timeout"></span><span id="_CPPv2I_DpNSt8integralEEN3c2k12ClientSocket7receiveEK7Timeout"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">integral</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Ts</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classc2k_1_1ClientSocket_1a6d7676168a0d1bdaca54ce0884d49f3f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">receive</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Timeout</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeout</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">default_timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_DpNSt8integralEEN3c2k12ClientSocket7receiveEDaK7Timeout" title="Link to this definition"></a><br /></dt>
+<dd><p>Reads one or multiple integral values from the socket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Ts</strong> – std::integral… The types of the values to read from the socket </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>timeout</strong> – The timeout for the receive operation </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A future that holds either the read value, if only one type parameter was provided, or a tuple of all the read values according to the provided types. If the operation cannot be completed within the specified timeout, an exception will be stored in the future. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket5closeEv">
+<span id="_CPPv3N3c2k12ClientSocket5closeEv"></span><span id="_CPPv2N3c2k12ClientSocket5closeEv"></span><span id="c2k::ClientSocket::close"></span><span class="target" id="classc2k_1_1ClientSocket_1a0768abf98ba9ea1632190a675b8e07f0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">close</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket5closeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Closes the client socket. </p>
+<p>This method closes the client socket and performs necessary cleanup operations. It stops the socket from running and clears any pending queues. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classc2k_1_1ChannelError.html" class="btn btn-neutral float-left" title="Class ChannelError" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classc2k_1_1ClientSocket_1_1State.html" class="btn btn-neutral float-right" title="Class ClientSocket::State" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Michael Gerhold.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

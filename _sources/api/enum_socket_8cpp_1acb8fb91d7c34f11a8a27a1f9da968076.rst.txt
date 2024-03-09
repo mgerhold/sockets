@@ -1,0 +1,14 @@
+.. _exhale_enum_socket_8cpp_1acb8fb91d7c34f11a8a27a1f9da968076:
+
+Enum SelectStatusCategory
+=========================
+
+- Defined in :ref:`file_sockets_socket.cpp`
+
+
+Enum Documentation
+------------------
+
+
+.. doxygenenum:: c2k::SelectStatusCategory
+   :project: Sockets

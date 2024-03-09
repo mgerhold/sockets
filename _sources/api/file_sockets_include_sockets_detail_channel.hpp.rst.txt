@@ -1,0 +1,93 @@
+
+.. _file_sockets_include_sockets_detail_channel.hpp:
+
+File channel.hpp
+================
+
+|exhale_lsh| :ref:`Parent directory <dir_sockets_include_sockets_detail>` (``sockets/include/sockets/detail``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``sockets/include/sockets/detail/channel.hpp``)
+-----------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_sockets_include_sockets_detail_channel.hpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``atomic``
+
+- ``cassert``
+
+- ``expected``
+
+- ``future``
+
+- ``memory``
+
+- ``mutex``
+
+- ``optional``
+
+- ``stdexcept``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file_sockets_include_sockets_detail_synchronized.hpp`
+
+
+
+
+Namespaces
+----------
+
+
+- :ref:`namespace_c2k`
+
+- :ref:`namespace_c2k__detail`
+
+
+Classes
+-------
+
+
+- :ref:`exhale_struct_structc2k_1_1detail_1_1ChannelState`
+
+- :ref:`exhale_class_classc2k_1_1BidirectionalChannel`
+
+- :ref:`exhale_class_classc2k_1_1ChannelError`
+
+- :ref:`exhale_class_classc2k_1_1detail_1_1ChannelBase`
+
+- :ref:`exhale_class_classc2k_1_1Receiver`
+
+- :ref:`exhale_class_classc2k_1_1Sender`
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_channel_8hpp_1aadf4a2711aeb30cec0eb2f8f2e08da65`
+
+- :ref:`exhale_function_channel_8hpp_1a78d0df30a412d849ca64f6342211c4ab`
+

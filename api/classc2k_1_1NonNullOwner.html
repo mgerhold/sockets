@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Template Class NonNullOwner &mdash; Sockets  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class ReadError" href="classc2k_1_1ReadError.html" />
+    <link rel="prev" title="Class MessageBuffer" href="classc2k_1_1MessageBuffer.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sockets
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Some important topic</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#namespaces">Namespaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1AddressInfo.html">Struct AddressInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1ClientSocket_1_1ReceiveTask.html">Struct ClientSocket::ReceiveTask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1ClientSocket_1_1SendTask.html">Struct ClientSocket::SendTask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1detail_1_1ChannelState.html">Template Struct ChannelState</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1AbstractSocket.html">Class AbstractSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1BidirectionalChannel.html">Template Class BidirectionalChannel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ChannelError.html">Class ChannelError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ClientSocket.html">Class ClientSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ClientSocket_1_1State.html">Class ClientSocket::State</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1detail_1_1ChannelBase.html">Template Class ChannelBase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1MessageBuffer.html">Class MessageBuffer</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Template Class NonNullOwner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ReadError.html">Class ReadError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Receiver.html">Template Class Receiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Sender.html">Template Class Sender</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1SendError.html">Class SendError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ServerSocket.html">Class ServerSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Sockets.html">Class Sockets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Synchronized.html">Template Class Synchronized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1TimeoutError.html">Class TimeoutError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1UniqueValue.html">Template Class UniqueValue</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#enums">Enums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#variables">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#typedefs">Typedefs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sockets</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="library_root.html">Library API</a></li>
+      <li class="breadcrumb-item active">Template Class NonNullOwner</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/classc2k_1_1NonNullOwner.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="template-class-nonnullowner">
+<span id="exhale-class-classc2k-1-1nonnullowner"></span><h1>Template Class NonNullOwner<a class="headerlink" href="#template-class-nonnullowner" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_sockets_include_sockets_detail_non_null_owner.hpp.html#file-sockets-include-sockets-detail-non-null-owner-hpp"><span class="std std-ref">File non_null_owner.hpp</span></a></p></li>
+</ul>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I_NSt21default_initializableEEN3c2k12NonNullOwnerE">
+<span id="_CPPv3I_NSt21default_initializableEEN3c2k12NonNullOwnerE"></span><span id="_CPPv2I_NSt21default_initializableEEN3c2k12NonNullOwnerE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">default_initializable</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classc2k_1_1NonNullOwner"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NonNullOwner</span></span></span><a class="headerlink" href="#_CPPv4I_NSt21default_initializableEEN3c2k12NonNullOwnerE" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12NonNullOwner12NonNullOwnerERK12NonNullOwner">
+<span id="_CPPv3N3c2k12NonNullOwner12NonNullOwnerERK12NonNullOwner"></span><span id="_CPPv2N3c2k12NonNullOwner12NonNullOwnerERK12NonNullOwner"></span><span id="c2k::NonNullOwner::NonNullOwner__NonNullOwnerCR"></span><span class="target" id="classc2k_1_1NonNullOwner_1a87d47124c4d23f3683b3d8374f5393e5"></span><span class="sig-name descname"><span class="n"><span class="pre">NonNullOwner</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3c2k12NonNullOwner12NonNullOwnerERK12NonNullOwner" title="c2k::NonNullOwner::NonNullOwner"><span class="n"><span class="pre">NonNullOwner</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N3c2k12NonNullOwner12NonNullOwnerERK12NonNullOwner" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12NonNullOwneraSERK12NonNullOwner">
+<span id="_CPPv3N3c2k12NonNullOwneraSERK12NonNullOwner"></span><span id="_CPPv2N3c2k12NonNullOwneraSERK12NonNullOwner"></span><span id="c2k::NonNullOwner::assign-operator__NonNullOwnerCR"></span><span class="target" id="classc2k_1_1NonNullOwner_1a3bd4a6556c6ea7550c1ada5f3b86482d"></span><a class="reference internal" href="#_CPPv4I_NSt21default_initializableEEN3c2k12NonNullOwnerE" title="c2k::NonNullOwner"><span class="n"><span class="pre">NonNullOwner</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_NSt21default_initializableEEN3c2k12NonNullOwnerE" title="c2k::NonNullOwner"><span class="n"><span class="pre">NonNullOwner</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N3c2k12NonNullOwneraSERK12NonNullOwner" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12NonNullOwner12NonNullOwnerERR12NonNullOwner">
+<span id="_CPPv3N3c2k12NonNullOwner12NonNullOwnerERR12NonNullOwner"></span><span id="_CPPv2N3c2k12NonNullOwner12NonNullOwnerERR12NonNullOwner"></span><span id="c2k::NonNullOwner::NonNullOwner__NonNullOwnerRR"></span><span class="target" id="classc2k_1_1NonNullOwner_1a07559ca0e97fd94d43b7a23a240cbd4f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NonNullOwner</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3c2k12NonNullOwner12NonNullOwnerERR12NonNullOwner" title="c2k::NonNullOwner::NonNullOwner"><span class="n"><span class="pre">NonNullOwner</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N3c2k12NonNullOwner12NonNullOwnerERR12NonNullOwner" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12NonNullOwneraSERR12NonNullOwner">
+<span id="_CPPv3N3c2k12NonNullOwneraSERR12NonNullOwner"></span><span id="_CPPv2N3c2k12NonNullOwneraSERR12NonNullOwner"></span><span id="c2k::NonNullOwner::assign-operator__NonNullOwnerRR"></span><span class="target" id="classc2k_1_1NonNullOwner_1a31a2a3e3ed10fcf462cc8299073f3d63"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_NSt21default_initializableEEN3c2k12NonNullOwnerE" title="c2k::NonNullOwner"><span class="n"><span class="pre">NonNullOwner</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_NSt21default_initializableEEN3c2k12NonNullOwnerE" title="c2k::NonNullOwner"><span class="n"><span class="pre">NonNullOwner</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N3c2k12NonNullOwneraSERR12NonNullOwner" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3c2k12NonNullOwnermlEv">
+<span id="_CPPv3NK3c2k12NonNullOwnermlEv"></span><span id="_CPPv2NK3c2k12NonNullOwnermlEv"></span><span id="c2k::NonNullOwner::mul-operatorC"></span><span class="target" id="classc2k_1_1NonNullOwner_1a3fcc7bc4b9afaa1c3b0414df7311a0e1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_NSt21default_initializableEEN3c2k12NonNullOwnerE" title="c2k::NonNullOwner::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3c2k12NonNullOwnermlEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12NonNullOwnermlEv">
+<span id="_CPPv3N3c2k12NonNullOwnermlEv"></span><span id="_CPPv2N3c2k12NonNullOwnermlEv"></span><span id="c2k::NonNullOwner::mul-operator"></span><span class="target" id="classc2k_1_1NonNullOwner_1a042403ba1583154e9aa3ddda5aa55445"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_NSt21default_initializableEEN3c2k12NonNullOwnerE" title="c2k::NonNullOwner::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k12NonNullOwnermlEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3c2k12NonNullOwnerptEv">
+<span id="_CPPv3NK3c2k12NonNullOwnerptEv"></span><span id="_CPPv2NK3c2k12NonNullOwnerptEv"></span><span id="c2k::NonNullOwner::pointer-operatorC"></span><span class="target" id="classc2k_1_1NonNullOwner_1a7ab4bf23bb7a1ca609e5bf5da405d81b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_NSt21default_initializableEEN3c2k12NonNullOwnerE" title="c2k::NonNullOwner::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-&gt;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3c2k12NonNullOwnerptEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12NonNullOwnerptEv">
+<span id="_CPPv3N3c2k12NonNullOwnerptEv"></span><span id="_CPPv2N3c2k12NonNullOwnerptEv"></span><span id="c2k::NonNullOwner::pointer-operator"></span><span class="target" id="classc2k_1_1NonNullOwner_1a657ca2bb213f0a45076a6b828340ee4d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_NSt21default_initializableEEN3c2k12NonNullOwnerE" title="c2k::NonNullOwner::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-&gt;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k12NonNullOwnerptEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classc2k_1_1MessageBuffer.html" class="btn btn-neutral float-left" title="Class MessageBuffer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classc2k_1_1ReadError.html" class="btn btn-neutral float-right" title="Class ReadError" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Michael Gerhold.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

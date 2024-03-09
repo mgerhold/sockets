@@ -1,0 +1,26 @@
+.. _dir_sockets_include_sockets:
+
+
+Directory sockets
+=================
+
+
+|exhale_lsh| :ref:`Parent directory <dir_sockets_include>` (``sockets/include``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+
+*Directory path:* ``sockets/include/sockets``
+
+Subdirectories
+--------------
+
+- :ref:`dir_sockets_include_sockets_detail`
+
+
+Files
+-----
+
+- :ref:`file_sockets_include_sockets_sockets.hpp`
+
+

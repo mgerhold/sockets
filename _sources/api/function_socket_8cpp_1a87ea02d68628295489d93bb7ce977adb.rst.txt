@@ -1,0 +1,14 @@
+.. _exhale_function_socket_8cpp_1a87ea02d68628295489d93bb7ce977adb:
+
+Function c2k::get_address_infos
+===============================
+
+- Defined in :ref:`file_sockets_socket.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::get_address_infos(AddressFamily const, std::uint16_t const, char const *const)
+   :project: Sockets

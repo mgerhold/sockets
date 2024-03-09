@@ -1,0 +1,14 @@
+.. _exhale_function_socket_8cpp_1ac2f9b2f71ad84ea4fd7122b473def3b7:
+
+Function c2k::generate_hints
+============================
+
+- Defined in :ref:`file_sockets_socket.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::generate_hints(AddressFamily const, bool const)
+   :project: Sockets

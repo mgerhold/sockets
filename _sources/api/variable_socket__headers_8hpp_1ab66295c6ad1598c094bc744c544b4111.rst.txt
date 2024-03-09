@@ -1,0 +1,14 @@
+.. _exhale_variable_socket__headers_8hpp_1ab66295c6ad1598c094bc744c544b4111:
+
+Variable c2k::constants::tcp_no_delay
+=====================================
+
+- Defined in :ref:`file_sockets_socket_headers.hpp`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: c2k::constants::tcp_no_delay
+   :project: Sockets

@@ -1,0 +1,22 @@
+
+.. _program_listing_file_sockets_include_sockets_detail_utils.hpp:
+
+Program Listing for File utils.hpp
+==================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sockets_include_sockets_detail_utils.hpp>` (``sockets/include/sockets/detail/utils.hpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #pragma once
+   
+   #include <cstdlib>
+   
+   namespace c2k::detail {
+       template<typename... Ts>
+       [[nodiscard]] consteval std::size_t summed_sizeof() {
+           return (sizeof(Ts) + ...);
+       }
+   } // namespace c2k::detail

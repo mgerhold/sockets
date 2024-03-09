@@ -1,0 +1,23 @@
+.. _dir_sockets:
+
+
+Directory sockets
+=================
+
+
+*Directory path:* ``sockets``
+
+Subdirectories
+--------------
+
+- :ref:`dir_sockets_include`
+
+
+Files
+-----
+
+- :ref:`file_sockets_socket.cpp`
+- :ref:`file_sockets_socket_headers.hpp`
+- :ref:`file_sockets_sockets.cpp`
+
+

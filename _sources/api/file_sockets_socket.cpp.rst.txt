@@ -1,0 +1,124 @@
+
+.. _file_sockets_socket.cpp:
+
+File socket.cpp
+===============
+
+|exhale_lsh| :ref:`Parent directory <dir_sockets>` (``sockets``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``sockets/socket.cpp``)
+-----------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_sockets_socket.cpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``cassert``
+
+- ``cstring``
+
+- ``iomanip``
+
+- ``iostream``
+
+- ``memory``
+
+- ``socket_headers.hpp`` (:ref:`file_sockets_socket_headers.hpp`)
+
+- ``sockets/detail/byte_order.hpp`` (:ref:`file_sockets_include_sockets_detail_byte_order.hpp`)
+
+- ``sockets/detail/unreachable.hpp`` (:ref:`file_sockets_include_sockets_detail_unreachable.hpp`)
+
+- ``sockets/sockets.hpp`` (:ref:`file_sockets_include_sockets_sockets.hpp`)
+
+- ``sstream``
+
+- ``stdexcept``
+
+- ``string``
+
+- ``utility``
+
+
+
+
+
+
+Namespaces
+----------
+
+
+- :ref:`namespace_c2k`
+
+
+Enums
+-----
+
+
+- :ref:`exhale_enum_socket_8cpp_1acb8fb91d7c34f11a8a27a1f9da968076`
+
+- :ref:`exhale_enum_socket_8cpp_1a454f1f69e20908509ce5a4d1e611ea51`
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_socket_8cpp_1a65c2fa6999130767d11d2aad9ad6f87f`
+
+- :ref:`exhale_function_socket_8cpp_1acbc257689828b2be7e73ed698babf4f1`
+
+- :ref:`exhale_function_socket_8cpp_1ada5407599374413dacadd141c9f388ed`
+
+- :ref:`exhale_function_socket_8cpp_1a7176d02f0563dc47d79be92d1b830d01`
+
+- :ref:`exhale_function_socket_8cpp_1a9d0dfdb452bc50d1def49f5c09e22607`
+
+- :ref:`exhale_function_socket_8cpp_1ac2f9b2f71ad84ea4fd7122b473def3b7`
+
+- :ref:`exhale_function_socket_8cpp_1a87ea02d68628295489d93bb7ce977adb`
+
+- :ref:`exhale_function_socket_8cpp_1a3e5a8280b00c7e6fe32e715d7cd4ca03`
+
+- :ref:`exhale_function_socket_8cpp_1a8f7a55f6204fa42202f4903b4e745fc4`
+
+- :ref:`exhale_function_socket_8cpp_1acd33764745eaf0d6d1809a48e10b1ff6`
+
+- :ref:`exhale_function_socket_8cpp_1ab1cfe50b941d20aeda94d586918cd2ce`
+
+- :ref:`exhale_function_socket_8cpp_1a3bc73ecc11ea10cdc0c08cee77924a67`
+
+- :ref:`exhale_function_socket_8cpp_1a6e336f97b91fcd41b0bd6700913a3427`
+
+- :ref:`exhale_function_socket_8cpp_1a755e58b0f57785fa6936f69a77b0657e`
+
+- :ref:`exhale_function_socket_8cpp_1a3900fe9a9a6a9aebde342033ce174709`
+
+- :ref:`exhale_function_socket_8cpp_1a0bfc388c3ebdc3cb5a1e009c2a513795`
+
+- :ref:`exhale_function_socket_8cpp_1aaa8546d456ca1baa1e801121e3d53728`
+
+
+Typedefs
+--------
+
+
+- :ref:`exhale_typedef_socket_8cpp_1ad1bcbdd6bf886213222637cae189e143`
+

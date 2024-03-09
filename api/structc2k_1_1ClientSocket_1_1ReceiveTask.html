@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Struct ClientSocket::ReceiveTask &mdash; Sockets  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Struct ClientSocket::SendTask" href="structc2k_1_1ClientSocket_1_1SendTask.html" />
+    <link rel="prev" title="Struct AddressInfo" href="structc2k_1_1AddressInfo.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sockets
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Some important topic</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#namespaces">Namespaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1AddressInfo.html">Struct AddressInfo</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Struct ClientSocket::ReceiveTask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1ClientSocket_1_1SendTask.html">Struct ClientSocket::SendTask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1detail_1_1ChannelState.html">Template Struct ChannelState</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1AbstractSocket.html">Class AbstractSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1BidirectionalChannel.html">Template Class BidirectionalChannel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ChannelError.html">Class ChannelError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ClientSocket.html">Class ClientSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ClientSocket_1_1State.html">Class ClientSocket::State</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1detail_1_1ChannelBase.html">Template Class ChannelBase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1MessageBuffer.html">Class MessageBuffer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1NonNullOwner.html">Template Class NonNullOwner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ReadError.html">Class ReadError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Receiver.html">Template Class Receiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Sender.html">Template Class Sender</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1SendError.html">Class SendError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ServerSocket.html">Class ServerSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Sockets.html">Class Sockets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Synchronized.html">Template Class Synchronized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1TimeoutError.html">Class TimeoutError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1UniqueValue.html">Template Class UniqueValue</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#enums">Enums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#variables">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#typedefs">Typedefs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sockets</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="library_root.html">Library API</a></li>
+      <li class="breadcrumb-item active">Struct ClientSocket::ReceiveTask</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/structc2k_1_1ClientSocket_1_1ReceiveTask.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="struct-clientsocket-receivetask">
+<span id="exhale-struct-structc2k-1-1clientsocket-1-1receivetask"></span><h1>Struct ClientSocket::ReceiveTask<a class="headerlink" href="#struct-clientsocket-receivetask" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_sockets_include_sockets_detail_socket.hpp.html#file-sockets-include-sockets-detail-socket-hpp"><span class="std std-ref">File socket.hpp</span></a></p></li>
+</ul>
+<section id="nested-relationships">
+<h2>Nested Relationships<a class="headerlink" href="#nested-relationships" title="Link to this heading"></a></h2>
+<p>This struct is a nested type of <a class="reference internal" href="classc2k_1_1ClientSocket.html#exhale-class-classc2k-1-1clientsocket"><span class="std std-ref">Class ClientSocket</span></a>.</p>
+</section>
+<section id="struct-documentation">
+<h2>Struct Documentation<a class="headerlink" href="#struct-documentation" title="Link to this heading"></a></h2>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket11ReceiveTaskE">
+<span id="_CPPv3N3c2k12ClientSocket11ReceiveTaskE"></span><span id="_CPPv2N3c2k12ClientSocket11ReceiveTaskE"></span><span id="c2k::ClientSocket::ReceiveTask"></span><span class="target" id="structc2k_1_1ClientSocket_1_1ReceiveTask"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReceiveTask</span></span></span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket11ReceiveTaskE" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket11ReceiveTask4KindE">
+<span id="_CPPv3N3c2k12ClientSocket11ReceiveTask4KindE"></span><span id="_CPPv2N3c2k12ClientSocket11ReceiveTask4KindE"></span><span class="target" id="structc2k_1_1ClientSocket_1_1ReceiveTask_1a1d7ccf3af92412537b10576dcc40f492"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Kind</span></span></span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket11ReceiveTask4KindE" title="Link to this definition"></a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket11ReceiveTask4Kind5ExactE">
+<span id="_CPPv3N3c2k12ClientSocket11ReceiveTask4Kind5ExactE"></span><span id="_CPPv2N3c2k12ClientSocket11ReceiveTask4Kind5ExactE"></span><span class="target" id="structc2k_1_1ClientSocket_1_1ReceiveTask_1a1d7ccf3af92412537b10576dcc40f492a1649aed298f99d587e2eb30c1db5946b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Exact</span></span></span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket11ReceiveTask4Kind5ExactE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket11ReceiveTask4Kind8MaxBytesE">
+<span id="_CPPv3N3c2k12ClientSocket11ReceiveTask4Kind8MaxBytesE"></span><span id="_CPPv2N3c2k12ClientSocket11ReceiveTask4Kind8MaxBytesE"></span><span class="target" id="structc2k_1_1ClientSocket_1_1ReceiveTask_1a1d7ccf3af92412537b10576dcc40f492ae10b310a2fe6d0a860630c7a5bc03fe7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MaxBytes</span></span></span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket11ReceiveTask4Kind8MaxBytesE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket11ReceiveTask11ReceiveTaskENSt7promiseINSt6vectorINSt4byteEEEEEKNSt6size_tEK4KindKNSt6chrono12steady_clock10time_pointE">
+<span id="_CPPv3N3c2k12ClientSocket11ReceiveTask11ReceiveTaskENSt7promiseINSt6vectorINSt4byteEEEEEKNSt6size_tEK4KindKNSt6chrono12steady_clock10time_pointE"></span><span id="_CPPv2N3c2k12ClientSocket11ReceiveTask11ReceiveTaskENSt7promiseINSt6vectorINSt4byteEEEEEKNSt6size_tEK4KindKNSt6chrono12steady_clock10time_pointE"></span><span id="c2k::ClientSocket::ReceiveTask::ReceiveTask__std::promise:std::vector:std::byte::.std::sC.KindC.std::chrono::steady_clock::time_pointC"></span><span class="target" id="structc2k_1_1ClientSocket_1_1ReceiveTask_1aae2033a92d68160716181813106af920"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReceiveTask</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">promise</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">promise</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">max_num_bytes</span></span>, <a class="reference internal" href="#_CPPv4N3c2k12ClientSocket11ReceiveTask4KindE" title="c2k::ClientSocket::ReceiveTask::Kind"><span class="n"><span class="pre">Kind</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">kind</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">chrono</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">steady_clock</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">time_point</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">end_time</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket11ReceiveTask11ReceiveTaskENSt7promiseINSt6vectorINSt4byteEEEEEKNSt6size_tEK4KindKNSt6chrono12steady_clock10time_pointE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket11ReceiveTask7promiseE">
+<span id="_CPPv3N3c2k12ClientSocket11ReceiveTask7promiseE"></span><span id="_CPPv2N3c2k12ClientSocket11ReceiveTask7promiseE"></span><span id="c2k::ClientSocket::ReceiveTask::promise__std::promise:std::vector:std::byte::"></span><span class="target" id="structc2k_1_1ClientSocket_1_1ReceiveTask_1a58005564d469648501fecdf85d3ba239"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">promise</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">promise</span></span></span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket11ReceiveTask7promiseE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket11ReceiveTask13max_num_bytesE">
+<span id="_CPPv3N3c2k12ClientSocket11ReceiveTask13max_num_bytesE"></span><span id="_CPPv2N3c2k12ClientSocket11ReceiveTask13max_num_bytesE"></span><span id="c2k::ClientSocket::ReceiveTask::max_num_bytes__std::s"></span><span class="target" id="structc2k_1_1ClientSocket_1_1ReceiveTask_1a7b33468422205eebf0b3f8a997182663"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">max_num_bytes</span></span></span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket11ReceiveTask13max_num_bytesE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket11ReceiveTask4kindE">
+<span id="_CPPv3N3c2k12ClientSocket11ReceiveTask4kindE"></span><span id="_CPPv2N3c2k12ClientSocket11ReceiveTask4kindE"></span><span id="c2k::ClientSocket::ReceiveTask::kind__Kind"></span><span class="target" id="structc2k_1_1ClientSocket_1_1ReceiveTask_1a9840e73afc4b528c8852844bb4881aac"></span><a class="reference internal" href="#_CPPv4N3c2k12ClientSocket11ReceiveTask4KindE" title="c2k::ClientSocket::ReceiveTask::Kind"><span class="n"><span class="pre">Kind</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kind</span></span></span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket11ReceiveTask4kindE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k12ClientSocket11ReceiveTask8end_timeE">
+<span id="_CPPv3N3c2k12ClientSocket11ReceiveTask8end_timeE"></span><span id="_CPPv2N3c2k12ClientSocket11ReceiveTask8end_timeE"></span><span id="c2k::ClientSocket::ReceiveTask::end_time__std::chrono::steady_clock::time_point"></span><span class="target" id="structc2k_1_1ClientSocket_1_1ReceiveTask_1a70a73e3581c2c830048fcf4876a5f142"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">chrono</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">steady_clock</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">time_point</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">end_time</span></span></span><a class="headerlink" href="#_CPPv4N3c2k12ClientSocket11ReceiveTask8end_timeE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="structc2k_1_1AddressInfo.html" class="btn btn-neutral float-left" title="Struct AddressInfo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="structc2k_1_1ClientSocket_1_1SendTask.html" class="btn btn-neutral float-right" title="Struct ClientSocket::SendTask" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Michael Gerhold.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

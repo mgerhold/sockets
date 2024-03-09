@@ -1,0 +1,14 @@
+.. _exhale_variable_socket__headers_8hpp_1a838b4824ae23cc3e34af1913a0eab1b6:
+
+Variable c2k::constants::send_flags
+===================================
+
+- Defined in :ref:`file_sockets_socket_headers.hpp`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: c2k::constants::send_flags
+   :project: Sockets

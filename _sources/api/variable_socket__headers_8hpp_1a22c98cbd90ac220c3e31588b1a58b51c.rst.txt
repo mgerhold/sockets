@@ -1,0 +1,14 @@
+.. _exhale_variable_socket__headers_8hpp_1a22c98cbd90ac220c3e31588b1a58b51c:
+
+Variable c2k::constants::reuse_port
+===================================
+
+- Defined in :ref:`file_sockets_socket_headers.hpp`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: c2k::constants::reuse_port
+   :project: Sockets

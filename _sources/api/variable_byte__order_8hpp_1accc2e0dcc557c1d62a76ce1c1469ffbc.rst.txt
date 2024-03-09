@@ -1,0 +1,14 @@
+.. _exhale_variable_byte__order_8hpp_1accc2e0dcc557c1d62a76ce1c1469ffbc:
+
+Variable c2k::network_byte_order
+================================
+
+- Defined in :ref:`file_sockets_include_sockets_detail_byte_order.hpp`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: c2k::network_byte_order
+   :project: Sockets

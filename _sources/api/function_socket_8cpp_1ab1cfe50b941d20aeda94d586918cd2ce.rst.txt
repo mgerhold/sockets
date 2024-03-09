@@ -1,0 +1,14 @@
+.. _exhale_function_socket_8cpp_1ab1cfe50b941d20aeda94d586918cd2ce:
+
+Function c2k::server_listen
+===========================
+
+- Defined in :ref:`file_sockets_socket.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::server_listen(std::stop_token const&, AbstractSocket::OsSocketHandle const, std::function<void(ClientSocket)> const&)
+   :project: Sockets

@@ -1,0 +1,14 @@
+.. _exhale_function_socket_8cpp_1acbc257689828b2be7e73ed698babf4f1:
+
+Function c2k::connect_socket
+============================
+
+- Defined in :ref:`file_sockets_socket.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::connect_socket(AbstractSocket::OsSocketHandle const, AddressInfos const&)
+   :project: Sockets

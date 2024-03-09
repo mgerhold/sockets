@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Template Class ChannelBase &mdash; Sockets  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class MessageBuffer" href="classc2k_1_1MessageBuffer.html" />
+    <link rel="prev" title="Class ClientSocket::State" href="classc2k_1_1ClientSocket_1_1State.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sockets
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Some important topic</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#namespaces">Namespaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1AddressInfo.html">Struct AddressInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1ClientSocket_1_1ReceiveTask.html">Struct ClientSocket::ReceiveTask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1ClientSocket_1_1SendTask.html">Struct ClientSocket::SendTask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1detail_1_1ChannelState.html">Template Struct ChannelState</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1AbstractSocket.html">Class AbstractSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1BidirectionalChannel.html">Template Class BidirectionalChannel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ChannelError.html">Class ChannelError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ClientSocket.html">Class ClientSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ClientSocket_1_1State.html">Class ClientSocket::State</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Template Class ChannelBase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1MessageBuffer.html">Class MessageBuffer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1NonNullOwner.html">Template Class NonNullOwner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ReadError.html">Class ReadError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Receiver.html">Template Class Receiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Sender.html">Template Class Sender</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1SendError.html">Class SendError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ServerSocket.html">Class ServerSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Sockets.html">Class Sockets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Synchronized.html">Template Class Synchronized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1TimeoutError.html">Class TimeoutError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1UniqueValue.html">Template Class UniqueValue</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#enums">Enums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#variables">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#typedefs">Typedefs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sockets</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="library_root.html">Library API</a></li>
+      <li class="breadcrumb-item active">Template Class ChannelBase</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/classc2k_1_1detail_1_1ChannelBase.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="template-class-channelbase">
+<span id="exhale-class-classc2k-1-1detail-1-1channelbase"></span><h1>Template Class ChannelBase<a class="headerlink" href="#template-class-channelbase" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_sockets_include_sockets_detail_channel.hpp.html#file-sockets-include-sockets-detail-channel-hpp"><span class="std std-ref">File channel.hpp</span></a></p></li>
+</ul>
+<section id="inheritance-relationships">
+<h2>Inheritance Relationships<a class="headerlink" href="#inheritance-relationships" title="Link to this heading"></a></h2>
+<section id="derived-types">
+<h3>Derived Types<a class="headerlink" href="#derived-types" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">c2k::Receiver&lt;</span> <span class="pre">T</span> <span class="pre">&gt;</span></code> (<a class="reference internal" href="classc2k_1_1Receiver.html#exhale-class-classc2k-1-1receiver"><span class="std std-ref">Template Class Receiver</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">c2k::Sender&lt;</span> <span class="pre">T</span> <span class="pre">&gt;</span></code> (<a class="reference internal" href="classc2k_1_1Sender.html#exhale-class-classc2k-1-1sender"><span class="std std-ref">Template Class Sender</span></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3c2k6detail11ChannelBaseE">
+<span id="_CPPv3I0EN3c2k6detail11ChannelBaseE"></span><span id="_CPPv2I0EN3c2k6detail11ChannelBaseE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classc2k_1_1detail_1_1ChannelBase"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ChannelBase</span></span></span><a class="headerlink" href="#_CPPv4I0EN3c2k6detail11ChannelBaseE" title="Link to this definition"></a><br /></dt>
+<dd><p>Subclassed by <a class="reference internal" href="classc2k_1_1Receiver.html#classc2k_1_1Receiver"><span class="std std-ref">c2k::Receiver&lt; T &gt;</span></a>, <a class="reference internal" href="classc2k_1_1Sender.html#classc2k_1_1Sender"><span class="std std-ref">c2k::Sender&lt; T &gt;</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k6detail11ChannelBase11ChannelBaseERK11ChannelBase">
+<span id="_CPPv3N3c2k6detail11ChannelBase11ChannelBaseERK11ChannelBase"></span><span id="_CPPv2N3c2k6detail11ChannelBase11ChannelBaseERK11ChannelBase"></span><span id="c2k::detail::ChannelBase::ChannelBase__ChannelBaseCR"></span><span class="target" id="classc2k_1_1detail_1_1ChannelBase_1a2c62851d04b4593c5fcbf053d2d15037"></span><span class="sig-name descname"><span class="n"><span class="pre">ChannelBase</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3c2k6detail11ChannelBase11ChannelBaseERK11ChannelBase" title="c2k::detail::ChannelBase::ChannelBase"><span class="n"><span class="pre">ChannelBase</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N3c2k6detail11ChannelBase11ChannelBaseERK11ChannelBase" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k6detail11ChannelBase11ChannelBaseERR11ChannelBase">
+<span id="_CPPv3N3c2k6detail11ChannelBase11ChannelBaseERR11ChannelBase"></span><span id="_CPPv2N3c2k6detail11ChannelBase11ChannelBaseERR11ChannelBase"></span><span id="c2k::detail::ChannelBase::ChannelBase__ChannelBaseRR"></span><span class="target" id="classc2k_1_1detail_1_1ChannelBase_1aef1e91946c6d2fd09032c20ecff7e6aa"></span><span class="sig-name descname"><span class="n"><span class="pre">ChannelBase</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3c2k6detail11ChannelBase11ChannelBaseERR11ChannelBase" title="c2k::detail::ChannelBase::ChannelBase"><span class="n"><span class="pre">ChannelBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3c2k6detail11ChannelBase11ChannelBaseERR11ChannelBase" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k6detail11ChannelBaseaSERK11ChannelBase">
+<span id="_CPPv3N3c2k6detail11ChannelBaseaSERK11ChannelBase"></span><span id="_CPPv2N3c2k6detail11ChannelBaseaSERK11ChannelBase"></span><span id="c2k::detail::ChannelBase::assign-operator__ChannelBaseCR"></span><span class="target" id="classc2k_1_1detail_1_1ChannelBase_1a9a848fd373157dbb715def06360cdb69"></span><a class="reference internal" href="#_CPPv4I0EN3c2k6detail11ChannelBaseE" title="c2k::detail::ChannelBase"><span class="n"><span class="pre">ChannelBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN3c2k6detail11ChannelBaseE" title="c2k::detail::ChannelBase"><span class="n"><span class="pre">ChannelBase</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N3c2k6detail11ChannelBaseaSERK11ChannelBase" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k6detail11ChannelBaseaSERR11ChannelBase">
+<span id="_CPPv3N3c2k6detail11ChannelBaseaSERR11ChannelBase"></span><span id="_CPPv2N3c2k6detail11ChannelBaseaSERR11ChannelBase"></span><span id="c2k::detail::ChannelBase::assign-operator__ChannelBaseRR"></span><span class="target" id="classc2k_1_1detail_1_1ChannelBase_1a36e9baeae649ed098891f9de4034dc5f"></span><a class="reference internal" href="#_CPPv4I0EN3c2k6detail11ChannelBaseE" title="c2k::detail::ChannelBase"><span class="n"><span class="pre">ChannelBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN3c2k6detail11ChannelBaseE" title="c2k::detail::ChannelBase"><span class="n"><span class="pre">ChannelBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3c2k6detail11ChannelBaseaSERR11ChannelBase" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k6detail11ChannelBaseD0Ev">
+<span id="_CPPv3N3c2k6detail11ChannelBaseD0Ev"></span><span id="_CPPv2N3c2k6detail11ChannelBaseD0Ev"></span><span id="c2k::detail::ChannelBase::~ChannelBase"></span><span class="target" id="classc2k_1_1detail_1_1ChannelBase_1a0485edeced248cc981bc2d6a7d0cef23"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~ChannelBase</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k6detail11ChannelBaseD0Ev" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3c2k6detail11ChannelBase7is_openEv">
+<span id="_CPPv3NK3c2k6detail11ChannelBase7is_openEv"></span><span id="_CPPv2NK3c2k6detail11ChannelBase7is_openEv"></span><span id="c2k::detail::ChannelBase::is_openC"></span><span class="target" id="classc2k_1_1detail_1_1ChannelBase_1a758812a3df3d2ceeea33993c4df3eb1a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_open</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3c2k6detail11ChannelBase7is_openEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k6detail11ChannelBase11ChannelBaseENSt10shared_ptrI12ChannelStateI1TEEE">
+<span id="_CPPv3N3c2k6detail11ChannelBase11ChannelBaseENSt10shared_ptrI12ChannelStateI1TEEE"></span><span id="_CPPv2N3c2k6detail11ChannelBase11ChannelBaseENSt10shared_ptrI12ChannelStateI1TEEE"></span><span id="c2k::detail::ChannelBase::ChannelBase__std::shared_ptr:ChannelState:T::"></span><span class="target" id="classc2k_1_1detail_1_1ChannelBase_1ac907b5eb3a2dc8a0665686cd3bb74902"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ChannelBase</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structc2k_1_1detail_1_1ChannelState.html#_CPPv4I0EN3c2k6detail12ChannelStateE" title="c2k::detail::ChannelState"><span class="n"><span class="pre">ChannelState</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN3c2k6detail11ChannelBaseE" title="c2k::detail::ChannelBase::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k6detail11ChannelBase11ChannelBaseENSt10shared_ptrI12ChannelStateI1TEEE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3c2k6detail11ChannelBase5stateEv">
+<span id="_CPPv3NK3c2k6detail11ChannelBase5stateEv"></span><span id="_CPPv2NK3c2k6detail11ChannelBase5stateEv"></span><span id="c2k::detail::ChannelBase::stateC"></span><span class="target" id="classc2k_1_1detail_1_1ChannelBase_1a29db27c02a5164e2a4581347297c9eef"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structc2k_1_1detail_1_1ChannelState.html#_CPPv4I0EN3c2k6detail12ChannelStateE" title="c2k::detail::ChannelState"><span class="n"><span class="pre">ChannelState</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN3c2k6detail11ChannelBaseE" title="c2k::detail::ChannelBase::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">state</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3c2k6detail11ChannelBase5stateEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k6detail11ChannelBase5stateEv">
+<span id="_CPPv3N3c2k6detail11ChannelBase5stateEv"></span><span id="_CPPv2N3c2k6detail11ChannelBase5stateEv"></span><span id="c2k::detail::ChannelBase::state"></span><span class="target" id="classc2k_1_1detail_1_1ChannelBase_1aa10a0c914167e0af3f5d3abbc2ddbcb6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structc2k_1_1detail_1_1ChannelState.html#_CPPv4I0EN3c2k6detail12ChannelStateE" title="c2k::detail::ChannelState"><span class="n"><span class="pre">ChannelState</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN3c2k6detail11ChannelBaseE" title="c2k::detail::ChannelBase::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">state</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k6detail11ChannelBase5stateEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k6detail11ChannelBase7m_stateE">
+<span id="_CPPv3N3c2k6detail11ChannelBase7m_stateE"></span><span id="_CPPv2N3c2k6detail11ChannelBase7m_stateE"></span><span id="c2k::detail::ChannelBase::m_state__std::shared_ptr:ChannelState:T::"></span><span class="target" id="classc2k_1_1detail_1_1ChannelBase_1a2db1b6e440a955acbcc2082b150fbc61"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structc2k_1_1detail_1_1ChannelState.html#_CPPv4I0EN3c2k6detail12ChannelStateE" title="c2k::detail::ChannelState"><span class="n"><span class="pre">ChannelState</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN3c2k6detail11ChannelBaseE" title="c2k::detail::ChannelBase::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">m_state</span></span></span><a class="headerlink" href="#_CPPv4N3c2k6detail11ChannelBase7m_stateE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classc2k_1_1ClientSocket_1_1State.html" class="btn btn-neutral float-left" title="Class ClientSocket::State" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classc2k_1_1MessageBuffer.html" class="btn btn-neutral float-right" title="Class MessageBuffer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Michael Gerhold.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

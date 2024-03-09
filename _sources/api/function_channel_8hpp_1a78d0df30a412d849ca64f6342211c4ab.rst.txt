@@ -1,0 +1,14 @@
+.. _exhale_function_channel_8hpp_1a78d0df30a412d849ca64f6342211c4ab:
+
+Template Function c2k::create_channel
+=====================================
+
+- Defined in :ref:`file_sockets_include_sockets_detail_channel.hpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::create_channel()
+   :project: Sockets

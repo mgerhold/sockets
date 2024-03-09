@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Template Class UniqueValue &mdash; Sockets  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Enum AddressFamily" href="enum_address__family_8hpp_1a9b5a6d1a9930d330e1ab802d8c07167f.html" />
+    <link rel="prev" title="Class TimeoutError" href="classc2k_1_1TimeoutError.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sockets
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Some important topic</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#namespaces">Namespaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1AddressInfo.html">Struct AddressInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1ClientSocket_1_1ReceiveTask.html">Struct ClientSocket::ReceiveTask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1ClientSocket_1_1SendTask.html">Struct ClientSocket::SendTask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structc2k_1_1detail_1_1ChannelState.html">Template Struct ChannelState</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1AbstractSocket.html">Class AbstractSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1BidirectionalChannel.html">Template Class BidirectionalChannel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ChannelError.html">Class ChannelError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ClientSocket.html">Class ClientSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ClientSocket_1_1State.html">Class ClientSocket::State</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1detail_1_1ChannelBase.html">Template Class ChannelBase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1MessageBuffer.html">Class MessageBuffer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1NonNullOwner.html">Template Class NonNullOwner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ReadError.html">Class ReadError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Receiver.html">Template Class Receiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Sender.html">Template Class Sender</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1SendError.html">Class SendError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1ServerSocket.html">Class ServerSocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Sockets.html">Class Sockets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1Synchronized.html">Template Class Synchronized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classc2k_1_1TimeoutError.html">Class TimeoutError</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Template Class UniqueValue</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#enums">Enums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#variables">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#typedefs">Typedefs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sockets</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="library_root.html">Library API</a></li>
+      <li class="breadcrumb-item active">Template Class UniqueValue</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/classc2k_1_1UniqueValue.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="template-class-uniquevalue">
+<span id="exhale-class-classc2k-1-1uniquevalue"></span><h1>Template Class UniqueValue<a class="headerlink" href="#template-class-uniquevalue" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_sockets_include_sockets_detail_unique_value.hpp.html#file-sockets-include-sockets-detail-unique-value-hpp"><span class="std std-ref">File unique_value.hpp</span></a></p></li>
+</ul>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN3c2k11UniqueValueE">
+<span id="_CPPv3I00EN3c2k11UniqueValueE"></span><span id="_CPPv2I00EN3c2k11UniqueValueE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Deleter</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I00EN3c2k11UniqueValueE" title="c2k::UniqueValue::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classc2k_1_1UniqueValue"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UniqueValue</span></span></span><a class="headerlink" href="#_CPPv4I00EN3c2k11UniqueValueE" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k11UniqueValue11UniqueValueE1T">
+<span id="_CPPv3N3c2k11UniqueValue11UniqueValueE1T"></span><span id="_CPPv2N3c2k11UniqueValue11UniqueValueE1T"></span><span id="c2k::UniqueValue::UniqueValue__T"></span><span class="target" id="classc2k_1_1UniqueValue_1a6409003b73061378e1cfc600381c8f74"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UniqueValue</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN3c2k11UniqueValueE" title="c2k::UniqueValue::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k11UniqueValue11UniqueValueE1T" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k11UniqueValue11UniqueValueE1T7Deleter">
+<span id="_CPPv3N3c2k11UniqueValue11UniqueValueE1T7Deleter"></span><span id="_CPPv2N3c2k11UniqueValue11UniqueValueE1T7Deleter"></span><span id="c2k::UniqueValue::UniqueValue__T.Deleter"></span><span class="target" id="classc2k_1_1UniqueValue_1ab953fa43b4d6a35abb17169b1f9103f8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UniqueValue</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN3c2k11UniqueValueE" title="c2k::UniqueValue::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span>, <a class="reference internal" href="#_CPPv4I00EN3c2k11UniqueValueE" title="c2k::UniqueValue::Deleter"><span class="n"><span class="pre">Deleter</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">deleter</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k11UniqueValue11UniqueValueE1T7Deleter" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k11UniqueValue11UniqueValueERK11UniqueValue">
+<span id="_CPPv3N3c2k11UniqueValue11UniqueValueERK11UniqueValue"></span><span id="_CPPv2N3c2k11UniqueValue11UniqueValueERK11UniqueValue"></span><span id="c2k::UniqueValue::UniqueValue__UniqueValueCR"></span><span class="target" id="classc2k_1_1UniqueValue_1a95b311bc86bbd1e386811c2349e6fe7c"></span><span class="sig-name descname"><span class="n"><span class="pre">UniqueValue</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3c2k11UniqueValue11UniqueValueERK11UniqueValue" title="c2k::UniqueValue::UniqueValue"><span class="n"><span class="pre">UniqueValue</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N3c2k11UniqueValue11UniqueValueERK11UniqueValue" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k11UniqueValueaSERK11UniqueValue">
+<span id="_CPPv3N3c2k11UniqueValueaSERK11UniqueValue"></span><span id="_CPPv2N3c2k11UniqueValueaSERK11UniqueValue"></span><span id="c2k::UniqueValue::assign-operator__UniqueValueCR"></span><span class="target" id="classc2k_1_1UniqueValue_1ae08f57b2a198ab72dd970e1826ed8174"></span><a class="reference internal" href="#_CPPv4I00EN3c2k11UniqueValueE" title="c2k::UniqueValue"><span class="n"><span class="pre">UniqueValue</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN3c2k11UniqueValueE" title="c2k::UniqueValue"><span class="n"><span class="pre">UniqueValue</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N3c2k11UniqueValueaSERK11UniqueValue" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k11UniqueValue11UniqueValueERR11UniqueValue">
+<span id="_CPPv3N3c2k11UniqueValue11UniqueValueERR11UniqueValue"></span><span id="_CPPv2N3c2k11UniqueValue11UniqueValueERR11UniqueValue"></span><span id="c2k::UniqueValue::UniqueValue__UniqueValueRR"></span><span class="target" id="classc2k_1_1UniqueValue_1ac6fe29919b0de2c1b0e25a9e1ca02e47"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UniqueValue</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3c2k11UniqueValue11UniqueValueERR11UniqueValue" title="c2k::UniqueValue::UniqueValue"><span class="n"><span class="pre">UniqueValue</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N3c2k11UniqueValue11UniqueValueERR11UniqueValue" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k11UniqueValueaSERR11UniqueValue">
+<span id="_CPPv3N3c2k11UniqueValueaSERR11UniqueValue"></span><span id="_CPPv2N3c2k11UniqueValueaSERR11UniqueValue"></span><span id="c2k::UniqueValue::assign-operator__UniqueValueRR"></span><span class="target" id="classc2k_1_1UniqueValue_1af8086eeb0d2a84517a0b3995193cc67d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN3c2k11UniqueValueE" title="c2k::UniqueValue"><span class="n"><span class="pre">UniqueValue</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN3c2k11UniqueValueE" title="c2k::UniqueValue"><span class="n"><span class="pre">UniqueValue</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N3c2k11UniqueValueaSERR11UniqueValue" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k11UniqueValueD0Ev">
+<span id="_CPPv3N3c2k11UniqueValueD0Ev"></span><span id="_CPPv2N3c2k11UniqueValueD0Ev"></span><span id="c2k::UniqueValue::~UniqueValue"></span><span class="target" id="classc2k_1_1UniqueValue_1ae98095b7b179dac177f58ddd33a81a5b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~UniqueValue</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k11UniqueValueD0Ev" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3c2k11UniqueValuecvRK1TEv">
+<span id="_CPPv3NK3c2k11UniqueValuecvRK1TEv"></span><span id="_CPPv2NK3c2k11UniqueValuecvRK1TEv"></span><span id="c2k::UniqueValue::castto-TCR-operatorC"></span><span class="target" id="classc2k_1_1UniqueValue_1aa7f1479735b97841450c883cbadf3de7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN3c2k11UniqueValueE" title="c2k::UniqueValue::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="p"><span class="pre">&amp;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3c2k11UniqueValuecvRK1TEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k11UniqueValuecvR1TEv">
+<span id="_CPPv3N3c2k11UniqueValuecvR1TEv"></span><span id="_CPPv2N3c2k11UniqueValuecvR1TEv"></span><span id="c2k::UniqueValue::castto-TR-operator"></span><span class="target" id="classc2k_1_1UniqueValue_1aa9add039ba35277b6164ea5d8e24cfd7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN3c2k11UniqueValueE" title="c2k::UniqueValue::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&amp;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k11UniqueValuecvR1TEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3c2k11UniqueValue9has_valueEv">
+<span id="_CPPv3NK3c2k11UniqueValue9has_valueEv"></span><span id="_CPPv2NK3c2k11UniqueValue9has_valueEv"></span><span id="c2k::UniqueValue::has_valueC"></span><span class="target" id="classc2k_1_1UniqueValue_1a715ed3d291f21645cc3f4bcfaf7f6317"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">has_value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3c2k11UniqueValue9has_valueEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3c2k11UniqueValue5valueEv">
+<span id="_CPPv3NK3c2k11UniqueValue5valueEv"></span><span id="_CPPv2NK3c2k11UniqueValue5valueEv"></span><span id="c2k::UniqueValue::valueC"></span><span class="target" id="classc2k_1_1UniqueValue_1ad322067d9a0b42cf1ce97d25c7b28b0d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN3c2k11UniqueValueE" title="c2k::UniqueValue::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3c2k11UniqueValue5valueEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k11UniqueValue5valueEv">
+<span id="_CPPv3N3c2k11UniqueValue5valueEv"></span><span id="_CPPv2N3c2k11UniqueValue5valueEv"></span><span id="c2k::UniqueValue::value"></span><span class="target" id="classc2k_1_1UniqueValue_1adcfd7f6820a1d434c550cf36e2ba0847"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN3c2k11UniqueValueE" title="c2k::UniqueValue::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k11UniqueValue5valueEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3c2k11UniqueValuemlEv">
+<span id="_CPPv3NK3c2k11UniqueValuemlEv"></span><span id="_CPPv2NK3c2k11UniqueValuemlEv"></span><span id="c2k::UniqueValue::mul-operatorC"></span><span class="target" id="classc2k_1_1UniqueValue_1ac5b9f52d0c6faff126629214cd3cae7a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN3c2k11UniqueValueE" title="c2k::UniqueValue::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3c2k11UniqueValuemlEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k11UniqueValuemlEv">
+<span id="_CPPv3N3c2k11UniqueValuemlEv"></span><span id="_CPPv2N3c2k11UniqueValuemlEv"></span><span id="c2k::UniqueValue::mul-operator"></span><span class="target" id="classc2k_1_1UniqueValue_1a6aa83b3f53fe129f7ed63d8f97183cbb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN3c2k11UniqueValueE" title="c2k::UniqueValue::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k11UniqueValuemlEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classc2k_1_1TimeoutError.html" class="btn btn-neutral float-left" title="Class TimeoutError" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="enum_address__family_8hpp_1a9b5a6d1a9930d330e1ab802d8c07167f.html" class="btn btn-neutral float-right" title="Enum AddressFamily" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Michael Gerhold.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

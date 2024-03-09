@@ -1,0 +1,80 @@
+
+.. _file_sockets_include_sockets_detail_message_buffer.hpp:
+
+File message_buffer.hpp
+=======================
+
+|exhale_lsh| :ref:`Parent directory <dir_sockets_include_sockets_detail>` (``sockets/include/sockets/detail``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``sockets/include/sockets/detail/message_buffer.hpp``)
+------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_sockets_include_sockets_detail_message_buffer.hpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``algorithm``
+
+- ``array``
+
+- ``byte_order.hpp`` (:ref:`file_sockets_include_sockets_detail_byte_order.hpp`)
+
+- ``concepts``
+
+- ``cstddef``
+
+- ``cstdlib``
+
+- ``cstring``
+
+- ``span``
+
+- ``stdexcept``
+
+- ``utils.hpp`` (:ref:`file_sockets_include_sockets_detail_utils.hpp`)
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file_sockets_include_sockets_detail_socket.hpp`
+
+- :ref:`file_sockets_include_sockets_sockets.hpp`
+
+
+
+
+Namespaces
+----------
+
+
+- :ref:`namespace_c2k`
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classc2k_1_1MessageBuffer`
+

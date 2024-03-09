@@ -1,0 +1,37 @@
+
+.. _namespace_c2k__constants:
+
+Namespace c2k::constants
+========================
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+
+
+
+
+Typedefs
+--------
+
+
+- :ref:`exhale_typedef_socket__headers_8hpp_1a5a565f5f94167cc86df23a8ba00e13b3`
+
+- :ref:`exhale_typedef_socket__headers_8hpp_1ad445a98b53e06e93a3caf010e458a783`
+
+
+Variables
+---------
+
+
+- :ref:`exhale_variable_socket__headers_8hpp_1aa5d1fb0b8ef363c4c5d06891607b9b6b`
+
+- :ref:`exhale_variable_socket__headers_8hpp_1a22c98cbd90ac220c3e31588b1a58b51c`
+
+- :ref:`exhale_variable_socket__headers_8hpp_1a838b4824ae23cc3e34af1913a0eab1b6`
+
+- :ref:`exhale_variable_socket__headers_8hpp_1a9cb815cf3b73050d533351cf5aecbc31`
+
+- :ref:`exhale_variable_socket__headers_8hpp_1ab66295c6ad1598c094bc744c544b4111`

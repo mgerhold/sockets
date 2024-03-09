@@ -1,0 +1,32 @@
+
+.. _program_listing_file_sockets_include_sockets_detail_byte_order.hpp:
+
+Program Listing for File byte_order.hpp
+=======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sockets_include_sockets_detail_byte_order.hpp>` (``sockets/include/sockets/detail/byte_order.hpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #pragma once
+   
+   #include "byteswap.hpp"
+   #include <bit>
+   
+   namespace c2k {
+       inline constexpr auto network_byte_order = std::endian::big; // for IP communication
+   
+       [[nodiscard]] constexpr auto to_network_byte_order(std::integral auto const value) {
+           if constexpr (std::endian::native == network_byte_order) {
+               return value;
+           } else {
+               return byteswap(value);
+           }
+       }
+   
+       [[nodiscard]] constexpr auto from_network_byte_order(std::integral auto const value) {
+           return to_network_byte_order(value);
+       }
+   } // namespace c2k

@@ -1,0 +1,141 @@
+
+.. _namespace_c2k:
+
+Namespace c2k
+=============
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+
+
+
+
+Namespaces
+----------
+
+
+- :ref:`namespace_c2k__constants`
+
+- :ref:`namespace_c2k__detail`
+
+
+Classes
+-------
+
+
+- :ref:`exhale_struct_structc2k_1_1AddressInfo`
+
+- :ref:`exhale_struct_structc2k_1_1ClientSocket_1_1ReceiveTask`
+
+- :ref:`exhale_struct_structc2k_1_1ClientSocket_1_1SendTask`
+
+- :ref:`exhale_class_classc2k_1_1AbstractSocket`
+
+- :ref:`exhale_class_classc2k_1_1BidirectionalChannel`
+
+- :ref:`exhale_class_classc2k_1_1ChannelError`
+
+- :ref:`exhale_class_classc2k_1_1ClientSocket`
+
+- :ref:`exhale_class_classc2k_1_1ClientSocket_1_1State`
+
+- :ref:`exhale_class_classc2k_1_1MessageBuffer`
+
+- :ref:`exhale_class_classc2k_1_1NonNullOwner`
+
+- :ref:`exhale_class_classc2k_1_1ReadError`
+
+- :ref:`exhale_class_classc2k_1_1Receiver`
+
+- :ref:`exhale_class_classc2k_1_1Sender`
+
+- :ref:`exhale_class_classc2k_1_1SendError`
+
+- :ref:`exhale_class_classc2k_1_1ServerSocket`
+
+- :ref:`exhale_class_classc2k_1_1Sockets`
+
+- :ref:`exhale_class_classc2k_1_1Synchronized`
+
+- :ref:`exhale_class_classc2k_1_1TimeoutError`
+
+- :ref:`exhale_class_classc2k_1_1UniqueValue`
+
+
+Enums
+-----
+
+
+- :ref:`exhale_enum_address__family_8hpp_1a9b5a6d1a9930d330e1ab802d8c07167f`
+
+- :ref:`exhale_enum_socket_8cpp_1acb8fb91d7c34f11a8a27a1f9da968076`
+
+- :ref:`exhale_enum_socket_8cpp_1a454f1f69e20908509ce5a4d1e611ea51`
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_socket_8cpp_1a65c2fa6999130767d11d2aad9ad6f87f`
+
+- :ref:`exhale_function_socket_8cpp_1acbc257689828b2be7e73ed698babf4f1`
+
+- :ref:`exhale_function_channel_8hpp_1aadf4a2711aeb30cec0eb2f8f2e08da65`
+
+- :ref:`exhale_function_channel_8hpp_1a78d0df30a412d849ca64f6342211c4ab`
+
+- :ref:`exhale_function_socket_8cpp_1ada5407599374413dacadd141c9f388ed`
+
+- :ref:`exhale_function_socket_8cpp_1a7176d02f0563dc47d79be92d1b830d01`
+
+- :ref:`exhale_function_byte__order_8hpp_1a8748bb18b795889c01a6326f53e2ab4e`
+
+- :ref:`exhale_function_socket_8cpp_1a9d0dfdb452bc50d1def49f5c09e22607`
+
+- :ref:`exhale_function_socket_8cpp_1ac2f9b2f71ad84ea4fd7122b473def3b7`
+
+- :ref:`exhale_function_socket_8cpp_1a87ea02d68628295489d93bb7ce977adb`
+
+- :ref:`exhale_function_socket_8cpp_1a3e5a8280b00c7e6fe32e715d7cd4ca03`
+
+- :ref:`exhale_function_socket_8cpp_1a8f7a55f6204fa42202f4903b4e745fc4`
+
+- :ref:`exhale_function_socket_8cpp_1acd33764745eaf0d6d1809a48e10b1ff6`
+
+- :ref:`exhale_function_non__null__owner_8hpp_1a1577081b720d1033c72ecac94a12e2dd`
+
+- :ref:`exhale_function_socket_8cpp_1ab1cfe50b941d20aeda94d586918cd2ce`
+
+- :ref:`exhale_function_socket_8cpp_1a3bc73ecc11ea10cdc0c08cee77924a67`
+
+- :ref:`exhale_function_socket_8cpp_1a6e336f97b91fcd41b0bd6700913a3427`
+
+- :ref:`exhale_function_socket_8cpp_1a755e58b0f57785fa6936f69a77b0657e`
+
+- :ref:`exhale_function_socket_8cpp_1a3900fe9a9a6a9aebde342033ce174709`
+
+- :ref:`exhale_function_byte__order_8hpp_1a668fa02275bc6fa6d5342b3d3efb030e`
+
+- :ref:`exhale_function_socket_8cpp_1a0bfc388c3ebdc3cb5a1e009c2a513795`
+
+- :ref:`exhale_function_socket_8cpp_1aaa8546d456ca1baa1e801121e3d53728`
+
+- :ref:`exhale_function_unreachable_8hpp_1a61e71d7964b56e90b288ee015963696a`
+
+
+Typedefs
+--------
+
+
+- :ref:`exhale_typedef_socket_8cpp_1ad1bcbdd6bf886213222637cae189e143`
+
+
+Variables
+---------
+
+
+- :ref:`exhale_variable_byte__order_8hpp_1accc2e0dcc557c1d62a76ce1c1469ffbc`

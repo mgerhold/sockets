@@ -1,0 +1,14 @@
+.. _exhale_function_byte__order_8hpp_1a8748bb18b795889c01a6326f53e2ab4e:
+
+Function c2k::from_network_byte_order
+=====================================
+
+- Defined in :ref:`file_sockets_include_sockets_detail_byte_order.hpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::from_network_byte_order(std::integral auto const)
+   :project: Sockets

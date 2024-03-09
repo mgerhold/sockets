@@ -1,0 +1,14 @@
+.. _exhale_variable_socket__headers_8hpp_1aa5d1fb0b8ef363c4c5d06891607b9b6b:
+
+Variable c2k::constants::invalid_socket
+=======================================
+
+- Defined in :ref:`file_sockets_socket_headers.hpp`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: c2k::constants::invalid_socket
+   :project: Sockets

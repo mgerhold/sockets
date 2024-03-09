@@ -1,0 +1,14 @@
+.. _exhale_function_byteswap_8hpp_1af444b5478f7ed9d836d32e512e4badd0:
+
+Template Function byteswap
+==========================
+
+- Defined in :ref:`file_sockets_include_sockets_detail_byteswap.hpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: byteswap(T)
+   :project: Sockets

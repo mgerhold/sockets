@@ -1,0 +1,113 @@
+:orphan:
+
+
+Full API
+========
+
+Directories
+***********
+
+
+.. toctree::
+   :maxdepth: 5
+
+   dir_sockets.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   dir_sockets_include.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   dir_sockets_include_sockets.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   dir_sockets_include_sockets_detail.rst
+
+Files
+*****
+
+
+.. toctree::
+   :maxdepth: 5
+
+   file_sockets_include_sockets_detail_address_family.hpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_sockets_include_sockets_detail_address_info.hpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_sockets_include_sockets_detail_byte_order.hpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_sockets_include_sockets_detail_byteswap.hpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_sockets_include_sockets_detail_channel.hpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_sockets_include_sockets_detail_message_buffer.hpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_sockets_include_sockets_detail_non_null_owner.hpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_sockets_socket.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_sockets_include_sockets_detail_socket.hpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_sockets_socket_headers.hpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_sockets_sockets.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_sockets_include_sockets_sockets.hpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_sockets_include_sockets_detail_synchronized.hpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_sockets_include_sockets_detail_unique_value.hpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_sockets_include_sockets_detail_unreachable.hpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_sockets_include_sockets_detail_utils.hpp.rst

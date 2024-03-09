@@ -1,0 +1,23 @@
+.. _exhale_struct_structc2k_1_1ClientSocket_1_1SendTask:
+
+Struct ClientSocket::SendTask
+=============================
+
+- Defined in :ref:`file_sockets_include_sockets_detail_socket.hpp`
+
+
+Nested Relationships
+--------------------
+
+This struct is a nested type of :ref:`exhale_class_classc2k_1_1ClientSocket`.
+
+
+Struct Documentation
+--------------------
+
+
+.. doxygenstruct:: c2k::ClientSocket::SendTask
+   :project: Sockets
+   :members:
+   :protected-members:
+   :undoc-members:

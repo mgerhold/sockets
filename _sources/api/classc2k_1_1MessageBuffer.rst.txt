@@ -1,0 +1,17 @@
+.. _exhale_class_classc2k_1_1MessageBuffer:
+
+Class MessageBuffer
+===================
+
+- Defined in :ref:`file_sockets_include_sockets_detail_message_buffer.hpp`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: c2k::MessageBuffer
+   :project: Sockets
+   :members:
+   :protected-members:
+   :undoc-members:

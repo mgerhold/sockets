@@ -1,0 +1,26 @@
+.. _exhale_class_classc2k_1_1ChannelError:
+
+Class ChannelError
+==================
+
+- Defined in :ref:`file_sockets_include_sockets_detail_channel.hpp`
+
+
+Inheritance Relationships
+-------------------------
+
+Base Type
+*********
+
+- ``public std::runtime_error``
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: c2k::ChannelError
+   :project: Sockets
+   :members:
+   :protected-members:
+   :undoc-members:

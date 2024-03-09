@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Function c2k::initialize_client_socket &mdash; Sockets  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Function c2k::initialize_server_socket" href="function_socket_8cpp_1a8f7a55f6204fa42202f4903b4e745fc4.html" />
+    <link rel="prev" title="Function c2k::get_address_infos" href="function_socket_8cpp_1a87ea02d68628295489d93bb7ce977adb.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sockets
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Some important topic</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#namespaces">Namespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#enums">Enums</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#functions">Functions</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="function_byteswap_8hpp_1af444b5478f7ed9d836d32e512e4badd0.html">Template Function byteswap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket_8cpp_1a65c2fa6999130767d11d2aad9ad6f87f.html">Function c2k::bind_socket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket_8cpp_1acbc257689828b2be7e73ed698babf4f1.html">Function c2k::connect_socket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_channel_8hpp_1aadf4a2711aeb30cec0eb2f8f2e08da65.html">Template Function c2k::create_bidirectional_channel_pair</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_channel_8hpp_1a78d0df30a412d849ca64f6342211c4ab.html">Template Function c2k::create_channel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket_8cpp_1ada5407599374413dacadd141c9f388ed.html">Function c2k::create_socket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket_8hpp_1ac097c6b60819186b5c3e85509858fa15.html">Function c2k::detail::initialize_server_socket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a54ac1e28648991582adf63e9f9b6b1ce.html">Template Function c2k::detail::summed_sizeof</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket_8cpp_1a7176d02f0563dc47d79be92d1b830d01.html">Function c2k::extract_adress_info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_byte__order_8hpp_1a8748bb18b795889c01a6326f53e2ab4e.html">Function c2k::from_network_byte_order</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket_8cpp_1a9d0dfdb452bc50d1def49f5c09e22607.html">Function c2k::generate_fd_set</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket_8cpp_1ac2f9b2f71ad84ea4fd7122b473def3b7.html">Function c2k::generate_hints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket_8cpp_1a87ea02d68628295489d93bb7ce977adb.html">Function c2k::get_address_infos</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Function c2k::initialize_client_socket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket_8cpp_1a8f7a55f6204fa42202f4903b4e745fc4.html">Function c2k::initialize_server_socket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket_8cpp_1acd33764745eaf0d6d1809a48e10b1ff6.html">Function c2k::is_socket_ready</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_non__null__owner_8hpp_1a1577081b720d1033c72ecac94a12e2dd.html">Template Function c2k::make_non_null_owner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket_8cpp_1ab1cfe50b941d20aeda94d586918cd2ce.html">Function c2k::server_listen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket_8cpp_1a3bc73ecc11ea10cdc0c08cee77924a67.html">Function c2k::set_all_default_socket_options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket_8cpp_1a6e336f97b91fcd41b0bd6700913a3427.html">Function c2k::set_socket_option</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket_8cpp_1a755e58b0f57785fa6936f69a77b0657e.html">Function c2k::socket_deleter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket_8cpp_1a3900fe9a9a6a9aebde342033ce174709.html">Function c2k::to_ai_family</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_byte__order_8hpp_1a668fa02275bc6fa6d5342b3d3efb030e.html">Function c2k::to_network_byte_order</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket_8cpp_1a0bfc388c3ebdc3cb5a1e009c2a513795.html">Function c2k::to_string</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket_8cpp_1aaa8546d456ca1baa1e801121e3d53728.html">Template Function c2k::try_dequeue_task</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_unreachable_8hpp_1a61e71d7964b56e90b288ee015963696a.html">Function c2k::unreachable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_socket__headers_8hpp_1ae20266fbb2e29176e7bedcafe8f6a001.html">Function closesocket</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#variables">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#typedefs">Typedefs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sockets</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="library_root.html">Library API</a></li>
+      <li class="breadcrumb-item active">Function c2k::initialize_client_socket</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/function_socket_8cpp_1a3e5a8280b00c7e6fe32e715d7cd4ca03.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="function-c2k-initialize-client-socket">
+<span id="exhale-function-socket-8cpp-1a3e5a8280b00c7e6fe32e715d7cd4ca03"></span><h1>Function c2k::initialize_client_socket<a class="headerlink" href="#function-c2k-initialize-client-socket" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_sockets_socket.cpp.html#file-sockets-socket-cpp"><span class="std std-ref">File socket.cpp</span></a></p></li>
+</ul>
+<section id="function-documentation">
+<h2>Function Documentation<a class="headerlink" href="#function-documentation" title="Link to this heading"></a></h2>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3c2k24initialize_client_socketEK13AddressFamilyRKNSt6stringEKNSt8uint16_tE">
+<span id="_CPPv3N3c2k24initialize_client_socketEK13AddressFamilyRKNSt6stringEKNSt8uint16_tE"></span><span id="_CPPv2N3c2k24initialize_client_socketEK13AddressFamilyRKNSt6stringEKNSt8uint16_tE"></span><span id="c2k::initialize_client_socket__AddressFamilyC.ssCR.std::uint16_tC"></span><span class="target" id="socket_8cpp_1a3e5a8280b00c7e6fe32e715d7cd4ca03"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">c2k</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">initialize_client_socket</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_address__family_8hpp_1a9b5a6d1a9930d330e1ab802d8c07167f.html#_CPPv4N3c2k13AddressFamilyE" title="c2k::AddressFamily"><span class="n"><span class="pre">AddressFamily</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">address_family</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">host</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">port</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3c2k24initialize_client_socketEK13AddressFamilyRKNSt6stringEKNSt8uint16_tE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="function_socket_8cpp_1a87ea02d68628295489d93bb7ce977adb.html" class="btn btn-neutral float-left" title="Function c2k::get_address_infos" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="function_socket_8cpp_1a8f7a55f6204fa42202f4903b4e745fc4.html" class="btn btn-neutral float-right" title="Function c2k::initialize_server_socket" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Michael Gerhold.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

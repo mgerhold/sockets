@@ -1,0 +1,17 @@
+.. _exhale_class_classc2k_1_1Sockets:
+
+Class Sockets
+=============
+
+- Defined in :ref:`file_sockets_include_sockets_sockets.hpp`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: c2k::Sockets
+   :project: Sockets
+   :members:
+   :protected-members:
+   :undoc-members:

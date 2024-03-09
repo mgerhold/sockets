@@ -1,0 +1,14 @@
+.. _exhale_function_channel_8hpp_1aadf4a2711aeb30cec0eb2f8f2e08da65:
+
+Template Function c2k::create_bidirectional_channel_pair
+========================================================
+
+- Defined in :ref:`file_sockets_include_sockets_detail_channel.hpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: c2k::create_bidirectional_channel_pair()
+   :project: Sockets

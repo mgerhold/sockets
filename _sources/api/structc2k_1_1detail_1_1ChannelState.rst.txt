@@ -1,0 +1,17 @@
+.. _exhale_struct_structc2k_1_1detail_1_1ChannelState:
+
+Template Struct ChannelState
+============================
+
+- Defined in :ref:`file_sockets_include_sockets_detail_channel.hpp`
+
+
+Struct Documentation
+--------------------
+
+
+.. doxygenstruct:: c2k::detail::ChannelState
+   :project: Sockets
+   :members:
+   :protected-members:
+   :undoc-members:
