@@ -22,63 +22,6 @@ namespace c2k {
         };
     } // namespace detail
 
-    /*template<typename T, typename Returner>
-    class Locked final {
-        friend class Synchronized<T>;
-
-    private:
-        std::unique_ptr<T> m_data;
-        Returner m_returner;
-
-        Locked(std::unique_ptr<T> data, Returner returner)
-            : m_data{ std::move(data) },
-              m_returner{ std::move(returner) } { }
-
-        void throw_if_expired() const { }
-
-    public:
-        Locked(Locked const& other) = delete;
-        Locked(Locked&& other) noexcept = default;
-        Locked& operator=(Locked const& other) = delete;
-        Locked& operator=(Locked&& other) noexcept = default;
-
-        ~Locked() {
-            m_returner(std::move(*m_data));
-        }
-
-        [[nodiscard]] T const& value() const& {
-            throw_if_expired();
-            return *m_data;
-        }
-
-        [[nodiscard]] T& value() & {
-            throw_if_expired();
-            return *m_data;
-        }
-
-        T const& operator*() && = delete;
-
-        [[nodiscard]] T const& operator*() const& {
-            throw_if_expired();
-            return value();
-        }
-
-        [[nodiscard]] T& operator*() & {
-            throw_if_expired();
-            return value();
-        }
-
-        T const* operator->() && = delete;
-
-        [[nodiscard]] T const* operator->() const& {
-            return m_data.get();
-        }
-
-        [[nodiscard]] T* operator->() & {
-            return m_data.get();
-        }
-    };*/
-
     template<typename T>
     class Synchronized final {
     private:
