@@ -1,0 +1,44 @@
+name: Generate and Deploy Documentation
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Install necessary packages
+        run: |
+          sudo apt-get install doxygen
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.12
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Generate documentation
+        run: |
+          cd src
+          doxygen ../docs/Doxyfile
+          cd ../docs
+          sphinx-build -b html . out
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.5
+        with:
+          branch: gh-pages
+          folder: docs/out

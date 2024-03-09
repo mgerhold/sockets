@@ -3,3 +3,4 @@ cmake-build*/
 docs/api
 docs/sphinx
 docs/xml
+docs/Doxyfile.bak
