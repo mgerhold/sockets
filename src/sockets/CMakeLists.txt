@@ -12,7 +12,6 @@ add_library(c2k_sockets
         include/sockets/detail/address_info.hpp
         include/sockets/detail/byte_order.hpp
         include/sockets/detail/message_buffer.hpp
-        include/sockets/detail/channel.hpp
         include/sockets/detail/unreachable.hpp
         include/sockets/detail/utils.hpp
 )

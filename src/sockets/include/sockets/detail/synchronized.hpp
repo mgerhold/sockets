@@ -1,6 +1,5 @@
 #pragma once
 
-#include "channel.hpp"
 #include <atomic>
 #include <cassert>
 #include <condition_variable>
