@@ -57,6 +57,11 @@ jobs:
           sudo update-alternatives --install /usr/bin/cc cc /usr/bin/${{ matrix.cc }} 100
           sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/${{ matrix.cxx }} 100
           cmake -B build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
+      - name: Fix kernel mmap rnd bits
+        # Asan in llvm 14 provided in ubuntu 22.04 is incompatible with
+        # high-entropy ASLR in much newer kernels that GitHub runners are
+        # using leading to random crashes: https://reviews.llvm.org/D148280
+        run: sudo sysctl vm.mmap_rnd_bits=28
       - name: Build
         run: cmake --build build
       - name: Run Tests
