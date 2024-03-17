@@ -34,8 +34,6 @@ Includes
 
 - ``cassert``
 
-- ``channel.hpp`` (:ref:`file_sockets_include_sockets_detail_channel.hpp`)
-
 - ``condition_variable``
 
 - ``exception``

@@ -13,15 +13,6 @@ Namespace c2k::detail
 
 
 
-Classes
--------
-
-
-- :ref:`exhale_struct_structc2k_1_1detail_1_1ChannelState`
-
-- :ref:`exhale_class_classc2k_1_1detail_1_1ChannelBase`
-
-
 Functions
 ---------
 

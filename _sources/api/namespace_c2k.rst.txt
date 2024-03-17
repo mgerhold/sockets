@@ -34,10 +34,6 @@ Classes
 
 - :ref:`exhale_class_classc2k_1_1AbstractSocket`
 
-- :ref:`exhale_class_classc2k_1_1BidirectionalChannel`
-
-- :ref:`exhale_class_classc2k_1_1ChannelError`
-
 - :ref:`exhale_class_classc2k_1_1ClientSocket`
 
 - :ref:`exhale_class_classc2k_1_1ClientSocket_1_1State`
@@ -47,10 +43,6 @@ Classes
 - :ref:`exhale_class_classc2k_1_1NonNullOwner`
 
 - :ref:`exhale_class_classc2k_1_1ReadError`
-
-- :ref:`exhale_class_classc2k_1_1Receiver`
-
-- :ref:`exhale_class_classc2k_1_1Sender`
 
 - :ref:`exhale_class_classc2k_1_1SendError`
 
@@ -83,10 +75,6 @@ Functions
 - :ref:`exhale_function_socket_8cpp_1a65c2fa6999130767d11d2aad9ad6f87f`
 
 - :ref:`exhale_function_socket_8cpp_1acbc257689828b2be7e73ed698babf4f1`
-
-- :ref:`exhale_function_channel_8hpp_1aadf4a2711aeb30cec0eb2f8f2e08da65`
-
-- :ref:`exhale_function_channel_8hpp_1a78d0df30a412d849ca64f6342211c4ab`
 
 - :ref:`exhale_function_socket_8cpp_1ada5407599374413dacadd141c9f388ed`
 

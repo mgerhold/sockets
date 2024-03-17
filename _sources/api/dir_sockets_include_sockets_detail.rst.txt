@@ -20,7 +20,6 @@ Files
 - :ref:`file_sockets_include_sockets_detail_address_info.hpp`
 - :ref:`file_sockets_include_sockets_detail_byte_order.hpp`
 - :ref:`file_sockets_include_sockets_detail_byteswap.hpp`
-- :ref:`file_sockets_include_sockets_detail_channel.hpp`
 - :ref:`file_sockets_include_sockets_detail_message_buffer.hpp`
 - :ref:`file_sockets_include_sockets_detail_non_null_owner.hpp`
 - :ref:`file_sockets_include_sockets_detail_socket.hpp`
