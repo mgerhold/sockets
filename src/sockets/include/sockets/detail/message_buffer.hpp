@@ -146,6 +146,7 @@ namespace c2k {
          * after converting it from network byte order to native byte order. If the MessageBuffer does not
          * contain enough data to extract the value, a std::runtime_error is thrown.
          *
+         * @tparam Integral The integral type of the value to extract.
          * @param message_buffer The MessageBuffer from which to extract the value.
          * @param target The integral type variable in which to store the extracted value.
          *
@@ -153,11 +154,12 @@ namespace c2k {
          *
          * @throw std::runtime_error if not enough data is available in the MessageBuffer.
          */
-        friend MessageBuffer& operator>>(MessageBuffer& message_buffer, std::integral auto& target) {
+        template<std::integral Integral>
+        friend MessageBuffer& operator>>(MessageBuffer& message_buffer, Integral& target) {
             if (message_buffer.m_data.size() < sizeof(target)) {
                 throw std::runtime_error{ "not enough data to extract value" };
             }
-            auto buffer = std::remove_cvref_t<decltype(target)>{};
+            auto buffer = Integral{};
             std::copy_n(message_buffer.m_data.cbegin(), sizeof(target), reinterpret_cast<std::byte*>(&buffer));
             target = from_network_byte_order(buffer);
             message_buffer.m_data.erase(
