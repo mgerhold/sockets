@@ -20,6 +20,7 @@ Program Listing for File message_buffer.hpp
    #include <cstddef>
    #include <cstdlib>
    #include <cstring>
+   #include <optional>
    #include <span>
    #include <stdexcept>
    #include <vector>
@@ -83,11 +84,12 @@ Program Listing for File message_buffer.hpp
                }
            }
    
-           friend MessageBuffer& operator>>(MessageBuffer& message_buffer, std::integral auto& target) {
+           template<std::integral Integral>
+           friend MessageBuffer& operator>>(MessageBuffer& message_buffer, Integral& target) {
                if (message_buffer.m_data.size() < sizeof(target)) {
                    throw std::runtime_error{ "not enough data to extract value" };
                }
-               auto buffer = std::remove_cvref_t<decltype(target)>{};
+               auto buffer = Integral{};
                std::copy_n(message_buffer.m_data.cbegin(), sizeof(target), reinterpret_cast<std::byte*>(&buffer));
                target = from_network_byte_order(buffer);
                message_buffer.m_data.erase(

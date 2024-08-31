@@ -44,6 +44,8 @@ Includes
 
 - ``cstring``
 
+- ``optional``
+
 - ``span``
 
 - ``stdexcept``
