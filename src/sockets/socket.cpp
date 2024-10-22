@@ -12,6 +12,12 @@
 #include <string>
 #include <utility>
 
+
+#ifndef _WIN32
+#define IPV6_INFO_PORT(ipv6_info) ((ipv6_info)->sin6_addr.s6_addr)
+#endif
+
+
 namespace c2k {
     [[nodiscard]] static constexpr int to_ai_family(AddressFamily const family) {
         switch (family) {
@@ -241,22 +247,22 @@ namespace c2k {
                 auto const ipv6_info = reinterpret_cast<sockaddr_in6 const*>(&address);
                 auto stream = std::stringstream{};
                 stream << std::hex << std::setfill('0');
-                stream << std::setw(2) << ipv6_info->sin6_addr.__in6_u.__u6_addr8[0] << std::setw(2)
-                       << ipv6_info->sin6_addr.__in6_u.__u6_addr8[1] << ':';
-                stream << std::setw(2) << ipv6_info->sin6_addr.__in6_u.__u6_addr8[2] << std::setw(2)
-                       << ipv6_info->sin6_addr.__in6_u.__u6_addr8[3] << ':';
-                stream << std::setw(2) << ipv6_info->sin6_addr.__in6_u.__u6_addr8[4] << std::setw(2)
-                       << ipv6_info->sin6_addr.__in6_u.__u6_addr8[5] << ':';
-                stream << std::setw(2) << ipv6_info->sin6_addr.__in6_u.__u6_addr8[6] << std::setw(2)
-                       << ipv6_info->sin6_addr.__in6_u.__u6_addr8[7] << ':';
-                stream << std::setw(2) << ipv6_info->sin6_addr.__in6_u.__u6_addr8[8] << std::setw(2)
-                       << ipv6_info->sin6_addr.__in6_u.__u6_addr8[9] << ':';
-                stream << std::setw(2) << ipv6_info->sin6_addr.__in6_u.__u6_addr8[10] << std::setw(2)
-                       << ipv6_info->sin6_addr.__in6_u.__u6_addr8[11] << ':';
-                stream << std::setw(2) << ipv6_info->sin6_addr.__in6_u.__u6_addr8[12] << std::setw(2)
-                       << ipv6_info->sin6_addr.__in6_u.__u6_addr8[13] << ':';
-                stream << std::setw(2) << ipv6_info->sin6_addr.__in6_u.__u6_addr8[14] << std::setw(2)
-                       << ipv6_info->sin6_addr.__in6_u.__u6_addr8[15];
+                stream << std::setw(2) << IPV6_INFO_PORT(ipv6_info)[0] << std::setw(2) << IPV6_INFO_PORT(ipv6_info)[1]
+                       << ':';
+                stream << std::setw(2) << IPV6_INFO_PORT(ipv6_info)[2] << std::setw(2) << IPV6_INFO_PORT(ipv6_info)[3]
+                       << ':';
+                stream << std::setw(2) << IPV6_INFO_PORT(ipv6_info)[4] << std::setw(2) << IPV6_INFO_PORT(ipv6_info)[5]
+                       << ':';
+                stream << std::setw(2) << IPV6_INFO_PORT(ipv6_info)[6] << std::setw(2) << IPV6_INFO_PORT(ipv6_info)[7]
+                       << ':';
+                stream << std::setw(2) << IPV6_INFO_PORT(ipv6_info)[8] << std::setw(2) << IPV6_INFO_PORT(ipv6_info)[9]
+                       << ':';
+                stream << std::setw(2) << IPV6_INFO_PORT(ipv6_info)[10] << std::setw(2) << IPV6_INFO_PORT(ipv6_info)[11]
+                       << ':';
+                stream << std::setw(2) << IPV6_INFO_PORT(ipv6_info)[12] << std::setw(2) << IPV6_INFO_PORT(ipv6_info)[13]
+                       << ':';
+                stream << std::setw(2) << IPV6_INFO_PORT(ipv6_info)[14] << std::setw(2)
+                       << IPV6_INFO_PORT(ipv6_info)[15];
                 return AddressInfo{ AddressFamily::Ipv6,
                                     std::move(stream).str(),
                                     from_network_byte_order(static_cast<std::uint16_t>(ipv6_info->sin6_port)) };
