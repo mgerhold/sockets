@@ -55,8 +55,8 @@ namespace c2k {
             std::size_t const timeout_milliseconds
     ) {
         auto const microseconds = timeout_milliseconds * 1000;
-        auto timeout = timeval{ .tv_sec = static_cast<long>(microseconds / (1000 * 1000)),
-                                .tv_usec = static_cast<long>(microseconds % (1000 * 1000)) };
+        auto timeout = timeval{ .tv_sec = static_cast<decltype(std::declval<timeval>().tv_sec)>(microseconds / (1000 * 1000)),
+                                .tv_usec = static_cast<decltype(std::declval<timeval>().tv_usec)>(microseconds % (1000 * 1000)) };
         auto const select_result = [&] {
             auto descriptors = generate_fd_set(socket);
             switch (category) {
