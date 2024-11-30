@@ -1,11 +1,11 @@
 #include "socket_headers.hpp"
 #include "sockets/detail/byte_order.hpp"
-#include "sockets/detail/unreachable.hpp"
 #include "sockets/sockets.hpp"
 #include <cassert>
 #include <cstring>
 #include <iomanip>
 #include <iostream>
+#include <lib2k/unreachable.hpp>
 #include <memory>
 #include <sstream>
 #include <stdexcept>
@@ -55,8 +55,10 @@ namespace c2k {
             std::size_t const timeout_milliseconds
     ) {
         auto const microseconds = timeout_milliseconds * 1000;
-        auto timeout = timeval{ .tv_sec = static_cast<decltype(std::declval<timeval>().tv_sec)>(microseconds / (1000 * 1000)),
-                                .tv_usec = static_cast<decltype(std::declval<timeval>().tv_usec)>(microseconds % (1000 * 1000)) };
+        auto timeout =
+                timeval{ .tv_sec = static_cast<decltype(std::declval<timeval>().tv_sec)>(microseconds / (1000 * 1000)),
+                         .tv_usec =
+                                 static_cast<decltype(std::declval<timeval>().tv_usec)>(microseconds % (1000 * 1000)) };
         auto const select_result = [&] {
             auto descriptors = generate_fd_set(socket);
             switch (category) {

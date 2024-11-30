@@ -1,16 +1,13 @@
 #pragma once
 
-#include "address_family.hpp"
-#include "address_info.hpp"
-#include "message_buffer.hpp"
-#include "non_null_owner.hpp"
-#include "synchronized.hpp"
-#include "unique_value.hpp"
 #include <atomic>
 #include <cstdint>
 #include <deque>
 #include <functional>
 #include <future>
+#include <lib2k/non_null_owner.hpp>
+#include <lib2k/synchronized.hpp>
+#include <lib2k/unique_value.hpp>
 #include <memory>
 #include <mutex>
 #include <optional>
@@ -18,17 +15,23 @@
 #include <stdexcept>
 #include <string_view>
 #include <thread>
+#include "address_family.hpp"
+#include "address_info.hpp"
+#include "message_buffer.hpp"
 
 namespace c2k {
     class TimeoutError final : public std::runtime_error {
     public:
-        TimeoutError() : std::runtime_error{ "operation timed out" } { }
+        TimeoutError()
+            : std::runtime_error{ "operation timed out" } {}
     };
 
     class ReadError final : public std::runtime_error {
     public:
         using std::runtime_error::runtime_error;
-        ReadError() : std::runtime_error{ "error reading from socket" } { }
+
+        ReadError()
+            : std::runtime_error{ "error reading from socket" } {}
     };
 
     class SendError final : public std::runtime_error {
@@ -101,8 +104,10 @@ namespace c2k {
     };
 
     namespace detail {
-        [[nodiscard]] AbstractSocket::OsSocketHandle
-        initialize_server_socket(AddressFamily address_family, std::uint16_t port);
+        [[nodiscard]] AbstractSocket::OsSocketHandle initialize_server_socket(
+            AddressFamily address_family,
+            std::uint16_t port
+        );
     }
 
     /**
@@ -144,9 +149,9 @@ namespace c2k {
     class ClientSocket final : public AbstractSocket {
         friend class Sockets;
         friend void server_listen(
-                std::stop_token const& stop_token,
-                OsSocketHandle listen_socket,
-                std::function<void(ClientSocket)> const& on_connect
+            std::stop_token const& stop_token,
+            OsSocketHandle listen_socket,
+            std::function<void(ClientSocket)> const& on_connect
         );
 
     private:
@@ -155,8 +160,7 @@ namespace c2k {
             std::vector<std::byte> data;
 
             SendTask(std::promise<std::size_t> promise, std::vector<std::byte> data)
-                : promise{ std::move(promise) },
-                  data{ std::move(data) } { }
+                : promise{ std::move(promise) }, data{ std::move(data) } {}
         };
 
         struct ReceiveTask {
@@ -171,15 +175,12 @@ namespace c2k {
             std::chrono::steady_clock::time_point end_time;
 
             ReceiveTask(
-                    std::promise<std::vector<std::byte>> promise,
-                    std::size_t const max_num_bytes,
-                    Kind const kind,
-                    std::chrono::steady_clock::time_point const end_time
+                std::promise<std::vector<std::byte>> promise,
+                std::size_t const max_num_bytes,
+                Kind const kind,
+                std::chrono::steady_clock::time_point const end_time
             )
-                : promise{ std::move(promise) },
-                  max_num_bytes{ max_num_bytes },
-                  kind{ kind },
-                  end_time{ end_time } { }
+                : promise{ std::move(promise) }, max_num_bytes{ max_num_bytes }, kind{ kind }, end_time{ end_time } {}
         };
 
         class State {
@@ -210,7 +211,7 @@ namespace c2k {
         };
 
         static constexpr auto default_timeout =
-                static_cast<std::chrono::steady_clock::duration>(std::chrono::seconds{ 1 });
+            static_cast<std::chrono::steady_clock::duration>(std::chrono::seconds{ 1 });
 
         std::unique_ptr<State> m_shared_state{ std::make_unique<State>() };
         std::jthread m_send_thread;
@@ -310,6 +311,7 @@ namespace c2k {
         std::future<std::size_t> send(MessageBuffer&& package) {
             return send(std::move(package).data());
         }
+
         // clang-format on
 
         /**
@@ -386,7 +388,7 @@ namespace c2k {
             return std::async(std::launch::deferred, [future = std::move(future)]() mutable {
                 auto message_buffer = MessageBuffer{ future.get() };
                 assert(message_buffer.size() == total_size);
-                return message_buffer.try_extract<Ts...>().value(); // should never fail since we have enough data
+                return message_buffer.try_extract<Ts...>().value();  // should never fail since we have enough data
             });
         }
 
@@ -409,4 +411,4 @@ namespace c2k {
         [[nodiscard]] static bool process_receive_task(OsSocketHandle socket, ReceiveTask task);
         [[nodiscard]] static bool process_send_task(OsSocketHandle socket, SendTask task);
     };
-} // namespace c2k
+}  // namespace c2k

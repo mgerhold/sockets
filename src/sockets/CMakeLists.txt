@@ -5,14 +5,10 @@ add_library(c2k_sockets
         include/sockets/detail/socket.hpp
         include/sockets/detail/address_family.hpp
         socket.cpp
-        include/sockets/detail/unique_value.hpp
-        include/sockets/detail/non_null_owner.hpp
-        include/sockets/detail/synchronized.hpp
         include/sockets/sockets.hpp
         include/sockets/detail/address_info.hpp
         include/sockets/detail/byte_order.hpp
         include/sockets/detail/message_buffer.hpp
-        include/sockets/detail/unreachable.hpp
         include/sockets/detail/utils.hpp
 )
 
@@ -23,3 +19,5 @@ if (WIN32)
 endif ()
 
 target_link_libraries(c2k_sockets PRIVATE ${SOCKET_LIBRARIES} c2k_sockets_options)
+
+target_link_system_libraries(c2k_sockets PUBLIC lib2k)
