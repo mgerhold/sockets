@@ -1,6 +1,6 @@
 #pragma once
 
-#include "unreachable.hpp"
+#include <lib2k/unreachable.hpp>
 #include <cstdint>
 #include <iostream>
 

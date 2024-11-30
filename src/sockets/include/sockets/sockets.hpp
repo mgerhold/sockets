@@ -1,13 +1,13 @@
 #pragma once
 
+#include <lib2k/non_null_owner.hpp>
+#include <lib2k/synchronized.hpp>
+#include <lib2k/unique_value.hpp>
 #include "detail/address_family.hpp"
 #include "detail/address_info.hpp"
 #include "detail/byte_order.hpp"
 #include "detail/message_buffer.hpp"
-#include "detail/non_null_owner.hpp"
 #include "detail/socket.hpp"
-#include "detail/synchronized.hpp"
-#include "detail/unique_value.hpp"
 
 namespace c2k {
 
@@ -37,10 +37,10 @@ namespace c2k {
          * @return The created ServerSocket object.
          */
         [[nodiscard]] static ServerSocket create_server(
-                AddressFamily const address_family,
-                std::uint16_t const port,
-                std::function<void(ClientSocket)> callback,
-                [[maybe_unused]] Sockets const& key = instance()
+            AddressFamily const address_family,
+            std::uint16_t const port,
+            std::function<void(ClientSocket)> callback,
+            [[maybe_unused]] Sockets const& key = instance()
         ) {
             return ServerSocket{ address_family, port, std::move(callback) };
         }
@@ -56,14 +56,14 @@ namespace c2k {
          * @return The created ClientSocket object.
          */
         [[nodiscard]] static ClientSocket create_client(
-                AddressFamily address_family,
-                std::string const& host,
-                std::uint16_t port,
-                [[maybe_unused]] Sockets const& key = instance()
+            AddressFamily address_family,
+            std::string const& host,
+            std::uint16_t port,
+            [[maybe_unused]] Sockets const& key = instance()
         );
 
     private:
         [[nodiscard]] static Sockets const& instance();
     };
 
-} // namespace c2k
+}  // namespace c2k

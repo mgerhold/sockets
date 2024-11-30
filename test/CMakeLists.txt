@@ -1,7 +1,6 @@
 include(GoogleTest)
 
 add_executable(c2k_sockets_tests
-        synchronized_tests.cpp
         sockets_tests.cpp
 )
 
