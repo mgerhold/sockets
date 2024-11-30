@@ -40,8 +40,6 @@ Classes
 
 - :ref:`exhale_class_classc2k_1_1MessageBuffer`
 
-- :ref:`exhale_class_classc2k_1_1NonNullOwner`
-
 - :ref:`exhale_class_classc2k_1_1ReadError`
 
 - :ref:`exhale_class_classc2k_1_1SendError`
@@ -50,11 +48,7 @@ Classes
 
 - :ref:`exhale_class_classc2k_1_1Sockets`
 
-- :ref:`exhale_class_classc2k_1_1Synchronized`
-
 - :ref:`exhale_class_classc2k_1_1TimeoutError`
-
-- :ref:`exhale_class_classc2k_1_1UniqueValue`
 
 
 Enums
@@ -94,8 +88,6 @@ Functions
 
 - :ref:`exhale_function_socket_8cpp_1acd33764745eaf0d6d1809a48e10b1ff6`
 
-- :ref:`exhale_function_non__null__owner_8hpp_1a1577081b720d1033c72ecac94a12e2dd`
-
 - :ref:`exhale_function_socket_8cpp_1ab1cfe50b941d20aeda94d586918cd2ce`
 
 - :ref:`exhale_function_socket_8cpp_1a3bc73ecc11ea10cdc0c08cee77924a67`
@@ -111,8 +103,6 @@ Functions
 - :ref:`exhale_function_socket_8cpp_1a0bfc388c3ebdc3cb5a1e009c2a513795`
 
 - :ref:`exhale_function_socket_8cpp_1aaa8546d456ca1baa1e801121e3d53728`
-
-- :ref:`exhale_function_unreachable_8hpp_1a61e71d7964b56e90b288ee015963696a`
 
 
 Typedefs

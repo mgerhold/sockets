@@ -60,11 +60,6 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_sockets_include_sockets_detail_non_null_owner.hpp.rst
-
-.. toctree::
-   :maxdepth: 5
-
    file_sockets_socket.cpp.rst
 
 .. toctree::
@@ -86,21 +81,6 @@ Files
    :maxdepth: 5
 
    file_sockets_include_sockets_sockets.hpp.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   file_sockets_include_sockets_detail_synchronized.hpp.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   file_sockets_include_sockets_detail_unique_value.hpp.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   file_sockets_include_sockets_detail_unreachable.hpp.rst
 
 .. toctree::
    :maxdepth: 5

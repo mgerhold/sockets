@@ -38,13 +38,13 @@ Includes
 
 - ``detail/message_buffer.hpp`` (:ref:`file_sockets_include_sockets_detail_message_buffer.hpp`)
 
-- ``detail/non_null_owner.hpp`` (:ref:`file_sockets_include_sockets_detail_non_null_owner.hpp`)
-
 - ``detail/socket.hpp`` (:ref:`file_sockets_include_sockets_detail_socket.hpp`)
 
-- ``detail/synchronized.hpp`` (:ref:`file_sockets_include_sockets_detail_synchronized.hpp`)
+- ``lib2k/non_null_owner.hpp``
 
-- ``detail/unique_value.hpp`` (:ref:`file_sockets_include_sockets_detail_unique_value.hpp`)
+- ``lib2k/synchronized.hpp``
+
+- ``lib2k/unique_value.hpp``
 
 
 

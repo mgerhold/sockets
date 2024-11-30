@@ -38,13 +38,13 @@ Includes
 
 - ``iostream``
 
+- ``lib2k/unreachable.hpp``
+
 - ``memory``
 
 - ``socket_headers.hpp`` (:ref:`file_sockets_socket_headers.hpp`)
 
 - ``sockets/detail/byte_order.hpp`` (:ref:`file_sockets_include_sockets_detail_byte_order.hpp`)
-
-- ``sockets/detail/unreachable.hpp`` (:ref:`file_sockets_include_sockets_detail_unreachable.hpp`)
 
 - ``sockets/sockets.hpp`` (:ref:`file_sockets_include_sockets_sockets.hpp`)
 
